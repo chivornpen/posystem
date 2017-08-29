@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">                
-        <h4 class="page-header"><i class="fa fa-fw fa-briefcase"></i> Create New Brand </h4>
+        <h4 class="page-header"><i class="fa fa-empire" aria-hidden="true"></i> Create New Brand </h4>
     </div>
                <!-- /.col-lg-12 -->
 </div>

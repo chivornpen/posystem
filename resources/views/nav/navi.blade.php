@@ -6,6 +6,14 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#Admin"><i class="fa fa-fw  fa-wrench"></i> Administrator <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="Admin" class="collapse nav nav-second-level">
                                 <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#Verify"><i class="fa fa-fw fa-check-circle"></i> Verify <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="Verify" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{ route('verifys.create')}}">Verify Purchase Order</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#Positions"><i class="fa fa-fw fa-briefcase"></i> Positions <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="Positions" class="collapse nav nav-second-level">
                                         <li>
@@ -17,7 +25,7 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#Brands"><i class="fa fa-fw fa-briefcase"></i> Brands <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#Brands"><i class="fa fa-empire" aria-hidden="true"></i> Brands <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="Brands" class="collapse nav nav-second-level">
                                         <li>
                                             <a href="{{ route('brands.index')}}">All Brands</a>
@@ -184,9 +192,6 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('purchaseOrders.create')}}">Create New Order</a>
-                                </li>
-                                <li>
-                                    <a href="{{ route('verifys.create')}}">Verify Purchase Order</a>
                                 </li>
                             </ul>
                         </li>

@@ -5,7 +5,7 @@
 </div>
     <div class="row">
       <div class="col-lg-12">
-        <div class="panel panel-default panel-success">
+        <div class="panel panel-default">
           <div class="panel-heading"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Create New Purchase Order</div>
           <div class="panel panel-body">
             {!!Form::open(['action'=>'PurchaseOrderSDController@store','method'=>'POST','id'=>'myFormPO'])!!}
@@ -59,7 +59,7 @@
                   <div class="col-lg-2">
                      <div class="form-group {{ $errors->has('qty') ? ' has-error' : '' }}">
                         {!!Form::label('qty','Quantity',[])!!}
-                        {!!Form::number('qty',null,['class'=>'form-control qty','readonly'=>'readonly','min'=>'0'])!!}
+                        {!!Form::number('qty',null,['class'=>'form-control qty','readonly'=>'readonly','min'=>'0','autocomplete'=>'off'])!!}
                           @if ($errors->has('qty'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('qty') }}</strong>
@@ -166,7 +166,7 @@
             <div class="col-lg-12">
               <div class="well-sm">
                 <button type="submit" disabled="true" name="btn_save" value="Save" class="btn btn-success btn-sm" id="btn_hide"><i class="icon-save"></i> Save </button>
-                <button disabled="true" type="submit" name="btn_cancel" value="Cancel" class="btn btn-danger btn-sm btn_hide"> Cancel </button>
+                <button disabled="true" type="submit" name="btn_cancel" value="Cancel" class="btn btn-danger btn-sm btn_hide"> Discard </button>
               </div>
             </div>
           </div>
@@ -174,6 +174,8 @@
       </div>
         {!!Form::hidden('discount',null,['id'=>'dis'])!!}
         {!!Form::hidden('grandTotal',null,['id'=>'gtotal'])!!}
+         {!!Form::hidden('qty_pro_in_stock',null,['class'=>'qty_pro_in_stock'])!!}
+         {!!Form::hidden('tmp_pro_qty',null,['class'=>'tmp_pro_qty'])!!}
         {!!Form::close()!!}
           </div>
         </div>
@@ -198,12 +200,54 @@
       }
       getProduct(proId);
   });
-  function getProduct(id){
+   //--------------------------------------------------------------
+//----------------------------------
+ $( ".qty" ).keyup(function() {
+   var qtys = $('.qty').val();
+   var qty_pro_in_stocks = $('.qty_pro_in_stock').val();
+   var tmp_pro_qtys = $('.tmp_pro_qty').val();
+   var qty = null;
+   var quantity = null;
+   var qty_pro_in_stock = null;
+   var quantities = null;
+   quantity = parseInt(tmp_pro_qtys);
+   qty = parseInt(qtys);
+   qty_pro_in_stock = parseInt(qty_pro_in_stocks);
+   quantities = qty + quantity;
+      var price = $('.price').val();
+      var total = qty * price;
+      var amount = total.toFixed(2);
+      $('.amount').val(amount);
+   if(quantities >= 0 && quantities <= qty_pro_in_stock){
+      $('.add').removeAttr('disabled','true');
+      $('.qty').css('border','1px solid lightblue');
+   }else if(quantities >= 0 && quantities > qty_pro_in_stock){
+      $('.add').attr('disabled','true');
+      $('.qty').css('border','1px solid red');
+      alert("Stock available only: "+qty_pro_in_stock+" items!");
+      $('.qty').val(null)
+      $(".amount").val(0);
+
+   }else{
+    $('.amount').val(0);
+      $('.add').attr('disabled','true');
+      $('.qty').css('border','1px solid red');
+    }
+});
+ //-----------------------------------
+ //-----------------------------------
+    function getProduct(id){
   $.ajax({
     type: 'GET',
     url:"{{url('/getProduct')}}"+"/"+id,
     success:function(response){
       $('.proId').val(response.pro_code);
+      $('.qty_pro_in_stock').val(response.qty_product);
+      if(response.tmp_pro_qty!=null){
+        $('.tmp_pro_qty').val(response.tmp_pro_qty);
+      }else{
+        $('.tmp_pro_qty').val(0);
+      }
       $('.price').val(response.price); 
       },
       error:function(error){
@@ -211,6 +255,7 @@
       }
   });
 }
+//-----------------------------
 function addOderSD(){
   var proid =$(".productId").val();
   var qty = $(".qty").val();
@@ -354,6 +399,13 @@ $.ajax({
     method: 'GET',
     url:"{{url('/removeOrderSD')}}"+"/"+id,
     success:function(data){
+      $(".productId").val('');
+      $('.proId').val(null);
+      $('.qty').val(null)
+      $('.qty').attr('readonly','readonly');
+      $(".price").val(0);
+      $(".amount").val(0);
+      $('.qty').css('border','1px solid lightblue');
       var count = $('table tr').length;
       if(count==2){
       $('#btn_hide').attr('disabled','true');
@@ -371,31 +423,6 @@ $.ajax({
     },
   });
 }
- 
- //--------------------------------------------------------------
- $( ".qty" ).keyup(function() {
-    var qty = $('.qty').val();
-    if (qty>=0) {
-      $('.add').removeAttr('disabled','true');
-      $('.qty').css('border','1px solid lightblue');
-    }else if(qty==null){
-      $('.add').attr('disabled','true');
-    }else{
-      $('.add').attr('disabled','true');
-      $('.qty').css('border','1px solid red');
-    }
-    var price = $('.price').val();
-    var total = qty * price;
-    var amount = total.toFixed(2);
-    $('.amount').val(amount);
-});
- //-----------------------------------
-// $('.discount').on('change',function(e){
-//         var dis = $(this).val();
-//         var total = $('.total').val();
-//         var grandTotal = total - (total * dis)/100;
-//         $('.grandTotal').val(grandTotal);
-//   });
-
+//---------
 </script>
 @stop

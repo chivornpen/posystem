@@ -1,11 +1,9 @@
 @extends('layouts.admin')
-
 @section('content')
 <div class="row">
     <div class="col-lg-12">                
         <h4 class="page-header"><i class="fa fa-money" aria-hidden="true"></i> Create New Price List </h4>
     </div>
-               <!-- /.col-lg-12 -->
 </div>
 <div>
   @include('nav.message')
@@ -103,7 +101,6 @@
             <button type="submit" class="btn btn-success"> Create </button>
             <a href="{{ url()->previous() }}" class="btn btn-info pull-right"> Back </a>
           </div>
-          
         {!!Form::close()!!}
       </div>
     </div>

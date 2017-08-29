@@ -7,7 +7,7 @@
 {{----------------------------------}}
     <div class="row">
       <div class="col-lg-12">
-          <div class="panel panel-success">
+          <div class="panel panel-footer">
             <div class="panel-heading"><i class="fa fa-check-circle" aria-hidden="true"></i> Verify Purchase Order</div>
               <div class="panel panel-body">
         {!!Form::open(['action'=>'TmpEditPurchaseorderController@store','method'=>'POST'])!!}

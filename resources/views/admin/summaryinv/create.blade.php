@@ -65,8 +65,8 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="well well-sm">
-                <a href="{{route('invoicePO.index')}}" class="btn btn-primary pull-right">Back</a>
-                {!!Form::submit('Save',['class'=>'btn btn-primary'])!!}
+                <a href="{{route('invoicePO.index')}}" class="btn btn-info pull-right">Back</a>
+                {!!Form::submit('Save',['class'=>'btn btn-success'])!!}
               </div>
             </div>
           </div>

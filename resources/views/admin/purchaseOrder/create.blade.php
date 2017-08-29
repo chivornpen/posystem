@@ -5,7 +5,7 @@
 </div>
 <div class="row">
   <div class="col-lg-12">
-    <div class="panel panel-default panel-success">
+    <div class="panel panel-default">
       <div class="panel-heading"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Create New Purchase Order</div>
         <div class="panel panel-body">
             <div id="mypopup"></div>
@@ -127,7 +127,7 @@
                           <div class="col-lg-2">
                              <div class="form-group {{ $errors->has('qty') ? ' has-error' : '' }}">
                                 {!!Form::label('qty','Quantity',[])!!}
-                                {!!Form::number('qty',null,['class'=>'form-control qty','readonly'=>'readonly','min'=>'0'])!!}
+                                {!!Form::number('qty',null,['class'=>'form-control qty','readonly'=>'readonly','min'=>'0','autocomplete'=>'off'])!!}
                                   @if ($errors->has('qty'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('qty') }}</strong>
@@ -262,7 +262,7 @@
                     <div class="col-lg-12">
                       <div class="well-sm">
                         <button type="submit" disabled="true" name="btn_save" value="Save" class="btn btn-success btn-sm" id="btn_hide"> Save</button>
-                        <button disabled="true" type="submit" name="btn_cancel" value="Cancel" class="btn btn-danger btn-sm btn_hide"> Cancel </button>
+                        <button disabled="true" type="submit" name="btn_cancel" value="Cancel" class="btn btn-danger btn-sm btn_hide"> Discard </button>
                       </div>
                     </div>
                   </div>

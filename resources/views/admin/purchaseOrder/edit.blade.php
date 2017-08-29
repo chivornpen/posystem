@@ -103,6 +103,9 @@
                   </div>
                 </div>
               </div>
+              {!!Form::text('qty_pro_in_stock',null,['class'=>'qty_pro_in_stock'])!!}
+              {!!Form::text('tmp_pro_qty',null,['class'=>'tmp_pro_qty'])!!}
+
             {!!Form::close()!!}
 {{-----------------------------------}}
 <input type="hidden" name="poid" class="poid" id="poid" value="{{$pos->id}}">
@@ -218,15 +221,22 @@ $('.productId').on('change',function(e){
         $('.price').val(0);
         $('.amount').val(0);
       }
-      getProduct(proId);
+      getProductVer(proId);
   });
   //---------------------------
-    function getProduct(id){
+   //---------------------------
+    function getProductVer(id){
   $.ajax({
     type: 'GET',
-    url:"{{url('/getProduct')}}"+"/"+id,
+    url:"{{url('/getProductVer')}}"+"/"+id,
     success:function(response){
       $('.proId').val(response.pro_code);
+      $('.qty_pro_in_stock').val(response.qty_product);
+      if(response.tmp_pro_qty!=null){
+        $('.tmp_pro_qty').val(response.tmp_pro_qty);
+      }else{
+        $('.tmp_pro_qty').val(0);
+      }
       $('.price').val(response.price); 
       },
       error:function(error){
@@ -236,22 +246,38 @@ $('.productId').on('change',function(e){
 }
 //----------------------------------
  $( ".qty" ).keyup(function() {
-   var qty = $('.qty').val();
-    if (qty>=0) {
+   var qtys = $('.qty').val();
+   var qty_pro_in_stocks = $('.qty_pro_in_stock').val();
+   var tmp_pro_qtys = $('.tmp_pro_qty').val();
+   var qty = null;
+   var quantity = null;
+   var qty_pro_in_stock = null;
+   var quantities = null;
+   quantity = parseInt(tmp_pro_qtys);
+   qty = parseInt(qtys);
+   qty_pro_in_stock = parseInt(qty_pro_in_stocks);
+   quantities = qty + quantity;
+      var price = $('.price').val();
+      var total = qty * price;
+      var amount = total.toFixed(2);
+      $('.amount').val(amount);
+   if(quantities >= 0 && quantities <= qty_pro_in_stock){
       $('.add').removeAttr('disabled','true');
       $('.qty').css('border','1px solid lightblue');
-    }else if(qty==null){
+   }else if(quantities >= 0 && quantities > qty_pro_in_stock){
       $('.add').attr('disabled','true');
-    }else{
+      $('.qty').css('border','1px solid red');
+      alert("Stock available only: "+qty_pro_in_stock+" items!");
+      $('.qty').val(null)
+      $(".amount").val(0);
+
+   }else{
+    $('.amount').val(0);
       $('.add').attr('disabled','true');
       $('.qty').css('border','1px solid red');
     }
-    var price = $('.price').val();
-    var total = qty * price;
-    var amount = total.toFixed(2);
-    $('.amount').val(amount);
 });
-//  //-----------------------------------
+ //-----------------------------------
 $(window).load(function(){
        $('.productId').val(null);
        $('.proId').val('');

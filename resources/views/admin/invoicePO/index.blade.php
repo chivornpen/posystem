@@ -68,8 +68,8 @@
                     <?php 
                         if($details->customer_id==null){
                             echo "<td style='font-size: 11px; font-family: Khmer OS System; '>" . $details->user->nameDisplay . "</td>";
-                            echo "<td style='font-size: 11px; font-family: Khmer OS System; text-align: center;'>" . $details->customer->channel->name . "</td>";
-                            echo "<td style='font-size: 11px; font-family: Khmer OS System; '> SD </td>";
+                            echo "<td style='font-size: 11px; font-family: Khmer OS System; text-align: center;'>" . $details->user->brand->name . "</td>";
+                            echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align:center; '> SD </td>";
                         }else
                         {
                             echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $details->customer->name . "</td>";
@@ -159,8 +159,8 @@
                 <?php 
                     if($paid->customer_id==null){
                         echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $paid->user->nameDisplay . "</td>";
-                        echo "<td style='font-size: 11px; font-family: Khmer OS System;' text-align: center;>" . $paid->customer->channel->name . "</td>";
-                        echo "<td style='font-size: 11px; font-family: Khmer OS System;'> SD </td>";
+                        echo "<td style='font-size: 11px; font-family: Khmer OS System;' text-align: center;>" . $paid->user->brand->name . "</td>";
+                        echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align:center;'> SD </td>";
                     }else
                     {
                         echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $paid->customer->name . "</td>";
@@ -243,8 +243,8 @@
                 <?php 
                         if($cradit->customer_id==null){
                             echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $cradit->user->nameDisplay . "</td>";
-                            echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align: center;'>" . $cradit->customer->channel->name . "</td>";
-                            echo "<td style='font-size: 11px; font-family: Khmer OS System;'> SD </td>";
+                            echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align: center;'>" . $cradit->user->brand->name . "</td>";
+                            echo "<td style='font-size: 11px; font-family: Khmer OS System; text-align:center;'> SD </td>";
                         }else
                         {
                             echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $cradit->customer->name . "</td>";

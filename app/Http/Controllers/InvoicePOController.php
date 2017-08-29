@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use App\SetValue;
 use App\User;
 use App\Position;
+use App\Customer;
 
 class InvoicePOController extends Controller
 {
@@ -149,7 +150,13 @@ class InvoicePOController extends Controller
         $printedBy = Purchaseorder::where('id','=',$id)->value('printedBy');
         $createdInv = User::where('id','=',$printedBy)->value('nameDisplay');
         $sex = User::where('id','=',$printedBy)->value('sex');
-        return view('admin.invoicePO.invoice',compact('po','totalAmount','discount','cod','vat','diposit','Vcod','Vvat','VgrandTotal','createdInv','sex','rate','totalAmountkh'));
+        $customerid = Purchaseorder::where('id','=',$id)->value('customer_id');
+        $userid = Purchaseorder::where('id','=',$id)->value('user_id');
+        if($customerid == null){
+            $phone = User::where('id','=',$userid)->value('contactNum');
+            $sdid = Customer::where('contactNo','=',$phone)->value('id');
+        }
+        return view('admin.invoicePO.invoice',compact('po','totalAmount','discount','cod','vat','diposit','Vcod','Vvat','VgrandTotal','createdInv','sex','rate','totalAmountkh','sdid'));
     }
     public function getPopupEditPO($id)
     {

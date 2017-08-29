@@ -30,8 +30,13 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-         $pocuss = PurchaseOrder::where('customer_id','!=',null)->where('user_id','=',Auth::user()->id)->get();
-        return view('admin.purchaseOrder.index',compact('pocuss'));
+        if(Auth::user()->position->name != 'SD'){
+            $pocuss = PurchaseOrder::where('customer_id','!=',null)->get();
+            return view('admin.purchaseOrder.index',compact('pocuss'));
+        }else{
+            $pocuss = PurchaseOrder::where('customer_id','!=',null)->where('user_id','=',Auth::user()->id)->get();
+            return view('admin.purchaseOrder.index',compact('pocuss'));
+        }
     }
 
     /**
@@ -216,10 +221,18 @@ class PurchaseOrderController extends Controller
             foreach ($tmps as $tmp) {
                 $tmp->delete();
             }
-            return redirect()->route('purchaseOrders.index');
+            if(Auth::user()->position->name != 'SD'){
+                return redirect()->route('purchaseOrders.index');
+            }else{
+                return redirect()->route('purchaseOrdersSD.index');
+            }
         }
         if(Input::get('btn_done')){
-            return redirect()->route('purchaseOrders.index');
+            if(Auth::user()->position->name != 'SD'){
+                return redirect()->route('purchaseOrders.index');
+            }else{
+                return redirect()->route('purchaseOrdersSD.index');
+            }
         }   
     }
 

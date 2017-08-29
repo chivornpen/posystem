@@ -8,7 +8,7 @@
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <tr>
-                        <th style="text-align: center;">Product Name</th>
+                        <th style="text-align: center;">Product Code</th>
                         <th style="text-align: center;">Quantities</th>
                         <th style="text-align: center;">Unit Price</th>
                         <th style="text-align: center;">Amount</th>

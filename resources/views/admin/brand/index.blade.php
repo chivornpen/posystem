@@ -5,7 +5,7 @@
     <div class="modal-content">
       <div class="modal-header" style="background-color: #117A65; color: white;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-fw fa-briefcase"></i> New Brand</h4>
+          <h4 class="modal-title" id="exampleModalLabel"><i class="fa fa-empire" aria-hidden="true"></i> New Brand</h4>
           </div>
           <div class="modal-body">
             <div class="row">
@@ -64,7 +64,7 @@
 </div>
 <div class="row">
     <div class="col-lg-12">                
-        <h4 class="page-header"> <i class="fa fa-fw fa-briefcase"></i> Brands</h4>
+        <h4 class="page-header"><i class="fa fa-empire" aria-hidden="true"></i> Brands</h4>
     </div>
                 <!-- /.col-lg-12 -->
 </div>

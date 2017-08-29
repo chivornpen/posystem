@@ -7,6 +7,7 @@ use App\Purchaseorder;
 use App\Pricelist;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\TpmEditPurchaseOrder;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -83,6 +84,22 @@ Route::get('/removeOrderSD/{id}',function($id){
 });
 Route::get('/getProduct/{id}',function($id){
 		$oldQty = TpmPurchaseOrder::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->value('qty');
+		$product_code = Product::where('id','=', $id)->value('product_code');
+		$qty_product = Product::where('id','=', $id)->value('qty');
+	 	$products = Product::findOrFail($id);
+	 	foreach ($products->pricelists as $product) {
+	 		$pricelist_id = $product->id;
+	 		$sql = "SELECT sellingprice FROM pricelists WHERE id={$pricelist_id} AND now()>=startdate AND now()<=enddate";
+		 	$result = DB::select($sql);
+		 	foreach ($result as $row) {
+		 		$price = $row->sellingprice;
+		 	}
+	 	}
+	 	return response()->json(['pro_code'=>$product_code,'qty_product'=>$qty_product,'tmp_pro_qty'=>$oldQty,'price'=>$price]);
+	});
+Route::get('/getProductVer/{id}',function($id){
+		$oldQty = TpmEditPurchaseOrder::where('product_id','=',$id)->where('recordStatus','!=','r')->where('user_id','=',Auth::user()->id)->value('qty');
+		//dd($oldQty);
 		$product_code = Product::where('id','=', $id)->value('product_code');
 		$qty_product = Product::where('id','=', $id)->value('qty');
 	 	$products = Product::findOrFail($id);

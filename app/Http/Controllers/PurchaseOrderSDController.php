@@ -9,6 +9,7 @@ use App\SetValue;
 use App\Purchaseorder;
 use Auth;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\TpmPurchaseOrder;
 
@@ -21,8 +22,13 @@ class PurchaseOrderSDController extends Controller
      */
     public function index()
     {
-        $posds = PurchaseOrder::where('customer_id','=',null)->where('user_id','=',Auth::user()->id)->get();
-        return view('admin.purchaseOrderSD.index',compact('posds'));
+        if(Auth::user()->position->name != 'SD'){
+            $posds = PurchaseOrder::where('customer_id','=',null)->get();
+            return view('admin.purchaseOrderSD.index',compact('posds'));
+        }else{
+            $posds = PurchaseOrder::where('customer_id','=',null)->where('user_id','=',Auth::user()->id)->get();
+            return view('admin.purchaseOrderSD.index',compact('posds'));
+        }
     }
 
     /**
@@ -58,6 +64,7 @@ class PurchaseOrderSDController extends Controller
             $po->dueDate = Carbon::now()->addMonths(1);
             $po->customer_id = Input::get('customer_id');
             $po->totalAmount = Input::get('total');
+            $po->cradit = Input::get('grandTotal');
             if(Input::get('discount')!=null){
                $po->discount = Input::get('discount'); 
            }else{
@@ -156,9 +163,25 @@ class PurchaseOrderSDController extends Controller
     {
         //
     }
-    public function addOrderSD($proid, $qty, $price, $amount)
+    // public function addOrderSD($proid, $qty, $price, $amount)
+    // {
+    //     TpmPurchaseOrder::create(['product_id'=>$proid,'qty'=>$qty,'unitPrice'=>$price,'amount'=>$amount,'user_id'=>Auth::user()->id]);
+    //     $tmpPurchaseOrders = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
+    //     return response()->json($tmpPurchaseOrders);
+    // }
+     public function addOrderSD($proid, $qty, $price, $amount)
     {
-        TpmPurchaseOrder::create(['product_id'=>$proid,'qty'=>$qty,'unitPrice'=>$price,'amount'=>$amount,'user_id'=>Auth::user()->id]);
+        $oldQty = TpmPurchaseOrder::where('product_id','=',$proid)->where('user_id','=',Auth::user()->id)->value('qty');
+        $user_id =Auth::user()->id;
+        if($oldQty!=null){
+            DB::statement("DELETE FROM tmppurchaseoders WHERE product_id={$proid} AND user_id={$user_id}");
+                $newQty = (int)$qty;
+                $qtylast = $oldQty + $newQty;
+                $amount = $qtylast * $price;
+            TpmPurchaseOrder::create(['product_id'=>$proid,'qty'=>$qtylast,'unitPrice'=>$price,'amount'=>$amount,'user_id'=>Auth::user()->id]);
+        }else{
+            TpmPurchaseOrder::create(['product_id'=>$proid,'qty'=>$qty,'unitPrice'=>$price,'amount'=>$amount,'user_id'=>Auth::user()->id]);
+        }
         $tmpPurchaseOrders = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
         return response()->json($tmpPurchaseOrders);
     }

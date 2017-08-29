@@ -52,6 +52,7 @@
                     {{$posd->cod . "%"}}
                 </td>
                 <td style="text-align: center;">
+                    <a href="{{ route('purchaseOrders.edit',$posd->id)}}" class="btn btn-warning btn-xs" title="Edit"><i class="fa fa-edit"></i></a>  
                     <a href="{{ route('purchaseOrdersSD.show',$posd->id)}}" class="btn btn-info btn-xs" title="Show Details"><i class="fa fa-indent" aria-hidden="true"></i></a>
                     <form action="{{ route('invoicePO.destroy',$posd->id) }}" method="POST" style="display: inline;" onsubmit="{ return true } else {return false };">
                         <input type="hidden" name="_method" value="DELETE">

@@ -125,7 +125,7 @@
                 @endif
                @if($po->customer_id==null)
                 <td style="border:none; margin-left: 50px; font-size: 10px; font-family: 'Khmer OS System';">
-                    {{$po->user->brand}}
+                    {{$po->user->brand->brandName}}
                 </td>
                @endif
             </tr>
@@ -235,7 +235,7 @@
                         if($po->customer_id!=null){
                         echo "CAM-CUS-" . sprintf('%06d',$po->customer->id);
                     }else{
-                        echo "CAM-CUS-" . sprintf('%06d',$po->user->id);
+                        echo "CAM-CUS-" . sprintf('%06d',$sdid);
                     }
                     ?>
                 </td>

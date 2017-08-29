@@ -125,7 +125,6 @@ class StockoutController extends Controller
 //                                        echo "Base Quantities = ".$bqty."<br>";
 //                                        echo "Order Quantities = ".$qtyIn."<br>";
 //                                        echo "Update Quantities = ".$uqty=($bqty-$qtyIn)."<br>";
-
                                         $j = $product_id;
                                         $a=0;
                                     }
