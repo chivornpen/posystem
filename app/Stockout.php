@@ -12,4 +12,5 @@ class Stockout extends Model
     public  function purchaseorder(){
         return $this->belongsTo(Purchaseorder::class);
     }
+
 }

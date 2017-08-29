@@ -51,11 +51,16 @@
                                 <div class="form-group">
                                     {!! Form::label('invoiceN','Invoice Number ') !!}
                                         <select name="invoiceN" id="invoiceN" class="form-control" onchange="InvNChange()">
-                                            <option value="0">Please select</option>
+                                            <option value="">Please select</option>
                                             @foreach($invoice as $row)
                                                 <option value="{{$row['id']}}">{{"CAM-IN-" . sprintf('%06d',$row['id'])}}</option>
                                             @endforeach
                                         </select>
+                                        @if($errors->has('invoiceN'))
+                                            <span class="help-block">
+                                                <strong>{{ $errors->first('invoiceN') }}</strong>
+                                            </span>
+                                        @endif
                                 </div>
                             </div>
                         </div>

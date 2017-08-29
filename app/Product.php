@@ -38,4 +38,8 @@ class Product extends Model
     public  function subimports(){
         return $this->belongsToMany(Product::class,'subimport_product','subimport_id','product_id')->withTimestamps()->withPivot('qty','mfd', 'expd');
     }
+
+    public function brands(){
+        return $this->belongsToMany(Brand::class)->withTimestamps()->withPivot('qty');
+    }
 }
