@@ -291,3 +291,39 @@
                               </li>
                             </ul>
                         </li>
+
+
+         {{--SD STOCK MANAGEMENT MENU--}}
+                        <li><a href="javascript:;" data-toggle="collapse" data-target="#sdStock"><i class="fa fa-industry" aria-hidden="true"></i> SD Stock Management <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="sdStock" class="collapse nav nav-second-level">
+
+                                {{--SD stock_in_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockin"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock In <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="sDstockin" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="#">Add New</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('sdstock.index')}}">Views</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end SD stock-in-menu--}}
+
+
+                                {{--SD stock_out_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockout"><i class="fa fa-truck" aria-hidden="true"></i> Stock Out <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="sDstockout" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="#">Export</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Views</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end stock-out-menu--}}
+                            </ul>
+                        </li>

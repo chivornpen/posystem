@@ -44,12 +44,11 @@ class StockoutController extends Controller
         $invoiceN = $re->input('invoiceN');//Get Invoice number from combobox in Form
         if($invoiceN!=0){
             $purchase = Purchaseorder::findOrFail($invoiceN);//Find purchase by In that got from comboBox from form
-            $SD = $purchase->customer->channel->name;
             $Brand_id = $purchase->user->brand_id;//Get brand_id by user ID
             $product = $purchase->products()->get();// Get all product by Invoice/Purchase Order
 
             //Insert record to table substock if that user is SD
-            if(strtolower($SD)=="sd"){
+            if($Brand_id!=0 && $Brand_id!=null){
                 $substock = new Subimport();
                 $substock->subimportDate=$stockoutDate;
                 $substock->purchaseorder_id=$invoiceN;
@@ -72,7 +71,7 @@ class StockoutController extends Controller
                 $brand_product_qty = 0;
                 $brand_product_productId = 0;
                 $brand_product_brandId = 0;
-                if(strtolower($SD)=="sd") {
+                if($Brand_id!=0 && $Brand_id!=null) {
                     $Brand = DB::table('brand_product')->where([['brand_id', '=', $Brand_id], ['product_id', '=', $product_id],])->get();
 //                    print_r($Brand);
                     foreach ($Brand as $B) {
@@ -112,7 +111,7 @@ class StockoutController extends Controller
                                         $Up->isDelivery=1;
                                         $Up->save();
 
-                                        if(strtolower($SD)=="sd") {//Insert data to substock if that user is SD
+                                        if($Brand_id!=0 && $Brand_id!=null) {//Insert data to substock if that user is SD
                                             DB::table('subimport_product')->insert(['subimport_id' => $subimport_id, 'product_id' => $product_id, 'qty' => $qt, 'mfd' => $s->mfd, 'expd' => $s->expd]);
                                             if($brand_product_productId!=0 && $brand_product_brandId!=0){
                                                 $qtyUpdate_brand_product = $brand_product_qty+$qtyIn;
@@ -150,7 +149,7 @@ class StockoutController extends Controller
                                         $Up->save();
 
                                         //insert record to table subimport / into substock detail
-                                        if(strtolower($SD)=="sd") {//Insert data to substock if that user is SD
+                                        if($Brand_id!=0 && $Brand_id!=null) {//Insert data to substock if that user is SD
                                             DB::table('subimport_product')->insert(['subimport_id' => $subimport_id, 'product_id' => $product_id, 'qty' => $qt, 'mfd' => $s->mfd, 'expd' => $s->expd]);
                                             if($brand_product_productId!=0 && $brand_product_brandId!=0){
                                                 $qtyUpdate_brand_product = $brand_product_qty+$qtyIn;
@@ -174,7 +173,7 @@ class StockoutController extends Controller
 //                                        echo "Values = 0<br><br>";
                                         DB::table('import_product')->where('id', $s->id)->update(array('qty'=>0));
 
-                                        if(strtolower($SD)=="sd") {//Insert data to substock if that user is SD
+                                        if($Brand_id!=0 && $Brand_id!=null) {//Insert data to substock if that user is SD
                                             DB::table('subimport_product')->insert(['subimport_id' => $subimport_id, 'product_id' => $product_id, 'qty' => $s->qty, 'mfd' => $s->mfd, 'expd' => $s->expd]);
                                         }
 
