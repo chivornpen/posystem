@@ -301,9 +301,6 @@
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockin"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock In <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="sDstockin" class="collapse nav nav-second-level">
                                         <li>
-                                            <a href="#">Add New</a>
-                                        </li>
-                                        <li>
                                             <a href="{{route('sdstock.index')}}">Views</a>
                                         </li>
                                     </ul>

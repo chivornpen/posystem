@@ -23,7 +23,6 @@
                     @endforeach
                 </table>
             </div>
-            <h5><smal>Total Quantities : {{$importCurrent->products->sum('qty')}}</smal></h5>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

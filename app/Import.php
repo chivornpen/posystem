@@ -19,4 +19,7 @@ class Import extends Model
     public function histories(){
         return $this->hasMany(History::class,'importId','id');
     }
+    public  function stockouts(){
+        return $this->belongsToMany(Stockout::class)->withTimestamps()->withPivot('product_id','qty','expd');
+    }
 }

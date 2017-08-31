@@ -41,6 +41,8 @@ class stock_in_controller extends Controller
                 'inv_date'=>'required',
                 'inv_number'=>'required',
             ]);
+            $lPrice=0;
+            $now= Carbon::now()->toDateString();
             $amount = Tmpstock::all()->sum('amount');
             $userId = Auth::user()->id;
             $import = new Import();
@@ -64,7 +66,8 @@ class stock_in_controller extends Controller
             foreach ($tmpInsert as $row){
                 $proId = $row->product_id;
                 $qty = $row->qty;
-                    $landing = DB::select("SELECT landingprice FROM `pricelists` WHERE product_id = {$proId} and startdate<=now() and enddate>=now()");
+                    $landing = DB::table('pricelists')->select('landingprice')->where([['product_id','=',$proId],['startdate','<=',$now],['enddate','>=',$now],])->get();
+                    //$landing = DB::select("SELECT landingprice FROM `pricelists` WHERE product_id = {$proId} and startdate<=now() and enddate>=now()");
                     foreach($landing as $rows){
                         $lPrice=$rows->landingprice;
                     }
@@ -151,11 +154,10 @@ class stock_in_controller extends Controller
             $error.="has errors";
         }
         if($error==""){
-            $lPrice = null;
-            $landing = DB::select("SELECT landingprice FROM `pricelists` WHERE product_id = {$id} and startdate<=now() and enddate>=now()");
-            foreach($landing as $row){
-                $lPrice=$row->landingprice;
-            }
+            $lPrice = 0;
+            $now= Carbon::now()->toDateString();
+            $lPrice = DB::table('pricelists')->select('landingprice')->where([['product_id','=',$id],['startdate','<=',$now],['enddate','>=',$now],])->value('landingprice');
+            //$landing = DB::select("SELECT landingprice FROM `pricelists` WHERE product_id = {$id} and startdate<=now() and enddate>=now()");
             $amount = ($lPrice * $qty);
             $tmpInsert = new  Tmpstock();
             $tmpInsert->product_id = $id;
