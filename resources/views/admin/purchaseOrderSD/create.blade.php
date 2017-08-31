@@ -224,7 +224,8 @@
    }else if(quantities >= 0 && quantities > qty_pro_in_stock){
       $('.add').attr('disabled','true');
       $('.qty').css('border','1px solid red');
-      alert("Stock available only: "+qty_pro_in_stock+" items!");
+       var tmp_qtys = qty_pro_in_stock - quantity;
+      alert("Stock available only: "+tmp_qtys+" items!");
       $('.qty').val(null)
       $(".amount").val(0);
 

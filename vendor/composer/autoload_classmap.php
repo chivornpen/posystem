@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Brand' => $baseDir . '/app/Brand.php',
     'App\\Category' => $baseDir . '/app/Category.php',
     'App\\Channel' => $baseDir . '/app/Channel.php',
     'App\\Commune' => $baseDir . '/app/Commune.php',
@@ -18,6 +19,7 @@ return array(
     'App\\Http\\Controllers\\Auth\\LoginController' => $baseDir . '/app/Http/Controllers/Auth/LoginController.php',
     'App\\Http\\Controllers\\Auth\\RegisterController' => $baseDir . '/app/Http/Controllers/Auth/RegisterController.php',
     'App\\Http\\Controllers\\Auth\\ResetPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ResetPasswordController.php',
+    'App\\Http\\Controllers\\BrandController' => $baseDir . '/app/Http/Controllers/BrandController.php',
     'App\\Http\\Controllers\\CategoryController' => $baseDir . '/app/Http/Controllers/CategoryController.php',
     'App\\Http\\Controllers\\ChannelController' => $baseDir . '/app/Http/Controllers/ChannelController.php',
     'App\\Http\\Controllers\\CommuneController' => $baseDir . '/app/Http/Controllers/CommuneController.php',
@@ -39,6 +41,7 @@ return array(
     'App\\Http\\Controllers\\StockController' => $baseDir . '/app/Http/Controllers/StockController.php',
     'App\\Http\\Controllers\\StockoutController' => $baseDir . '/app/Http/Controllers/StockoutController.php',
     'App\\Http\\Controllers\\SupplierController' => $baseDir . '/app/Http/Controllers/SupplierController.php',
+    'App\\Http\\Controllers\\TmpEditPurchaseorderController' => $baseDir . '/app/Http/Controllers/TmpEditPurchaseorderController.php',
     'App\\Http\\Controllers\\UsageController' => $baseDir . '/app/Http/Controllers/UsageController.php',
     'App\\Http\\Controllers\\UserController' => $baseDir . '/app/Http/Controllers/UserController.php',
     'App\\Http\\Controllers\\VillageController' => $baseDir . '/app/Http/Controllers/VillageController.php',
@@ -62,6 +65,7 @@ return array(
     'App\\Province' => $baseDir . '/app/Province.php',
     'App\\Purchaseorder' => $baseDir . '/app/Purchaseorder.php',
     'App\\Purchaseorder_Product' => $baseDir . '/app/Purchaseorder_Product.php',
+    'App\\Purchaseordersd' => $baseDir . '/app/Purchaseordersd.php',
     'App\\SetValue' => $baseDir . '/app/SetValue.php',
     'App\\Stockout' => $baseDir . '/app/Stockout.php',
     'App\\Subimport' => $baseDir . '/app/Subimport.php',
@@ -88,13 +92,10 @@ return array(
     'CreateImportsTable' => $baseDir . '/database/migrations/2017_08_21_152732_create_imports_table.php',
     'CreatePasswordResetsTable' => $baseDir . '/database/migrations/2014_10_12_100000_create_password_resets_table.php',
     'CreateSessionsTable' => $baseDir . '/database/migrations/2017_06_01_074932_create_sessions_table.php',
-<<<<<<< HEAD
-    'CreateTableBrand' => $baseDir . '/database/migrations/2017_08_23_104629_create_table_brand.php',
-=======
     'CreateStockoutsTable' => $baseDir . '/database/migrations/2017_08_23_104243_create_stockouts_table.php',
     'CreateSubimportsTable' => $baseDir . '/database/migrations/2017_08_28_111515_create_subimports_table.php',
+    'CreateTableBrand' => $baseDir . '/database/migrations/2017_08_23_104629_create_table_brand.php',
     'CreateTableBrandProduct' => $baseDir . '/database/migrations/2017_08_28_115727_create_table_brand_product.php',
->>>>>>> 71d31afb733f771d264993486c7849808e42d77a
     'CreateTableCategories' => $baseDir . '/database/migrations/2017_07_03_095106_create_table_categories.php',
     'CreateTableChannels' => $baseDir . '/database/migrations/2017_07_03_095225_create_table_channels.php',
     'CreateTableCommunes' => $baseDir . '/database/migrations/2017_06_05_033707_create_table_communes.php',
@@ -108,6 +109,8 @@ return array(
     'CreateTableProvinces' => $baseDir . '/database/migrations/2017_06_05_034909_create_table_provinces.php',
     'CreateTablePurchaseOrder' => $baseDir . '/database/migrations/2017_07_03_094826_create_table_purchase_order.php',
     'CreateTablePurchaseorderProduct' => $baseDir . '/database/migrations/2017_07_12_141512_create_table_purchaseorder_product.php',
+    'CreateTablePurchaseordersd' => $baseDir . '/database/migrations/2017_08_30_082344_create_table_purchaseordersd.php',
+    'CreateTablePurchaseordersdProduct' => $baseDir . '/database/migrations/2017_08_30_082852_create_table_purchaseordersd_product.php',
     'CreateTableSetValues' => $baseDir . '/database/migrations/2017_07_05_161738_create_table_setValues.php',
     'CreateTableSubimportProduct' => $baseDir . '/database/migrations/2017_08_28_112721_create_table_subimport_product.php',
     'CreateTableSummaryInvoice' => $baseDir . '/database/migrations/2017_07_19_155747_create_table_summaryInvoice.php',

@@ -42,4 +42,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(PurchaseOder::class);
     }
+    public function purchaseordersds()
+    {
+        return $this->hasMany(Purchaseodersd::class);
+    }
 }

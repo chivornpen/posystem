@@ -19,12 +19,13 @@ class CreateTableCustomers extends Migration
             $table->string('contactNo')->nullable();
             $table->string('homeNo')->nullable();
             $table->string('streetNo')->nullable();
-            $table->integer('village_id');
-            $table->integer('district_id');
-            $table->integer('commune_id');
-            $table->integer('province_id');
+            $table->integer('village_id')->nullable();
+            $table->integer('district_id')->nullable();
+            $table->integer('commune_id')->nullable();
+            $table->integer('province_id')->nullable();
             $table->string('location')->nullable();
             $table->integer('channel_id')->nullable();
+            $table->integer('brand_id')->nullable();
             $table->integer('user_id');
             $table->timestamps();
         });

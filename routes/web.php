@@ -8,6 +8,7 @@ use App\Pricelist;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\TpmEditPurchaseOrder;
+use App\User;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,6 +50,7 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('invoices','InvoiceController');
 	Route::resource('usages','UsageController');
 	Route::resource('purchaseOrders','PurchaseOrderController');
+	Route::resource('saleSD','SaleSDController');
 	Route::resource('suppliers','SupplierController');
 	Route::resource('pricelists','PriceListController');
 	Route::resource('purchaseOrdersSD','PurchaseOrderSDController');
@@ -72,6 +74,7 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 //endAdmin
 //Route::post('/insert',array('as'=>'insert','invoices'=>'InvoiceController'));
 Route::get('/getPopup','PurchaseOrderController@popupCus');
+Route::get('/getPopupCusSD','SaleSDController@getPopupCusSD');
 Route::get('/removeOrderCus/{id}',function($id){
 	 	$tpmPurchaseOrders = TpmPurchaseOrder::where('id','=', $id)->first();
 	 	$tpmPurchaseOrders->delete();
@@ -87,29 +90,34 @@ Route::get('/getProduct/{id}',function($id){
 		$product_code = Product::where('id','=', $id)->value('product_code');
 		$qty_product = Product::where('id','=', $id)->value('qty');
 	 	$products = Product::findOrFail($id);
+	 	$now = Carbon::now()->toDateString();
 	 	foreach ($products->pricelists as $product) {
 	 		$pricelist_id = $product->id;
-	 		$sql = "SELECT sellingprice FROM pricelists WHERE id={$pricelist_id} AND now()>=startdate AND now()<=enddate";
-		 	$result = DB::select($sql);
-		 	foreach ($result as $row) {
-		 		$price = $row->sellingprice;
-		 	}
+	 		// $sql = "SELECT sellingprice FROM pricelists WHERE id={$pricelist_id} AND now()>=startdate AND now()<=enddate";
+		 	$price = DB::table('pricelists')->where([['id','=',$pricelist_id],['startdate','<=',$now],['enddate','>=',$now],])->value('sellingprice');
+		 	
 	 	}
 	 	return response()->json(['pro_code'=>$product_code,'qty_product'=>$qty_product,'tmp_pro_qty'=>$oldQty,'price'=>$price]);
 	});
+Route::get('/getProductSubStock/{id}',function($id){
+		$brandid = User::where('id','=',Auth::user()->id)->value('brand_id');
+		$qtySub = DB::select("SELECT qty FROM brand_product WHERE brand_id={$brandid} AND product_id=$id");
+		foreach ($qtySub as $qtys) {
+			$qtySubStock = $qtys->qty;
+		}
+		$oldQty = TpmPurchaseOrder::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->value('qty');
+		$product_code = Product::where('id','=', $id)->value('product_code');
+	 	return response()->json(['pro_code'=>$product_code,'qtySubStock'=>$qtySubStock,'tmp_pro_qty'=>$oldQty]);
+	});
 Route::get('/getProductVer/{id}',function($id){
 		$oldQty = TpmEditPurchaseOrder::where('product_id','=',$id)->where('recordStatus','!=','r')->where('user_id','=',Auth::user()->id)->value('qty');
-		//dd($oldQty);
 		$product_code = Product::where('id','=', $id)->value('product_code');
 		$qty_product = Product::where('id','=', $id)->value('qty');
 	 	$products = Product::findOrFail($id);
+	 	$now = Carbon::now()->toDateString();
 	 	foreach ($products->pricelists as $product) {
 	 		$pricelist_id = $product->id;
-	 		$sql = "SELECT sellingprice FROM pricelists WHERE id={$pricelist_id} AND now()>=startdate AND now()<=enddate";
-		 	$result = DB::select($sql);
-		 	foreach ($result as $row) {
-		 		$price = $row->sellingprice;
-		 	}
+	 		$price = DB::table('pricelists')->where([['id','=',$pricelist_id],['startdate','<=',$now],['enddate','>=',$now],])->value('sellingprice');
 	 	}
 	 	return response()->json(['pro_code'=>$product_code,'qty_product'=>$qty_product,'tmp_pro_qty'=>$oldQty,'price'=>$price]);
 	});
@@ -154,6 +162,7 @@ Route::get('/addOrderCus/{proid}/{qty}/{price}/{amount}','PurchaseOrderControlle
 Route::get('/showProductCus','PurchaseOrderController@showProductCus');
 Route::get('/addOrderSD/{proid}/{qty}/{price}/{amount}','PurchaseOrderSDController@addOrderSD');
 Route::get('/showProductSD','PurchaseOrderSDController@showProductSD');
+Route::get('/addOrderSDSale/{proid}/{qty}/{price}/{amount}','SaleSDController@addOrderSDSale');
 
 
 

@@ -12,6 +12,10 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Purchaseorder','purchaseorder_product')->pivot('product_id','unitPrice','qty','amount','user_id');
     }
+    public function purchaseordersds()
+    {
+        return $this->belongsToMany('App\Purchaseordersd','purchaseordersd_product')->pivot('product_id','unitPrice','qty','amount','user_id');
+    }
     public function category()
     {
         return $this->belongsTo(Category::class);

@@ -103,8 +103,8 @@
                   </div>
                 </div>
               </div>
-              {!!Form::hidden('qty_pro_in_stock',null,['class'=>'qty_pro_in_stock'])!!}
-              {!!Form::hidden('tmp_pro_qty',null,['class'=>'tmp_pro_qty'])!!}
+              {!!Form::text('qty_pro_in_stock',null,['class'=>'qty_pro_in_stock'])!!}
+              {!!Form::text('tmp_pro_qty',null,['class'=>'tmp_pro_qty'])!!}
 
             {!!Form::close()!!}
 {{-----------------------------------}}

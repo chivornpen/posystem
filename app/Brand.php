@@ -18,4 +18,8 @@ class Brand extends Model
 
         return $this->belongsToMany(Product::class)->withTimestamps()->withPivot('qty');
     }
+    public function customers()
+    {
+        return $this->hasMany(Customer::class);
+    }
 }

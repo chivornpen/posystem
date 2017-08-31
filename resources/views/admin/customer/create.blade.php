@@ -119,7 +119,7 @@
               <div class="col-lg-3">
                    <div class="form-group {{ $errors->has('channel_id') ? ' has-error' : '' }}">
                     {!!Form::label('channel_id','Channel Name :',[])!!}
-                    {!!Form::select('channel_id',[null=>'---Please select a channel name---']+$channels,null,['class'=>'form-control','required'=>'true'])!!}
+                    {!!Form::select('channel_id',[null=>'---Please select a channel name---']+$channels,null,['class'=>'form-control'])!!}
                     @if ($errors->has('channel_id'))
                         <span class="help-block">
                             <strong>{{ $errors->first('channel_id') }}</strong>

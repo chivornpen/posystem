@@ -12,6 +12,10 @@ class Customer extends Model
     {
         return $this->belongsTo(Channel::class);
     }
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
     public function village()
     {
     	return $this->belongsTo('App\Village');
@@ -19,5 +23,9 @@ class Customer extends Model
     public function purchaseorders()
     {
         return $this->hasMany(Purchaseorder::class);
+    }
+     public function purchaseordersds()
+    {
+        return $this->hasMany(Purchaseordersd::class);
     }
 }
