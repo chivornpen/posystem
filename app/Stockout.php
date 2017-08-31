@@ -13,4 +13,8 @@ class Stockout extends Model
         return $this->belongsTo(Purchaseorder::class);
     }
 
+    public  function imports(){
+        return $this->belongsToMany(Import::class)->withTimestamps()->withPivot('product_id','qty','expd');
+    }
+
 }

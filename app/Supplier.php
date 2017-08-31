@@ -12,4 +12,7 @@ class Supplier extends Model
     public function imports(){
         return $this->hasMany(Import::class);
     }
+    public  function subimports(){
+        return $this->hasMany(Subimport::class);
+    }
 }

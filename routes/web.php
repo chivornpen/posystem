@@ -227,3 +227,10 @@ Route::get('/admin/stock/views-all', 'stock_in_controller@viewsall');
 //stock_out_route
 Route::resource('/stockout', 'StockoutController');
 Route::get('/stockout/change/{id}','StockoutController@InvNChange')->name('InvNChange');//Route for event onchange in combobox invoice number
+
+
+//SD stock_in route
+Route::resource('/sdstock','SdStockController');
+Route::get('/admin/sdstock/current/{id}','SdStockController@ShowCurrentRecordSdStock');//show current record import
+Route::get('/admin/sdstock/histories/{id}','SdStockController@ShowHistoryRecordSdStock');//show histories record import
+Route::get('/sdstock/adminView/{id}','SdStockController@show');//Show record of each brand by ID and View it by Admin

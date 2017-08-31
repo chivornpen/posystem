@@ -42,8 +42,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(PurchaseOder::class);
     }
+<<<<<<< HEAD
     public function purchaseordersds()
     {
         return $this->hasMany(Purchaseodersd::class);
+=======
+
+    public function subimports(){
+        return $this->hasMany(Subimport::class,'imported_by');
+>>>>>>> 0d94bc94b641bf9171b57f40d2684d990f86d762
     }
 }

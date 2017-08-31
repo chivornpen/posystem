@@ -68,7 +68,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     {!! Form::submit('Submit',['class'=>'btn btn-primary btn-sm']) !!}
-                                    {!! Form::button('Cancel',['class'=>'btn btn-danger btn-sm']) !!}
+                                    <a href="{{url('admin/dashbords')}}" class="btn btn-danger btn-sm">Cancel</a>
                                 </div>
                             </div>
                         </div>

@@ -95,7 +95,7 @@
                             <div class="col-lg-4">
                                 <div class="form-group">
                                     {!! Form::label('product_name','Product Name', ['class'=>'']) !!}
-                                    {!! Form::select('product_name',$product,null,['class'=>'form-control', 'id'=>'product_id','placeholder'=>'Please chose product name'])!!}
+                                    {!! Form::select('product_name',$product,null,['class'=>'form-control', 'id'=>'product_id','placeholder'=>'Please chose product name','onchange'=>'checkValue()'])!!}
                                     @if($errors->has('product_name'))
                                         <div class="help-block">
                                             <strong>{{$errors->first('product_name')}}</strong>
@@ -154,9 +154,15 @@
 //        check values when release key
         function checkValue() {
             var qty = $("#qty").val();
+            var  product_name = $('#product_id').val();
             var discount = $("#discount").val();
+            if(product_name!=0){
+                $("#qty").focus();
+            }
             if(qty<0){
                 $("#qty").css('border','1px solid red');
+            }else if(qty==""){
+                $("#qty").css('border','');
             }
             if(discount<0){
                 $("#discount").css('border','1px solid red');
