@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use Auth;
+use App\User;
+use App\Customer;
+use App\Channel;
 
 class TmpEditPurchaseorderController extends Controller
 {
@@ -44,7 +47,7 @@ class TmpEditPurchaseorderController extends Controller
     {
         $poid = $request->purchaseorder_id;
         $tmp = TpmEditPurchaseOrder::all();
-        $totalAmount= $tmp->where('purchaseorder_id','=',$poid)->sum('amount');
+        $totalAmount = $tmp->where('purchaseorder_id','=',$poid)->sum('amount');
         $discount = Purchaseorder::where('id','=',$poid)->value('discount');
         $cod = Purchaseorder::where('id','=',$poid)->value('cod');
         $vat = Purchaseorder::where('id','=',$poid)->value('vat');
@@ -57,6 +60,7 @@ class TmpEditPurchaseorderController extends Controller
         $po = Purchaseorder::findOrFail($poid);
         $po->totalAmount = $totalAmount;
         $po->cradit = $VgrandTotal;
+        $po->save();
         DB::table('purchaseorder_product')->where('purchaseorder_id','=',$poid)->delete();
         $tmps = TpmEditPurchaseOrder::where('purchaseorder_id','=',$poid)->where('recordStatus','!=','r')->get();
                 foreach ($tmps as $tmp) {
@@ -112,9 +116,28 @@ class TmpEditPurchaseorderController extends Controller
     {
         //
     }
-    public function getPopupTmpPo($id)
+    public function getProuctVerTmpPo($id)
     {
-         $pos = TpmEditPurchaseOrder::where('purchaseorder_id','=',$id)->get();
-         return view('admin.purchaseOrder.showVerifyPopup',compact('pos'));
+        $pos = TpmEditPurchaseOrder::where('purchaseorder_id','=',$id)->get();
+        $cusid = Purchaseorder::where('id','=',$id)->value('customer_id');
+        if($cusid!=null){
+            $customerid = Purchaseorder::where('id','=',$id)->value('customer_id');
+            $userid = Purchaseorder::where('id','=',$id)->value('user_id');
+            $username = User::where('id','=',$userid)->value('nameDisplay');
+            $cusname = Customer::where('id','=',$customerid)->value('name');
+            $phone = Customer::where('id','=',$customerid)->value('contactNo');
+            $channelid = Customer::where('id','=',$customerid)->value('channel_id');
+            $channel = Channel::where('id','=',$channelid)->value('name');
+            return view('admin.purchaseOrder.showVerifyPopup',compact('pos','customerid','cusname','phone','channel','username'));
+        }else{
+            $userid = Purchaseorder::where('id','=',$id)->value('user_id');
+            $username = User::where('id','=',$userid)->value('nameDisplay');
+            $phone = User::where('id','=',$userid)->value('contactNum');
+            $customerid = Customer::where('contactNo','=',$phone)->value('id');
+            $cusname = Customer::where('id','=',$customerid)->value('name');
+            $channelid = Customer::where('id','=',$customerid)->value('channel_id');
+            $channel = Channel::where('id','=',$channelid)->value('name');
+            return view('admin.purchaseOrder.showVerifyPopup',compact('pos','customerid','cusname','phone','channel','username'));
+        }
     }
 }

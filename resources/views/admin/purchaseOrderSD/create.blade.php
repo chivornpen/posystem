@@ -191,6 +191,7 @@
       $('.qty').focus();
       $('.amount').val(0);
       if(proId==''){
+        $('.productId').focus();
         $('.add').attr('disabled','true');
         $('.qty').val('');
         $('.qty').attr('readonly','readonly');

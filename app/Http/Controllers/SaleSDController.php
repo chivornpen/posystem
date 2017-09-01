@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\Channel;
 use App\Purchaseordersd;
-
+use App\Tmppurchaseordercussd;
 
 class SaleSDController extends Controller
 {
@@ -67,7 +67,7 @@ class SaleSDController extends Controller
             $po->isDelivery =0;
             $po->cod = Input::get('cod');
             $po->save();
-            $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
+            $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
                 foreach ($tmps as $tmp) {
                 $po->products()->attach($tmp->product_id,
                     ['unitPrice'=>$tmp->unitPrice,
@@ -75,16 +75,16 @@ class SaleSDController extends Controller
                     'amount'=>$tmp->amount,
                     'user_id'=>$tmp->user_id]);
                 }
-            $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
+            $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
             foreach ($tmps as $tmp) {
                 $tmp->delete();
             }
-            $pocuss = Purchaseordersd::where('customer_id','!=',null)->get();
-            return view('admin.saleSD.index',compact('pocuss'));
+            $sale = Purchaseordersd::where('customer_id','!=',null)->get();
+            return view('admin.saleSD.index',compact('sale'));
         }
         //------------------btn_back---------------
         if(Input::get('btn_back')){
-            $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
+            $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
             foreach ($tmps as $tmp) {
                 $tmp->delete();
             }
@@ -92,7 +92,7 @@ class SaleSDController extends Controller
         }
         //------------------btn_cancel--------------------------
         if(Input::get('btn_cancel')){
-            $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
+            $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
             foreach ($tmps as $tmp) {
                 $tmp->delete();
             }
@@ -151,19 +151,23 @@ class SaleSDController extends Controller
         return view('include.popupCusSD',compact('channels'));
     }
     public function addOrderSDSale($proid, $qty, $price, $amount){
-        $oldQty = TpmPurchaseOrder::where('product_id','=',$proid)->where('user_id','=',Auth::user()->id)->value('qty');
+        $oldQty = Tmppurchaseordercussd::where('product_id','=',$proid)->where('user_id','=',Auth::user()->id)->value('qty');
         $user_id =Auth::user()->id;
         if($oldQty!=null){
-            DB::statement("DELETE FROM tmppurchaseoders WHERE product_id={$proid} AND user_id={$user_id}");
+            DB::statement("DELETE FROM tmppurchaseordercussd WHERE product_id={$proid} AND user_id={$user_id}");
                 $newQty = (int)$qty;
                 $qtylast = $oldQty + $newQty;
                 $amount = $qtylast * $price;
-            TpmPurchaseOrder::create(['product_id'=>$proid,'qty'=>$qtylast,'unitPrice'=>$price,'amount'=>$amount,'user_id'=>Auth::user()->id]);
+            Tmppurchaseordercussd::create(['product_id'=>$proid,'qty'=>$qtylast,'unitPrice'=>$price,'amount'=>$amount,'user_id'=>Auth::user()->id]);
         }else{
-            TpmPurchaseOrder::create(['product_id'=>$proid,'qty'=>$qty,'unitPrice'=>$price,'amount'=>$amount,'user_id'=>Auth::user()->id]);
+            Tmppurchaseordercussd::create(['product_id'=>$proid,'qty'=>$qty,'unitPrice'=>$price,'amount'=>$amount,'user_id'=>Auth::user()->id]);
         }
-        $tmpPurchaseOrders = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
+        $tmpPurchaseOrders = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
         return response()->json($tmpPurchaseOrders);
+    }
+    public function showProductCussd(){
+        $tmpdata = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
+        return view('admin.saleSD.showProduct',compact('tmpdata'));
     }
 
 }

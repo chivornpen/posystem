@@ -459,31 +459,31 @@ $( ".price" ).keyup(function() {
   });
 
   };
-function getValueCombo(id,ul,f)
-{
-   $.ajax({
-    method: 'GET',
-      url: ul+id,
-      success:function(response){
-        console.log(response)
-        if(Array.isArray(response)){
+// function getValueCombo(id,ul,f)
+// {
+//    $.ajax({
+//     method: 'GET',
+//       url: ul+id,
+//       success:function(response){
+//         console.log(response)
+//         if(Array.isArray(response)){
 
-            $(f).empty();
-            var serialnumber="<option value=''>---Please select option---</option>";
-            $(f).append(serialnumber);
-            response.map(function(item){
-              console.log(item.name);
-              serialnumber="<option value=" + item.id + ">" + item.name + "</option>";;
-              $(f).append(serialnumber);
-            });
-        }
-      },
-      error:function(error){
-        console.log(error);
-      }
-   })
-};
-//-----------------------
+//             $(f).empty();
+//             var serialnumber="<option value=''>---Please select option---</option>";
+//             $(f).append(serialnumber);
+//             response.map(function(item){
+//               console.log(item.name);
+//               serialnumber="<option value=" + item.id + ">" + item.name + "</option>";;
+//               $(f).append(serialnumber);
+//             });
+//         }
+//       },
+//       error:function(error){
+//         console.log(error);
+//       }
+//    })
+// };
+// //-----------------------
 function getEmailCustomer(id){
     $.ajax({
       method: 'GET',
@@ -524,8 +524,8 @@ function getEmailCustomer(id){
       $('#cod').fadeIn(1000);
       $('#btn_hide').removeAttr('disabled','true');
     $('.btn_hide').removeAttr('disabled','true');
-      showProductCus();
-      getTotalCus();
+      showProductCussd();
+      getTotalCussd();
     },
     error:function(error){
       console.log(error)
@@ -533,9 +533,9 @@ function getEmailCustomer(id){
   });
 }
  //-------------------------
-  function showProductCus(){
+  function showProductCussd(){
     $.ajax({
-  url:"{{url('/showProductCus')}}",
+  url:"{{url('/showProductCussd')}}",
   type: 'get',
   dataType: 'html',
   success:function(data){
@@ -549,9 +549,9 @@ function getEmailCustomer(id){
  
   //------------------------
   //-------------------
-  function getTotalCus() {
+  function getTotalCussd() {
 $.ajax({
-  url:"{{url('/getTotalCus')}}",
+  url:"{{url('/getTotalCussd')}}",
   type:'get',
   success:function(data){
       
@@ -625,10 +625,10 @@ $.ajax({
 
   }
  //-------------------------------
-function removeOrderCus(id){
+function removeOrderCussd(id){
   $.ajax({
     method: 'GET',
-    url:"{{url('/removeOrderCus')}}"+"/"+id,
+    url:"{{url('/removeOrderCussd')}}"+"/"+id,
     success:function(data){
       $(".productId").val('');
       $('.proId').val(null);
@@ -636,7 +636,7 @@ function removeOrderCus(id){
       $('.qty').attr('readonly','readonly');
       $(".price").val(0);
       $(".amount").val(0);
-      getTotalCus(); 
+      getTotalCussd(); 
       var count = $('table tr').length;
       if(count==2){
       $('#btn_hide').attr('disabled','true');
@@ -656,36 +656,36 @@ function removeOrderCus(id){
   });
 }
 //------------------------
-$(document).ready(function(){
-$('.cod').on('change',function(){
-  if (this.checked) {
-    var totalcus =0;
-    var grandTotalcus =0;
-    var totalcus = $('.totalcus').val();
-    var codcus = $('#codcus').val();
-    var discountcus = $('.discountcus').val();
-      if(discountcus!=''){
-        var totaldis = totalcus - totalcus * discountcus/100;
-        var grandTotal = totaldis - totaldis * codcus/100;
-            grandTotalcus = grandTotal.toFixed(2);
-         $('.grandTotalcus').val(grandTotalcus);
-      }else{
-        var codcus = $('#codcus').val();
-        var totalcus = $('.totalcus').val();
-        var grandTotal = totalcus - (totalcus * codcus)/100;
-            grandTotalcus = grandTotal.toFixed(2);
-        $('.grandTotalcus').val(grandTotalcus);
-      }
-  } else {
-      var dis = $('.discountcus').val();
-      var totalcus = $('.totalcus').val();
-      var grandTotal = totalcus - (totalcus * dis)/100;
-          grandTotalcus = grandTotal.toFixed(2);
-      $('.grandTotalcus').val(grandTotalcus);
+// $(document).ready(function(){
+// $('.cod').on('change',function(){
+//   if (this.checked) {
+//     var totalcus =0;
+//     var grandTotalcus =0;
+//     var totalcus = $('.totalcus').val();
+//     var codcus = $('#codcus').val();
+//     var discountcus = $('.discountcus').val();
+//       if(discountcus!=''){
+//         var totaldis = totalcus - totalcus * discountcus/100;
+//         var grandTotal = totaldis - totaldis * codcus/100;
+//             grandTotalcus = grandTotal.toFixed(2);
+//          $('.grandTotalcus').val(grandTotalcus);
+//       }else{
+//         var codcus = $('#codcus').val();
+//         var totalcus = $('.totalcus').val();
+//         var grandTotal = totalcus - (totalcus * codcus)/100;
+//             grandTotalcus = grandTotal.toFixed(2);
+//         $('.grandTotalcus').val(grandTotalcus);
+//       }
+//   } else {
+//       var dis = $('.discountcus').val();
+//       var totalcus = $('.totalcus').val();
+//       var grandTotal = totalcus - (totalcus * dis)/100;
+//           grandTotalcus = grandTotal.toFixed(2);
+//       $('.grandTotalcus').val(grandTotalcus);
       
-    }
- });
-});
+//     }
+//  });
+// });
    
 </script>
 

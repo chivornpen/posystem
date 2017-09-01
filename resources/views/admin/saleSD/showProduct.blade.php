@@ -32,7 +32,7 @@
                             ?>
                           </td>
                           <td width="150px" style="text-align: center;">
-                          <button class="btn btn-danger fa fa-remove btn-xs poid" type="button" onclick="removeOrderCus({{$tmppo->id}})"> Remove</button></td>
+                          <button class="btn btn-danger fa fa-remove btn-xs poid" type="button" onclick="removeOrderCussd({{$tmppo->id}})"> Remove</button></td>
                       </tr>
                       @endforeach
                       

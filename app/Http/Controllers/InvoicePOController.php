@@ -151,8 +151,8 @@ class InvoicePOController extends Controller
         $createdInv = User::where('id','=',$printedBy)->value('nameDisplay');
         $sex = User::where('id','=',$printedBy)->value('sex');
         $customerid = Purchaseorder::where('id','=',$id)->value('customer_id');
-        $userid = Purchaseorder::where('id','=',$id)->value('user_id');
         //get customer id by user id
+        $userid = Purchaseorder::where('id','=',$id)->value('user_id');
         if($customerid == null){
             $phone = User::where('id','=',$userid)->value('contactNum');
             $sdid = Customer::where('contactNo','=',$phone)->value('id');

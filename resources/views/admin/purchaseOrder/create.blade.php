@@ -339,6 +339,7 @@ $(document).ready(function() {
         $('.proId').val(null);
         $('.price').val(0);
         $('.amount').val(0);
+        $('.productId').focus();
       }
       getProduct(proId);
   });

@@ -80,7 +80,7 @@ class SetValuesTableSeeder extends Seeder
 
         $conditioncus1= new SetValue();
         $conditioncus1->name = 'លក្ខ័ណ្ឌទី១របស់Customer';
-        $conditioncus1->value = 50;
+        $conditioncus1->value = 0;
         $conditioncus1->status = 1;
         $conditioncus1->description = '';
         $conditioncus1->user_id = 1;

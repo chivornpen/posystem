@@ -63,7 +63,7 @@
                     $customer->village->commune->district->name . ", " . 
                     $customer->village->commune->district->province->name . "." . " ( " . $customer->location . " )"}}
                 @else
-                    {{$customer->location . " Customer of SD " . $customer->brand->brandName}}
+                    {{"Location: ".$customer->location . ". Customer of SD " . $customer->brand->brandName}}
                 @endif
                 </td>
                 <td style="text-align: center;">

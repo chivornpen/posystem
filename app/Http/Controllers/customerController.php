@@ -93,7 +93,7 @@ class customerController extends Controller
             if(Auth::user()->position->name =='Sale'){
             	return redirect()->route('purchaseOrders.create')->with('message','This new customer has been created successfully!');
             }else{
-            	return redirect()->route('customers.index')->with('message','This new customer has been created successfully!');
+            	return redirect()->back();
             }
     }
 

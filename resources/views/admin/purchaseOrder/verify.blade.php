@@ -15,7 +15,7 @@
               <div class="row">
                 <div class="col-lg-12">
                    <div class="form-group {{ $errors->has('purchaseorder_id') ? ' has-error' : '' }}">
-                        <select class="form-control" name="purchaseorder_id" id="poid" onchange="getPopupTmpPo()">
+                        <select class="form-control" name="purchaseorder_id" id="poid" onchange="getProuctVerTmpPo()">
                         <option value="0">Please Select Purchaseorder Number</option>
                           @foreach($pos as $po)
                             <option value="{{$po->purchaseorder_id}}">{{$po->purchaseorder_id}}</option>
@@ -43,14 +43,14 @@
 @stop
 @section('script')
   <script type="text/javascript">
-function getPopupTmpPo(){
+function getProuctVerTmpPo(){
         var id=$('#poid').val();
         $('.verify').fadeIn('slow');
         $('#Popup').fadeIn('slow');
         if(id!=0){
               $.ajax({
               type:'get',
-              url:"{{url('/getPopupTmpPo/')}}"+"/"+id,
+              url:"{{url('/getProuctVerTmpPo/')}}"+"/"+id,
               dataType:'html',
               success:function(data){
                   $("#Popup").html(data);

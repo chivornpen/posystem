@@ -49,7 +49,9 @@
                 </td>
                 <td style="text-align: center;">
                     <a href="{{ route('purchaseOrders.show',$pocus->id)}}" class="btn btn-info btn-xs" title="Show Details"><i class="fa fa-indent" aria-hidden="true"></i></a>
-                    <a href="{{ route('purchaseOrders.edit',$pocus->id)}}" class="btn btn-warning btn-xs" title="Show Details"><i class="fa fa-edit"></i></a>                
+                    @if($pocus->isPayment==0)
+                    <a href="{{ route('purchaseOrders.edit',$pocus->id)}}" class="btn btn-warning btn-xs" title="Edit"><i class="fa fa-edit"></i></a> 
+                    @endif            
                 </td>
             </tr>
             @endforeach
