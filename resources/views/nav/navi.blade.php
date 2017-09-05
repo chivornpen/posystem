@@ -258,6 +258,21 @@
                                 {{--end stock-out-menu--}}
 
 
+                                {{--Exchange_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#exchange"><i class="fa fa-exchange" aria-hidden="true"></i> Product Exchange <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="exchange" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{route('exchange.create')}}">Exchange</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('exchange.index')}}">Views</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end Exchange-menu--}}
+
+
                                 <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#cat"><i class="fa fa-tags" aria-hidden="true"></i> Category <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="cat" class="collapse nav nav-second-level">

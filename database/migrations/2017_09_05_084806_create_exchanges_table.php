@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateImportStockout extends Migration
+class CreateExchangesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateImportStockout extends Migration
      */
     public function up()
     {
-        Schema::create('import_stockout', function (Blueprint $table) {
+        Schema::create('exchanges', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('stockout_id');
-            $table->integer('import_id');
-            $table->integer('product_id');
-            $table->integer('qty');
-            $table->date('expd');
-            $table->tinyInteger('status')->nullable();
+            $table->integer('	purchaseorder_id')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateImportStockout extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('import_stockout');
+        Schema::dropIfExists('exchanges');
     }
 }

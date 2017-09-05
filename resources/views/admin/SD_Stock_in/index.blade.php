@@ -41,8 +41,8 @@
                                                         <td style="text-align: center;">{!! $re->supplier->companyname !!}</td>
                                                         <td style="text-align: center;">{!! $re->user->name !!}</td>
                                                         <td style="text-align: center;">
-                                                            <a href="#" onclick="currentViews(this.id)" id="{{$re->id}}" style="margin-right:10px;"><i class="fa fa-outdent" data-toggle="modal" data-target="#current"></i></a>
-                                                            <a href="#" onclick="historyviews(this.id)" id="{{$re->purchaseorder_id}}"><i class="fa fa-history" data-toggle="modal" data-target="#histories"></i></a>
+                                                            <a href="#" title="Current" onclick="currentViews(this.id)" id="{{$re->id}}" style="margin-right:10px;"><i class="fa fa-outdent" data-toggle="modal" data-target="#current"></i></a>
+                                                            <a href="#" title="History" onclick="historyviews(this.id)" id="{{$re->purchaseorder_id}}"><i class="fa fa-history" data-toggle="modal" data-target="#histories"></i></a>
                                                         </td>
                                                     </tr>
                                                 @endforeach
@@ -115,7 +115,7 @@
 @stop
 @section('script')
     <script type="text/javascript">
-        function Brand() {//View Data by Brand ID
+        function Brand() {//View Data by Brand ID for Admin
             var brandId= $("#Brand").val();
             if(brandId!=null){
                 $.ajax({

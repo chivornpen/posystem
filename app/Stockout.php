@@ -14,7 +14,11 @@ class Stockout extends Model
     }
 
     public  function imports(){
-        return $this->belongsToMany(Import::class)->withTimestamps()->withPivot('product_id','qty','expd');
+        return $this->belongsToMany(Import::class)->withTimestamps()->withPivot('product_id','qty','expd','status');
+    }
+
+    public function exchange(){
+        return $this->hasOne(Exchange::class);
     }
 
 }

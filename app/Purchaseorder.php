@@ -28,4 +28,8 @@ class Purchaseorder extends Model
     public function stockouts(){
         return $this->hasOne(Stockout::class);
     }
+
+    public function exchange(){
+        return $this->hasOne(Exchange::class);
+    }
 }

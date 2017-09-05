@@ -95,6 +95,7 @@
                        success:function (data) {
                            console.log(data);
                            $("#customerName").val(data['userName']);
+
                            $("#invoiceDate").val(data['invoiceDate']);
                        },
                        error:function (error) {

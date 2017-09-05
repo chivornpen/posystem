@@ -157,21 +157,29 @@ class stock_in_controller extends Controller
             $lPrice = 0;
             $now= Carbon::now()->toDateString();
             $lPrice = DB::table('pricelists')->select('landingprice')->where([['product_id','=',$id],['startdate','<=',$now],['enddate','>=',$now],])->value('landingprice');
-            //$landing = DB::select("SELECT landingprice FROM `pricelists` WHERE product_id = {$id} and startdate<=now() and enddate>=now()");
-            $amount = ($lPrice * $qty);
-            $tmpInsert = new  Tmpstock();
-            $tmpInsert->product_id = $id;
-            $tmpInsert->qty=$qty;
-            $tmpInsert->amount= $amount;
-            $tmpInsert->mfd = $mfd;
-            $tmpInsert->expd = $expd;
-            $tmpInsert->save();
-            $tmpSelect = Tmpstock::all();
-            return view('admin.stock_in.show',compact('tmpSelect'));
+            $checkExist = Tmpstock::where('product_id','=',$id)->value('qty');
+            if($checkExist){
+                $qtyUp = $checkExist+$qty;
+                $amountUp = $qtyUp*$lPrice;
+                DB::table('tmpstocks')->where('product_id','=',$id)->update(array('qty'=>$qtyUp, 'amount'=>$amountUp));
+
+            }else{
+                //$landing = DB::select("SELECT landingprice FROM `pricelists` WHERE product_id = {$id} and startdate<=now() and enddate>=now()");
+                $amount = ($lPrice * $qty);
+                $tmpInsert = new  Tmpstock();
+                $tmpInsert->product_id = $id;
+                $tmpInsert->qty=$qty;
+                $tmpInsert->amount= $amount;
+                $tmpInsert->mfd = $mfd;
+                $tmpInsert->expd = $expd;
+                $tmpInsert->save();
+            }
         }
+        $tmpSelect = Tmpstock::orderBy('id','desc')->get();
+        return view('admin.stock_in.show',compact('tmpSelect'));
     }
     public function viewRecord(){
-        $tmpSelect = Tmpstock::all();
+        $tmpSelect = Tmpstock::orderBy('id','desc')->get();
         return view('admin.stock_in.show',compact('tmpSelect'));
     }
 

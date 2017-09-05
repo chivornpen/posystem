@@ -20,6 +20,6 @@ class Import extends Model
         return $this->hasMany(History::class,'importId','id');
     }
     public  function stockouts(){
-        return $this->belongsToMany(Stockout::class)->withTimestamps()->withPivot('product_id','qty','expd');
+        return $this->belongsToMany(Stockout::class)->withTimestamps()->withPivot('product_id','qty','expd','status');
     }
 }

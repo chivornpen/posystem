@@ -200,7 +200,6 @@ Route::get('/getPopupEditProduct/{poid}/{proid}','PurchaseOrderController@getPop
 
 
 //stock in _route
-
 Route::get('/admin/stock', 'stock_in_controller@create');
 Route::resource('/stock','stock_in_controller');
 Route::get('/admin/stock/create/{id}/{qty}/{mfd}/{expd}','stock_in_controller@tmpInsert')->name('tmpInsert');
@@ -225,3 +224,14 @@ Route::resource('/sdstock','SdStockController');
 Route::get('/admin/sdstock/current/{id}','SdStockController@ShowCurrentRecordSdStock');//show current record import
 Route::get('/admin/sdstock/histories/{id}','SdStockController@ShowHistoryRecordSdStock');//show histories record import
 Route::get('/sdstock/adminView/{id}','SdStockController@show');//Show record of each brand by ID and View it by Admin
+
+
+//Product Exchange Route
+Route::resource('/exchange','ProductExchange');
+Route::get('/exchange/showRecord/{id}','ProductExchange@showRecord');
+Route::get('/exchange/save/{importI}/{productI}/{qty}/{expd}/{stockout}','ProductExchange@saveRecord');//save data when exchange
+
+
+Route::get('/welcome1',function (){
+    return "hello";
+});
