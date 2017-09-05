@@ -14,6 +14,9 @@ use Carbon\Carbon;
 use App\Channel;
 use App\Purchaseordersd;
 use App\Tmppurchaseordercussd;
+use App\Tmpeditpurchaseordercussd;
+use App\Product;
+use App\User;
 
 class SaleSDController extends Controller
 {
@@ -23,9 +26,19 @@ class SaleSDController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $sale = Purchaseordersd::where('customer_id','!=',null)->get();
-        return view('admin.saleSD.index',compact('sale'));
+    {     $sale= array();
+        
+        if(Auth::user()->position->name == 'SD'){
+            $brandid = Auth::user()->brand->id;
+            $userids = User::where('brand_id','=',$brandid)->get();
+            foreach ($userids as $userid) {
+                $sale=array(Purchaseordersd::where('user_id','=',$userid->id)->get());
+            }
+            return view('admin.saleSD.index',compact('sale'));
+        }else{
+            $sale = Purchaseordersd::all();
+            return view('admin.saleSD.index1',compact('sale'));
+        }
     }
 
     /**
@@ -79,8 +92,7 @@ class SaleSDController extends Controller
             foreach ($tmps as $tmp) {
                 $tmp->delete();
             }
-            $sale = Purchaseordersd::where('customer_id','!=',null)->get();
-            return view('admin.saleSD.index',compact('sale'));
+            return redirect()->route('saleSD.index');
         }
         //------------------btn_back---------------
         if(Input::get('btn_back')){
@@ -120,7 +132,27 @@ class SaleSDController extends Controller
      */
     public function edit($id)
     {
-        //
+        $tmps = Tmpeditpurchaseordercussd::where('purchaseorder_id','=',$id)->get();
+            foreach ($tmps as $tmp) {
+                $tmp->delete();
+            }
+        $pos=Purchaseordersd::findOrFail($id);
+        $product = Purchaseordersd::findOrFail($id)->products()->get();
+         foreach ($product as $po) {
+            Tmpeditpurchaseordercussd::create([
+                'purchaseorder_id'=>$pos->id,
+                'product_id'=>$po->pivot->product_id,
+                'qty'=>$po->pivot->qty,
+                'unitPrice'=>$po->pivot->unitPrice,
+                'amount'=>$po->pivot->amount,
+                'recordStatus'=>'n',
+                'user_id'=>Auth::user()->id
+            ]);
+         }
+        $brandid = Auth::user()->brand->id;
+        $products = Brand::findOrFail($brandid)->products()->get();
+        $potmps = Tmpeditpurchaseordercussd::where('purchaseorder_id','=',$id)->get();
+         return view('admin.saleSD.edit',compact('pos','potmps','products'));
     }
 
     /**
@@ -132,7 +164,65 @@ class SaleSDController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //dd('test');
+        if(Input::get('btn_add')){
+            $tmpedit = new Tmpeditpurchaseordercussd;
+            $poid = Input::get('poid');
+            $proid = Input::get('product_id');
+            $qty = Tmpeditpurchaseordercussd::where('purchaseorder_id','=',$poid)->where('product_id','=',$proid)->where('recordStatus','!=','r')->value('qty');
+            if($qty!=null){
+                DB::statement("DELETE FROM tmpeditpurchaseordercussd WHERE purchaseorder_id={$poid} AND product_id={$proid}");
+                $newQtys = Input::get('qty');
+                $newQty = (int)$newQtys;
+                $qtylast = $qty + $newQty;
+                $price = Input::get('unitPrice');
+                $amount = $qtylast * $price;
+                $tmpedit->qty = $qtylast;
+                $tmpedit->amount = $amount;
+            }else{
+                $tmpedit->qty = Input::get('qty');
+                $tmpedit->amount = Input::get('amount');
+            }
+            $tmpedit->purchaseorder_id = Input::get('poid');
+            $tmpedit->product_id = Input::get('product_id');
+            $tmpedit->unitPrice = Input::get('unitPrice');
+            $tmpedit->recordStatus = 'a';
+            $tmpedit->user_id = Auth::user()->id;
+            $tmpedit->save();
+            $pos=Purchaseordersd::findOrFail($poid);
+            $brandid = Auth::user()->brand->id;
+            $products = Brand::findOrFail($brandid)->products()->get();
+            $potmps = Tmpeditpurchaseordercussd::where('purchaseorder_id','=',$poid)->where('recordStatus','!=','r')->get();
+         return view('admin.saleSD.edit',compact('pos','potmps','products'));
+        }
+        if(Input::get('btn_back')){
+            $tmps = Tmpeditpurchaseordercussd::where('purchaseorder_id','=',$id)->get();
+            foreach ($tmps as $tmp) {
+                $tmp->delete();
+            }
+            return redirect()->route('saleSD.index');
+        }
+        if(Input::get('btn_done')){
+            $poid = Input::get('poid');
+            $tmp = Tmpeditpurchaseordercussd::all();
+            $totalAmount = $tmp->where('purchaseorder_id','=',$poid)->where('recordStatus','!=','r')->sum('amount');
+            $discount = Purchaseordersd::where('id','=',$poid)->value('discount');
+            $cod = Purchaseordersd::where('id','=',$poid)->value('cod');
+            $Vtotal = $totalAmount  - $totalAmount * $discount /100;
+            $grandTotal = $Vtotal - $Vtotal * $cod /100;
+            $po = Purchaseordersd::findOrFail($poid);
+            $po->totalAmount = $totalAmount;
+            $po->grandTotal = $grandTotal;
+            $po->save();
+            DB::table('purchaseordersd_product')->where('purchaseordersd_id','=',$poid)->delete();
+            $tmps = Tmpeditpurchaseordercussd::where('purchaseorder_id','=',$poid)->where('recordStatus','!=','r')->get();
+                    foreach ($tmps as $tmp) {
+                     DB::statement("INSERT INTO purchaseordersd_product (purchaseordersd_id, product_id, unitPrice, qty, amount, user_id) 
+                        VALUES({$tmp->purchaseorder_id},{$tmp->product_id},{$tmp->unitPrice},{$tmp->qty},{$tmp->amount},{$tmp->user_id})");
+                    }
+            DB::table('tmpeditpurchaseordercussd')->where('purchaseorder_id','=',$poid)->delete();
+           return redirect()->route('saleSD.index');
+        }   
     }
 
     /**
@@ -169,5 +259,41 @@ class SaleSDController extends Controller
         $tmpdata = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
         return view('admin.saleSD.showProduct',compact('tmpdata'));
     }
-
+    public function showEditcussd($poid)
+    {
+        $pos=Purchaseordersd::findOrFail($poid);
+         $brandid = Auth::user()->brand->id;
+        $products = Brand::findOrFail($brandid)->products()->get();
+        $potmps = Tmpeditpurchaseordercussd::where('purchaseorder_id','=',$poid)->where('recordStatus','!=','r')->get();
+         return view('admin.saleSD.edit',compact('pos','potmps','products'));
+    }
+    public function deleteProcussd(Request $request)
+    {
+        $poid = Input::get('poid');
+        $proid = Input::get('proid');
+        DB::statement("UPDATE tmpeditpurchaseordercussd SET recordStatus='r' WHERE purchaseorder_id={$poid} AND product_id={$proid}");
+        return redirect(url('admin/showEditcussd',$poid));
+    }
+    public function getPopupEditProductEditCussd($poid,$proid)
+    {
+        $qty = Tmpeditpurchaseordercussd::where('purchaseorder_id','=',$poid)
+                                      ->where('product_id','=',$proid)
+                                      ->where('recordStatus','!=','r')
+                                      ->value('qty');
+        $price = Tmpeditpurchaseordercussd::where('purchaseorder_id','=',$poid)
+                                      ->where('product_id','=',$proid)
+                                      ->where('recordStatus','!=','r')
+                                      ->value('unitPrice');
+        return view('admin.saleSD.editPopup',compact('qty','proid','poid','price'));
+    }
+    public function updateProCussd(Request $request)
+    {
+        $poid = Input::get('poid');
+        $proid = Input::get('proid');
+        $qty = Input::get('qty');
+        $unitPrice = Input::get('unitPrice');
+        $amount = $qty * $unitPrice;
+        DB::statement("UPDATE tmpeditpurchaseordercussd SET qty={$qty}, unitPrice={$unitPrice}, amount={$amount}, recordStatus='e' WHERE purchaseorder_id={$poid} AND product_id={$proid} AND recordStatus!='r'");
+        return redirect(url('admin/showEditcussd',$poid));
+    }
 }

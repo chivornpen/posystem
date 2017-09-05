@@ -1,4 +1,4 @@
- @extends('layouts.admin')
+@extends('layouts.admin')
 @section('content')
 {{--Modal view import detail--}}
       <!-- Modal -->
@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-lg-12">
           {{----------------------------------------------}}
-          {!!Form::model($pos,['action'=>['PurchaseOrderController@update',$pos->id],'method'=>'PATCH'])!!}
+          {!!Form::model($pos,['action'=>['SaleSDController@update',$pos->id],'method'=>'PATCH'])!!}
           {{csrf_field()}}
               <div class="row">
                   <div class="col-lg-1 btnback">
@@ -41,8 +41,13 @@
                 <div class="row">
                   <div class="col-lg-4">
                     <div class="form-group {{ $errors->has('product_id') ? ' has-error' : '' }}">
-                      {!!Form::label('product_id','Product Name',[])!!}
-                      {!!Form::select('product_id',[null=>'---Please select product']+$products,null,['class'=>'form-control productId'])!!}
+                    {!!Form::label('product_id','Product Name',[])!!}
+                    <select id="product_id" class="form-control productId" name="product_id">
+                      <option value="{{null}}">Please select product name</option>
+                        @foreach($products as $pro)
+                      <option value="{{$pro->id}}">{{$pro->name}}</option>
+                        @endforeach
+                    </select>
                         @if ($errors->has('product_id'))
                           <span class="help-block">
                               <strong>{{ $errors->first('product_id') }}</strong>
@@ -75,7 +80,7 @@
                   <div class="col-lg-2">
                     <div class="form-group {{ $errors->has('unitPrice') ? ' has-error' : '' }}">
                         {!!Form::label('unitPrice','Unit Price',[])!!}
-                        {!!Form::text('unitPrice',0,['class'=>'form-control price','readonly'=>'readonly'])!!}
+                        {!!Form::number('unitPrice',0,['class'=>'form-control price','readonly'=>'readonly','min'=>'0','autocomplete'=>'off'])!!}
                           @if ($errors->has('unitPrice'))
                             <span class="help-block">
                               <strong>{{ $errors->first('unitPrice') }}</strong>
@@ -103,8 +108,8 @@
                   </div>
                 </div>
               </div>
-              {!!Form::text('qty_pro_in_stock',null,['class'=>'qty_pro_in_stock'])!!}
-              {!!Form::text('tmp_pro_qty',null,['class'=>'tmp_pro_qty'])!!}
+              {!!Form::hidden('qtySubStock',null,['class'=>'qtySubStock'])!!}
+              {!!Form::hidden('tmp_pro_qty',null,['class'=>'tmp_pro_qty'])!!}
 
             {!!Form::close()!!}
 {{-----------------------------------}}
@@ -145,8 +150,8 @@
                             ?>
                           </td>
                           <td width="150px" style="text-align: center;"> 
-                            <a href="#" onclick="getPopupEditProduct({{$potmp->product->id}})" id="{{$pos->id}}"><i class="btn-warning btn-xs fa fa-edit" data-toggle="modal" data-target="#myPopup"></i></a>
-                             {!!Form::open(['action'=>'PurchaseOrderController@deletePro','method'=>'POST','style'=>'display:inline'])!!}
+                            <a href="#" onclick="getPopupEditProductEditCussd({{$potmp->product->id}})" id="{{$pos->id}}"><i class="btn-warning btn-xs fa fa-edit" data-toggle="modal" data-target="#myPopup"></i></a>
+                             {!!Form::open(['action'=>'SaleSDController@deleteProcussd','method'=>'POST','style'=>'display:inline'])!!}
                               {{csrf_field()}}
                                 {!!Form::hidden('poid',$pos->id,['class'=>'form-control '])!!}
                                 {!!Form::hidden('proid',$potmp->product->id,['class'=>'form-control '])!!}
@@ -180,11 +185,11 @@
 <script type="text/javascript">
 
 
-function getPopupEditProduct(proid){
+function getPopupEditProductEditCussd(proid){
         var poid = $('#poid').val();
         $.ajax({
             type:'get',
-            url:"{{url('/getPopupEditProduct/')}}"+"/"+poid+"/"+proid,
+            url:"{{url('/getPopupEditProductEditCussd/')}}"+"/"+poid+"/"+proid,
             dataType:'html',
             success:function(data){
                 $("#myPopup").html(data);
@@ -206,48 +211,57 @@ function getPopupEditProduct(proid){
         $('.add').fadeIn('slow');
         $('.hi').show();
 }
-$('.productId').on('change',function(e){
+  $('.productId').on('change',function(e){
       var proId= $(this).val();
-      $('.proid').val(proId);
       $('.qty').removeAttr('readonly','readonly');
+      $('.price').removeAttr('readonly','readonly');
       $('.qty').val('');
+      $('.price').val(0);
+      $('.price').css('border','1px solid lightblue');
       $('.qty').focus();
       $('.qty').css('border','1px solid lightblue');
       $('.amount').val(0);
       if(proId==''){
+        $('.productId').focus();
         $('.add').attr('disabled','true');
         $('.qty').attr('readonly','readonly');
+        $('.price').attr('readonly','readonly');
+        $('.qty').css('border','1px solid lightblue');
+        $('.price').css('border','1px solid lightblue');
         $('.proId').val(null);
         $('.price').val(0);
         $('.amount').val(0);
       }
-      getProductVer(proId);
+      getProductSubStockEdit(proId);
   });
   //---------------------------
-   //---------------------------
-    function getProductVer(id){
-  $.ajax({
-    type: 'GET',
-    url:"{{url('/getProductVer')}}"+"/"+id,
-    success:function(response){
-      $('.proId').val(response.pro_code);
-      $('.qty_pro_in_stock').val(response.qty_product);
-      if(response.tmp_pro_qty!=null){
-        $('.tmp_pro_qty').val(response.tmp_pro_qty);
-      }else{
-        $('.tmp_pro_qty').val(0);
-      }
-      $('.price').val(response.price); 
-      },
-      error:function(error){
-        console.log(error);
-      }
-  });
-}
+//----------------------------------
+$( ".price" ).keyup(function() {
+  var price = null;
+  var qty = $('.qty').val();
+  price = $('.price').val();
+  if(price<0 || price==""){
+    $('.add').attr('disabled','true');
+    $('.price').css('border','1px solid red');
+    $('.amount').val(0);
+  }else{
+    $('.add').removeAttr('disabled','true');
+    $('.price').css('border','1px solid lightblue');
+    var qty = $('.qty').val();
+    var total = qty * price;
+    var amount = total.toFixed(2);
+    $('.amount').val(amount);
+  }
+  if(qty<0){
+    $('.add').attr('disabled','true');
+    $('.qty').css('border','1px solid red');
+    $('.amount').val(0);
+  }
+});
 //----------------------------------
  $( ".qty" ).keyup(function() {
    var qtys = $('.qty').val();
-   var qty_pro_in_stocks = $('.qty_pro_in_stock').val();
+   var qty_pro_in_stocks = $('.qtySubStock').val();
    var tmp_pro_qtys = $('.tmp_pro_qty').val();
    var qty = null;
    var quantity = null;
@@ -261,22 +275,54 @@ $('.productId').on('change',function(e){
       var total = qty * price;
       var amount = total.toFixed(2);
       $('.amount').val(amount);
+      //alert(quantities);
    if(quantities >= 0 && quantities <= qty_pro_in_stock){
       $('.add').removeAttr('disabled','true');
       $('.qty').css('border','1px solid lightblue');
    }else if(quantities >= 0 && quantities > qty_pro_in_stock){
       $('.add').attr('disabled','true');
       $('.qty').css('border','1px solid red');
-      alert("Stock available only: "+qty_pro_in_stock+" items!");
+      var tmp_qtys = qty_pro_in_stock - quantity;
+      alert("Stock available only: "+tmp_qtys+" items!");
       $('.qty').val(null)
       $(".amount").val(0);
-
    }else{
-    $('.amount').val(0);
+      $('.amount').val(0);
       $('.add').attr('disabled','true');
       $('.qty').css('border','1px solid red');
     }
+    var price = $('.price').val();
+    if(price==''){
+    $('.add').attr('disabled','true');
+    $('.price').css('border','1px solid red');
+    $('.amount').val(0);
+  }
+  if(qty<0){
+    $('.add').attr('disabled','true');
+    $('.qty').css('border','1px solid red');
+    $('.amount').val(0);
+  }
 });
+ //--------------
+   //---------------------------
+    function getProductSubStockEdit(id){
+  $.ajax({
+    type: 'GET',
+    url:"{{url('/getProductSubStockEdit')}}"+"/"+id,
+    success:function(response){
+      $('.proId').val(response.pro_code);
+      $('.qtySubStock').val(response.qtySubStock);
+        if(response.tmp_pro_qty!=null){
+          $('.tmp_pro_qty').val(response.tmp_pro_qty);
+        }else{
+          $('.tmp_pro_qty').val(0);
+        }
+      },
+      error:function(error){
+        console.log(error);
+      }
+  });
+}
  //-----------------------------------
 $(window).load(function(){
        $('.productId').val(null);

@@ -1,19 +1,13 @@
  @extends('layouts.admin')
 @section('content')
-<div class="row">
-    <div class="col-lg-12">                
-        <h4 class="page-header"><i class="fa fa-shopping-basket" aria-hidden="true"></i> All Purchase Order</h4>
-    </div>
-</div>
+
 <div>
   @include('nav.message')
 </div>
-<a href="{{ route('saleSD.create')}}" title="Create new order" class="btn btn-danger btn-sm" > Create Order </a>
-<div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-           All Purchase Orders
+           All Purchase Orders of SD
         </div>
         <div class="panel-body table-responsive">
        <table with="100%" id="example" class="table table-striped table-responsive table-bordered table-hover">
@@ -26,12 +20,12 @@
                 <th>COD</th>
                 <th>Grand Total</th>
                 <th>Customer</th>
+                <th>Brand</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($sale as $pos)
-                @foreach($pos as $pocus)
+            @foreach($sale as $pocus)
                     <tr>
                         <td style="font-size: 11px; font-family: 'Khmer OS System'; text-align: center;">
                             {{$pocus->id}}
@@ -62,13 +56,13 @@
                         <td style="font-size: 11px; font-family: 'Khmer OS System';">
                             {{$pocus->customer->name}}
                         </td>
+                        <td style="font-size: 11px; font-family: 'Khmer OS System';">
+                            {{$pocus->customer->brand->brandName}}
+                        </td>
                         <td style="text-align: center;">
-                            <a href="{{ route('saleSD.edit',$pocus->id)}}" class="btn btn-warning btn-xs" title="Edit"><i class="fa fa-edit"></i></a> 
-                            <a href="{{ route('saleSD.show',$pocus->id)}}" class="btn btn-info btn-xs" title="Show Details"><i class="fa fa-indent" aria-hidden="true"></i></a>
-                            <a href="{{ route('purchaseOrders.edit',$pocus->id)}}" class="btn btn-primary btn-xs" title="Show Details"><i class="fa fa-eye"></i></a>                
+                            <a href="{{ route('saleSD.show',$pocus->id)}}" class="btn btn-info btn-xs" title="Show Details"><i class="fa fa-indent" aria-hidden="true"></i></a>             
                         </td>
                     </tr>
-                @endforeach
             @endforeach
             <script type="text/javascript">
 

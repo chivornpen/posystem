@@ -17,7 +17,7 @@
                           <div class="col-lg-3">
                            <div class="form-group {{ $errors->has('poDate') ? ' has-error' : '' }}">
                             {!!Form::label('poDate','Purchase Order Date :',[])!!}
-                            {!!Form::date('poDate',null,['class'=>'form-control poDate'])!!}
+                            {!!Form::text('poDate',Carbon\Carbon::parse(\Carbon\Carbon::now())->format('d-M-Y'),['class'=>'form-control poDate','readonly'=>'readonly'])!!}
                             @if ($errors->has('poDate'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('poDate') }}</strong>
@@ -29,7 +29,12 @@
                            <div class="form-group {{ $errors->has('customer_id') ? ' has-error' : '' }}">
                             {!!Form::label('customer_id','Customer Name :',[])!!}
                             <div class="input-group">
-                            {!!Form::select('customer_id',[null=>'---Please select custome name---']+$customers,null,['class'=>'form-control customerid','required'=>'true','id'=>'customername'])!!}
+                            <select id="customername" class="form-control customerid" name="customer_id">
+                              <option value="0">Please select customer name</option>
+                                @foreach($customers as $cus)
+                                  <option value="{{$cus->id}}">{{$cus->name}}</option>
+                                @endforeach
+                                </select>
                             <span class="input-group-btn">
                               <button title="Add New Customer"  type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="getPopupCus()"><i class="fa fa-user-plus" aria-hidden="true"></i> Add</button>
                             </span>

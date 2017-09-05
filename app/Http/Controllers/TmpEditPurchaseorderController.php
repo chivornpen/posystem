@@ -47,7 +47,7 @@ class TmpEditPurchaseorderController extends Controller
     {
         $poid = $request->purchaseorder_id;
         $tmp = TpmEditPurchaseOrder::all();
-        $totalAmount = $tmp->where('purchaseorder_id','=',$poid)->sum('amount');
+        $totalAmount = $tmp->where('purchaseorder_id','=',$poid)->where('recordStatus','!=','r')->sum('amount');
         $discount = Purchaseorder::where('id','=',$poid)->value('discount');
         $cod = Purchaseorder::where('id','=',$poid)->value('cod');
         $vat = Purchaseorder::where('id','=',$poid)->value('vat');

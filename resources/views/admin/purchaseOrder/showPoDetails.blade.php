@@ -6,7 +6,10 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-11">
+    <div class="col-lg-2">
+        <a href="{{ route('purchaseOrders.index')}}" class="btn btn-info btn-sm" > Back </a>
+    </div>
+    <div class="col-lg-9">
         
     </div>
     <div class="col-lg-1">

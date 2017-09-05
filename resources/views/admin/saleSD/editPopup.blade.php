@@ -7,7 +7,7 @@
         <div class="modal-body">
             <div class="row">
             <div class="col-lg-12">
-              {!!Form::open(['action'=>'PurchaseOrderController@updatePro','method'=>'POST'])!!}
+              {!!Form::open(['action'=>'SaleSDController@updateProCussd','method'=>'POST'])!!}
                 {{csrf_field()}}
                     <div class="row">
                       <div class="col-lg-12">
@@ -17,6 +17,19 @@
                               @if ($errors->has('qty'))
                                   <span class="help-block">
                                       <strong>{{ $errors->first('qty') }}</strong>
+                                  </span>
+                              @endif
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-lg-12">
+                         <div class="form-group {{ $errors->has('unitPrice') ? ' has-error' : '' }}">
+                              {!!Form::label('unitPrice','Unit Price : ',[])!!}
+                              {!!Form::text('unitPrice',$price,['class'=>'form-control','required'=>'true','autocomplete'=>'off'])!!}
+                              @if ($errors->has('unitPrice'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('unitPrice') }}</strong>
                                   </span>
                               @endif
                           </div>

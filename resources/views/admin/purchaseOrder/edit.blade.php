@@ -1,4 +1,4 @@
- @extends('layouts.admin')
+@extends('layouts.admin')
 @section('content')
 {{--Modal view import detail--}}
       <!-- Modal -->
@@ -145,7 +145,7 @@
                             ?>
                           </td>
                           <td width="150px" style="text-align: center;"> 
-                            <a href="#" onclick="getPopupEditProduct({{$potmp->product->id}})" id="{{$pos->id}}"><i class="btn-warning btn-xs fa fa-edit" data-toggle="modal" data-target="#myPopup"></i></a>
+                            <a href="#" onclick="getPopupEditProduct({{$potmp->product->id}})"><i class="btn-warning btn-xs fa fa-edit" data-toggle="modal" data-target="#myPopup"></i></a>
                              {!!Form::open(['action'=>'PurchaseOrderController@deletePro','method'=>'POST','style'=>'display:inline'])!!}
                               {{csrf_field()}}
                                 {!!Form::hidden('poid',$pos->id,['class'=>'form-control '])!!}

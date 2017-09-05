@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\TpmEditPurchaseOrder;
 use App\User;
 use App\Tmppurchaseordercussd;
+use App\Tmpeditpurchaseordercussd;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -64,6 +65,9 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::post('/updatePro','PurchaseOrderController@updatePro');
 	Route::get('/showEdit/{poid}','PurchaseOrderController@showEdit');
 	Route::post('/deletePro','PurchaseOrderController@deletePro');
+	Route::post('/deleteProcussd','SaleSDController@deleteProcussd');
+	Route::get('/showEditcussd/{poid}','SaleSDController@showEditcussd');
+	Route::post('/updateProCussd','SaleSDController@updateProCussd');
 });
 //endAdmin
 //----------------------select customer------------------
@@ -124,6 +128,16 @@ Route::get('/getProductSubStock/{id}',function($id){
 		$product_code = Product::where('id','=', $id)->value('product_code');
 	 	return response()->json(['pro_code'=>$product_code,'qtySubStock'=>$qtySubStock,'tmp_pro_qty'=>$oldQty]);
 	});
+Route::get('/getProductSubStockEdit/{id}',function($id){
+		$brandid = User::where('id','=',Auth::user()->id)->value('brand_id');
+		$qtySub = DB::select("SELECT qty FROM brand_product WHERE brand_id={$brandid} AND product_id=$id");
+		foreach ($qtySub as $qtys) {
+			$qtySubStock = $qtys->qty;
+		}
+		$oldQty = Tmpeditpurchaseordercussd::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->where('recordStatus','!=','r')->value('qty');
+		$product_code = Product::where('id','=', $id)->value('product_code');
+	 	return response()->json(['pro_code'=>$product_code,'qtySubStock'=>$qtySubStock,'tmp_pro_qty'=>$oldQty]);
+	});
 //------------------------get product to select combobox-------------------------
 Route::get('/getProduct/{id}',function($id){
 		$oldQty = TpmPurchaseOrder::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->value('qty');
@@ -180,6 +194,8 @@ Route::get('/getPopupEditPO/{id}','InvoicePOController@getPopupEditPO');
 Route::get('/getPopupEditCradit/{id}','InvoicePOController@getPopupEditCradit');
 Route::get('/getPopupEditInvoice/{id}','StockController@getPopupEditInvoice');
 Route::get('/getPopupEditProduct/{poid}/{proid}','PurchaseOrderController@getPopupEditProduct');
+Route::get('/getPopupEditProductEditCussd/{poid}/{proid}','SaleSDController@getPopupEditProductEditCussd');
+
 //stock in _route
 Route::get('/admin/stock', 'stock_in_controller@create');
 Route::resource('/stock','stock_in_controller');

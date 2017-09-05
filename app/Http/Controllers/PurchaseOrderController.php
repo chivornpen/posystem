@@ -47,7 +47,8 @@ class PurchaseOrderController extends Controller
     public function create()
     {
 
-        $customers = Customer::pluck('name','id')->all();
+        $customers = Customer::where('brand_id','=',null)->get();
+        //dd($customers);
         $channels = Channel::pluck('name','id')->all();
         $product_name = Product::pluck('name','id')->all();
         $product_code = Product::pluck('product_code','id')->all();

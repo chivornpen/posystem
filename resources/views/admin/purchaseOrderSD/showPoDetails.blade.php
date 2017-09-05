@@ -5,6 +5,14 @@
         <h4 class="page-header"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Purchase Order Details</h4>
     </div>
 </div>
+<div class="row">
+    <div class="col-lg-2">
+        <a href="{{ route('purchaseOrdersSD.index')}}" class="btn btn-info btn-sm" > Back </a>
+    </div>
+    <div class="col-lg-10">
+        
+    </div>
+</div>
 <div class="row table-responsive">
     <div class="col-lg-12">
         <table class="table" cellspacing="0">

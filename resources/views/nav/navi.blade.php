@@ -216,9 +216,7 @@
                                         <li>
                                             <a href="{{ route('saleSD.index')}}">All Purchase Order</a>
                                         </li>
-                                        <li>
-                                            <a href="{{ route('saleSD.create')}}">Create New Order</a>
-                                        </li>
+                                        
                                     </ul>
                                 </li>
                             </ul>

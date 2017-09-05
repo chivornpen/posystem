@@ -28,6 +28,10 @@ class Product extends Model
     {
         return $this->hasMany(TpmEditPurchaseOrder::class);
     }
+    public function tmpEditPurchaseordercussds()
+    {
+        return $this->hasMany(Tmpeditpurchaseordercussd::class);
+    }
     public function Tmppurchaseordercussds()
     {
         return $this->hasMany(Tmppurchaseordercussd::class);

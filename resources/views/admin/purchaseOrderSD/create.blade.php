@@ -14,7 +14,7 @@
                <div class="col-lg-3">
                   <div class="form-group {{ $errors->has('poDate') ? ' has-error' : '' }}">
                     {!!Form::label('poDate','Purchase Order Date :',[])!!}
-                    {!!Form::date('poDate',null,['class'=>'form-control'])!!}
+                    {!!Form::text('poDate',Carbon\Carbon::parse(\Carbon\Carbon::now())->format('d-M-Y'),['class'=>'form-control','readonly'=>'readonly'])!!}
                     @if ($errors->has('poDate'))
                         <span class="help-block">
                             <strong>{{ $errors->first('poDate') }}</strong>
