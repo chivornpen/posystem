@@ -47,7 +47,8 @@ class PurchaseOrderController extends Controller
     public function create()
     {
 
-        $customers = Customer::pluck('name','id')->all();
+        $customers = Customer::where('brand_id','=',null)->get();
+        //dd($customers);
         $channels = Channel::pluck('name','id')->all();
         $product_name = Product::pluck('name','id')->all();
         $product_code = Product::pluck('product_code','id')->all();
@@ -115,7 +116,7 @@ class PurchaseOrderController extends Controller
             foreach ($tmps as $tmp) {
                 $tmp->delete();
             }
-            $pocuss = PurchaseOrder::where('customer_id','!=',null)->get();
+            $pocuss = PurchaseOrder::where('customer_id','!=',null)->where('user_id','=',Auth::user()->id)->get();
             return view('admin.purchaseOrder.index',compact('pocuss'));
         }
         //------------------btn_back---------------

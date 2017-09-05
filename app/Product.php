@@ -12,6 +12,10 @@ class Product extends Model
     {
         return $this->belongsToMany('App\Purchaseorder','purchaseorder_product')->pivot('product_id','unitPrice','qty','amount','user_id');
     }
+    public function purchaseordersds()
+    {
+        return $this->belongsToMany('App\Purchaseordersd','purchaseordersd_product')->pivot('product_id','unitPrice','qty','amount','user_id');
+    }
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -23,6 +27,14 @@ class Product extends Model
     public function tmpEditPurchaseOrders()
     {
         return $this->hasMany(TpmEditPurchaseOrder::class);
+    }
+    public function tmpEditPurchaseordercussds()
+    {
+        return $this->hasMany(Tmpeditpurchaseordercussd::class);
+    }
+    public function Tmppurchaseordercussds()
+    {
+        return $this->hasMany(Tmppurchaseordercussd::class);
     }
     public function pricelists()
     {

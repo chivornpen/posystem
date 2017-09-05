@@ -1,4 +1,4 @@
- @extends('layouts.admin')
+@extends('layouts.admin')
 @section('content')
 @include('include.cusPopUp')
 <div class="row">
@@ -27,8 +27,8 @@
             <tr>
                 <th>No</th>
                 <th>Name</th>
-                <th>Phone Number</th>
-                <th>Channel</th>
+                <th>Contact</th>
+                <th>Channel/Brand</th>
                 <th>Address</th>
                 <th>Action</th>
             </tr>
@@ -45,9 +45,16 @@
                     {{$customer->contactNo}}
                 </td>
                 <td style="font-size: 11px; font-family: 'Khmer OS System'; text-align: center;">  
-                    {{$customer->channel->name}}
+                    <?php 
+                        if($customer->channel_id!=null){
+                            echo $customer->channel->name;
+                        }else{
+                            echo "SD " . $customer->brand->brandName;
+                        }
+                    ?>
                 </td>
                 <td style="font-size: 11px; font-family: 'Khmer OS System';">
+                @if($customer->brand_id==null)
                     {{"No." . 
                     $customer->homeNo . ", St." . 
                     $customer->streetNo . ", " . 
@@ -55,15 +62,20 @@
                     $customer->village->commune->name . ", " . 
                     $customer->village->commune->district->name . ", " . 
                     $customer->village->commune->district->province->name . "." . " ( " . $customer->location . " )"}}
+                @else
+                    {{"Location: ".$customer->location . ". Customer of SD " . $customer->brand->brandName}}
+                @endif
                 </td>
                 <td style="text-align: center;">
                     <a href="{{ route('customers.edit',$customer->id)}}" class="btn btn-warning btn-xs" title="Edit"><i class="fa fa-edit"></i></a>
                     @if(Auth::user()->position->name != 'Sale')
+                    @if(Auth::user()->position->name != 'SD')
                     <form action="{{ route('customers.destroy', $customer->id) }}" method="POST" style="display: inline;" onsubmit="if(confirm('Are you sure you want to delete?')) { return true } else {return false };">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <button title="Delete" type="submit" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>
                     </form>
+                    @endif
                     @endif
                 </td>
             </tr>

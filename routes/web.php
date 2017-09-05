@@ -8,6 +8,9 @@ use App\Pricelist;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\TpmEditPurchaseOrder;
+use App\User;
+use App\Tmppurchaseordercussd;
+use App\Tmpeditpurchaseordercussd;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,14 +21,10 @@ use App\TpmEditPurchaseOrder;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::get('/', function () {
     return view('welcome');
 });
-
 Auth::routes();
-
-
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
    	Route::get('/','DashbordController@index');
@@ -49,6 +48,7 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('invoices','InvoiceController');
 	Route::resource('usages','UsageController');
 	Route::resource('purchaseOrders','PurchaseOrderController');
+	Route::resource('saleSD','SaleSDController');
 	Route::resource('suppliers','SupplierController');
 	Route::resource('pricelists','PriceListController');
 	Route::resource('purchaseOrdersSD','PurchaseOrderSDController');
@@ -65,139 +65,136 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::post('/updatePro','PurchaseOrderController@updatePro');
 	Route::get('/showEdit/{poid}','PurchaseOrderController@showEdit');
 	Route::post('/deletePro','PurchaseOrderController@deletePro');
-	
-	
-	
+	Route::post('/deleteProcussd','SaleSDController@deleteProcussd');
+	Route::get('/showEditcussd/{poid}','SaleSDController@showEditcussd');
+	Route::post('/updateProCussd','SaleSDController@updateProCussd');
 });
 //endAdmin
-//Route::post('/insert',array('as'=>'insert','invoices'=>'InvoiceController'));
+//----------------------select customer------------------
+Route::get('/getCustomer/{id}',function($id){
+	 	$customers = Customer::where('id','=', $id)->first();
+	 	$channels = $customers->channel()->select('id','description')->first();
+        return response()->json([$customers,$channels]);
+});
+//------------------purchaseorder customer---------------
+Route::get('/addOrderCus/{proid}/{qty}/{price}/{amount}','PurchaseOrderController@addOrderCus');
+Route::get('/showProductCus','PurchaseOrderController@showProductCus');
 Route::get('/getPopup','PurchaseOrderController@popupCus');
 Route::get('/removeOrderCus/{id}',function($id){
 	 	$tpmPurchaseOrders = TpmPurchaseOrder::where('id','=', $id)->first();
 	 	$tpmPurchaseOrders->delete();
         return response()->json($id);
 });
+Route::get('/getTotalCus',function(){
+	$tmp = App\TpmPurchaseOrder::all();
+	$total= $tmp->where('user_id','=',Auth::user()->id)->sum('amount');
+	return response()->json($total);
+});
+//-----------------------purchaseorder sd ---------------
+Route::get('/addOrderSD/{proid}/{qty}/{price}/{amount}','PurchaseOrderSDController@addOrderSD');
+Route::get('/showProductSD','PurchaseOrderSDController@showProductSD');
 Route::get('/removeOrderSD/{id}',function($id){
 	 	$tpmPurchaseOrders = TpmPurchaseOrder::where('id','=', $id)->first();
 	 	$tpmPurchaseOrders->delete();
         return response()->json($id);
 });
+Route::get('/getTotalSD',function(){
+	$tmp = App\TpmPurchaseOrder::all();
+	$total= $tmp->where('user_id','=',Auth::user()->id)->sum('amount');
+	return response()->json($total);
+});
+//------------------purchaseorder customer of sd----------------------
+Route::get('/addOrderSDSale/{proid}/{qty}/{price}/{amount}','SaleSDController@addOrderSDSale');
+Route::get('/showProductCussd','SaleSDController@showProductCussd');
+Route::get('/getPopupCusSD','SaleSDController@getPopupCusSD');
+Route::get('/getTotalCussd',function(){
+	$tmp = App\Tmppurchaseordercussd::all();
+	$total= $tmp->where('user_id','=',Auth::user()->id)->sum('amount');
+	return response()->json($total);
+});
+Route::get('/removeOrderCussd/{id}',function($id){
+	 	$tpmPurchaseOrders = Tmppurchaseordercussd::where('id','=', $id)->first();
+	 	$tpmPurchaseOrders->delete();
+        return response()->json($id);
+});
+//---------------------get product in stock of sd----------------------------
+Route::get('/getProductSubStock/{id}',function($id){
+		$brandid = User::where('id','=',Auth::user()->id)->value('brand_id');
+		$qtySub = DB::select("SELECT qty FROM brand_product WHERE brand_id={$brandid} AND product_id=$id");
+		foreach ($qtySub as $qtys) {
+			$qtySubStock = $qtys->qty;
+		}
+		$oldQty = Tmppurchaseordercussd::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->value('qty');
+		$product_code = Product::where('id','=', $id)->value('product_code');
+	 	return response()->json(['pro_code'=>$product_code,'qtySubStock'=>$qtySubStock,'tmp_pro_qty'=>$oldQty]);
+	});
+Route::get('/getProductSubStockEdit/{id}',function($id){
+		$brandid = User::where('id','=',Auth::user()->id)->value('brand_id');
+		$qtySub = DB::select("SELECT qty FROM brand_product WHERE brand_id={$brandid} AND product_id=$id");
+		foreach ($qtySub as $qtys) {
+			$qtySubStock = $qtys->qty;
+		}
+		$oldQty = Tmpeditpurchaseordercussd::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->where('recordStatus','!=','r')->value('qty');
+		$product_code = Product::where('id','=', $id)->value('product_code');
+	 	return response()->json(['pro_code'=>$product_code,'qtySubStock'=>$qtySubStock,'tmp_pro_qty'=>$oldQty]);
+	});
+//------------------------get product to select combobox-------------------------
 Route::get('/getProduct/{id}',function($id){
 		$oldQty = TpmPurchaseOrder::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->value('qty');
 		$product_code = Product::where('id','=', $id)->value('product_code');
 		$qty_product = Product::where('id','=', $id)->value('qty');
 	 	$products = Product::findOrFail($id);
+	 	$now = Carbon::now()->toDateString();
 	 	foreach ($products->pricelists as $product) {
 	 		$pricelist_id = $product->id;
-	 		$sql = "SELECT sellingprice FROM pricelists WHERE id={$pricelist_id} AND now()>=startdate AND now()<=enddate";
-		 	$result = DB::select($sql);
-		 	foreach ($result as $row) {
-		 		$price = $row->sellingprice;
-		 	}
+	 		// $sql = "SELECT sellingprice FROM pricelists WHERE id={$pricelist_id} AND now()>=startdate AND now()<=enddate";
+		 	$price = DB::table('pricelists')->where([['id','=',$pricelist_id],['startdate','<=',$now],['enddate','>=',$now],])->value('sellingprice');
+		 	
 	 	}
 	 	return response()->json(['pro_code'=>$product_code,'qty_product'=>$qty_product,'tmp_pro_qty'=>$oldQty,'price'=>$price]);
 	});
+//------------------------get product in edit purchaseorder----------------------
 Route::get('/getProductVer/{id}',function($id){
 		$oldQty = TpmEditPurchaseOrder::where('product_id','=',$id)->where('recordStatus','!=','r')->where('user_id','=',Auth::user()->id)->value('qty');
-		//dd($oldQty);
 		$product_code = Product::where('id','=', $id)->value('product_code');
 		$qty_product = Product::where('id','=', $id)->value('qty');
 	 	$products = Product::findOrFail($id);
+	 	$now = Carbon::now()->toDateString();
 	 	foreach ($products->pricelists as $product) {
 	 		$pricelist_id = $product->id;
-	 		$sql = "SELECT sellingprice FROM pricelists WHERE id={$pricelist_id} AND now()>=startdate AND now()<=enddate";
-		 	$result = DB::select($sql);
-		 	foreach ($result as $row) {
-		 		$price = $row->sellingprice;
-		 	}
+	 		$price = DB::table('pricelists')->where([['id','=',$pricelist_id],['startdate','<=',$now],['enddate','>=',$now],])->value('sellingprice');
 	 	}
 	 	return response()->json(['pro_code'=>$product_code,'qty_product'=>$qty_product,'tmp_pro_qty'=>$oldQty,'price'=>$price]);
 	});
-
+//--------------------------------Address select combobox---------------------
 Route::get('/getProvince/{id}',function($id){
 	 	$district = DB::table('districts')->select('id','name')->where('province_id','=', $id)->get();
         return response()->json($district);
 });
 Route::get('/getDistrict/{id}',function($id){
 	 	$commune = DB::table('communes')->select('id','name')->where('district_id','=', $id)->get();
-        //dd($commune);
         return response()->json($commune);
 });
 Route::get('/getCommune/{id}',function($id){
 	 	$village = DB::table('villages')->select('id','name')->where('commune_id','=', $id)->get();
-        //dd($commune);
         return response()->json($village);
 });
-Route::get('/getCustomer/{id}',function($id){
-	 	$customers = Customer::where('id','=', $id)->first();
-	 	//dump($cusemail);
-	 	$channels = $customers->channel()->select('id','description')->first();
-	 	//dd($channels);
-        return response()->json([$customers,$channels]);
-});
-
-Route::get('/getEndNoCus/{customer_id}',function($customer_id){
-	 	$endNo = Usage::select('endNo')->where('customer_id','=', $customer_id)->orderBy('created_at', 'desc')->value('endNo');
-	 	if($endNo==''){
-	 		return response()->json(0);
-	 	}else{
-	 		return response()->json($endNo);
-	 	}
-        
-});
+//---------------------------get purchaseorder infomation---------------------------
 Route::get('/getPOInfo/{id}',function($id){
 	 	$po = Purchaseorder::where('id','=', $id)->get();
         return response()->json($po);
-});
-
-Route::get('/addOrderCus/{proid}/{qty}/{price}/{amount}','PurchaseOrderController@addOrderCus');
-Route::get('/showProductCus','PurchaseOrderController@showProductCus');
-Route::get('/addOrderSD/{proid}/{qty}/{price}/{amount}','PurchaseOrderSDController@addOrderSD');
-Route::get('/showProductSD','PurchaseOrderSDController@showProductSD');
-
-
-
-Route::get('/getPopupTmpPo/{id}','TmpEditPurchaseorderController@getPopupTmpPo');
-
-// Route::get('/removeOrder/{id}','PurchaseOrderController@removeOrder');
-
-
-Route::get('/updateGenerate/{id}','InvoicePOController@updateGenerate');
-
-
-
-// Route::get('/getSelectGenerateInv/{generateInv}',function($generateInv){
-// 	 	$isGenerateInv = Usage::where('isGenerateInv','=', $generateInv)->get();
-// 	 	//dump($isGenerateInv);
-// 	 	return response()->json($isGenerateInv);
-        
-// });
-// Route::get('admin/getRequest',function(){
-// 	if(request()->ajax()){
-		
-// 	}
-// });
-Route::get('/getTotalCus',function(){
-	$tmp = App\TpmPurchaseOrder::all();
-	$total= $tmp->where('user_id','=',Auth::user()->id)->sum('amount');
-	return response()->json($total);
-});
-
-Route::get('/getTotalSD',function(){
-	$tmp = App\TpmPurchaseOrder::all();
-	$total= $tmp->where('user_id','=',Auth::user()->id)->sum('amount');
-	return response()->json($total);
 });
 Route::get('/getPO/{id}',function($id){
 	$po = Purchaseorder::with('customer')->where('customer_id','=',$id)->where('isPayment','=',0)->get();
 	return response()->json($po);
 });
+Route::get('/getProuctVerTmpPo/{id}','TmpEditPurchaseorderController@getProuctVerTmpPo');
+Route::get('/updateGenerate/{id}','InvoicePOController@updateGenerate');
 Route::get('/getPopupEditPO/{id}','InvoicePOController@getPopupEditPO');
 Route::get('/getPopupEditCradit/{id}','InvoicePOController@getPopupEditCradit');
 Route::get('/getPopupEditInvoice/{id}','StockController@getPopupEditInvoice');
 Route::get('/getPopupEditProduct/{poid}/{proid}','PurchaseOrderController@getPopupEditProduct');
-
-
+Route::get('/getPopupEditProductEditCussd/{poid}/{proid}','SaleSDController@getPopupEditProductEditCussd');
 
 //stock in _route
 Route::get('/admin/stock', 'stock_in_controller@create');
@@ -211,13 +208,9 @@ Route::get('/admin/stock/{id}', 'stock_in_controller@show');
 Route::get('/admin/stock/current/{id}', 'stock_in_controller@showCurrent')->name('showCurrent');
 Route::get('/admin/stock/views-all', 'stock_in_controller@viewsall');
 
-
-
-
 //stock_out_route
 Route::resource('/stockout', 'StockoutController');
 Route::get('/stockout/change/{id}','StockoutController@InvNChange')->name('InvNChange');//Route for event onchange in combobox invoice number
-
 
 //SD stock_in route
 Route::resource('/sdstock','SdStockController');
@@ -225,6 +218,7 @@ Route::get('/admin/sdstock/current/{id}','SdStockController@ShowCurrentRecordSdS
 Route::get('/admin/sdstock/histories/{id}','SdStockController@ShowHistoryRecordSdStock');//show histories record import
 Route::get('/sdstock/adminView/{id}','SdStockController@show');//Show record of each brand by ID and View it by Admin
 
+<<<<<<< HEAD
 
 //Product Exchange Route
 Route::resource('/exchange','ProductExchange');
@@ -235,3 +229,14 @@ Route::get('/exchange/save/{importI}/{productI}/{qty}/{expd}/{stockout}','Produc
 Route::get('/welcome1',function (){
     return "hello";
 });
+=======
+// Route::get('/getEndNoCus/{customer_id}',function($customer_id){
+// 	 	$endNo = Usage::select('endNo')->where('customer_id','=', $customer_id)->orderBy('created_at', 'desc')->value('endNo');
+// 	 	if($endNo==''){
+// 	 		return response()->json(0);
+// 	 	}else{
+// 	 		return response()->json($endNo);
+// 	 	}
+        
+// });
+>>>>>>> 0e31060a08c3b6899fd6cb8a405186e341667c12

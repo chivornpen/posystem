@@ -208,7 +208,7 @@
                 <td width="20%">
                     <b style="font-size: 10px; font-weight: bold; font-family: 'Khmer OS System';">
                     <?php
-                        echo "៛ " . number_format($rate);
+                        echo number_format($rate) . " ៛";
                      ?></b>
                 </td>
             </tr>
@@ -302,7 +302,7 @@
                         NetPrice
                     </th>
                     <th width="7%" style="font-size: 10px; font-family: 'Khmer OS System'; text-align: center;">
-                        សរុប($) <br />
+                        សរុប <br />
                         Total
                     </th>
                 </tr>
@@ -462,7 +462,7 @@
                 <td colspan="2" style="font-size: 9px;padding-right: 2px; font-weight: bold; font-family: 'Khmer OS System'; text-align:right;">
                 	ប្រាក់កក់
                 </td>
-                <td colspan="3" style="font-weight: bold;font-size: 9px;">
+                <td colspan="3" style="font-weight: bold;font-size: 10px;">
                     <?php 
                             echo "$ " . number_format($diposit,2);
                     ?>
@@ -507,7 +507,7 @@
                 </td>
                 <td colspan="2" style="font-weight: bold; font-size: 11px;">
                     <?php 
-                            echo "៛ " . number_format($totalAmountkh,0);
+                            echo number_format($totalAmountkh,0) . " ៛";
                     ?>
                 </td>
             </tr>

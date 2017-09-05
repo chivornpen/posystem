@@ -6,11 +6,8 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-2">
-        <a href="{{ route('purchaseOrders.index')}}" class="btn btn-info btn-sm" > Back </a>
-    </div>
-    <div class="col-lg-9">
-        
+    <div class="col-lg-11">
+        <a href="{{ route('saleSD.index')}}" title="Create new order" class="btn btn-info btn-sm" > Back </a>
     </div>
     <div class="col-lg-1">
        
@@ -24,8 +21,6 @@
                     <th>PO ID</th>
                     <th>Date</th>
                     <th>Customer</th>
-                    <th>Discount</th>
-                    <th>Total Amount</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,16 +31,8 @@
                     <td style="font-size: 12px; font-weight: bold; font-family: 'Khmer OS System';">
                         {{Carbon\Carbon::parse($details->poDate)->format('d-M-Y')}}
                     </td>
-                    <td style="font-size: 12px; font-weight: bold; font-family: 'Khmer OS System';">
+                    <td style="font-size: 13px; font-weight: bold; font-family: 'Khmer OS System';">
                         {{$details->customer->name}}
-                    </td>
-                    <td style="font-size: 12px; font-weight: bold; font-family: 'Khmer OS System';">
-                        {{$details->discount . " %"}}
-                    </td>
-                    <td style="font-size: 12px; font-weight: bold; font-family: 'Khmer OS System';">
-                        <?php 
-                            echo "$ " . number_format($details->totalAmount,2);
-                        ?>
                     </td>
                 </tr>
             </tbody>
@@ -96,6 +83,62 @@
                 </td>
             </tr>
             @endforeach
+            <tr>
+                <td style="border-left:none; border-right:none;border-button:none;"></td>
+                <td style="border-left:none; border-right:none;border-button:none;"></td>
+                <td style="border-left:none; border-right:none;border-button:none;"></td>
+                <td style="border-left:none; border-right:none;border-button:none;"></td>
+                <td style="border-left:none; border-button:none;"></td>
+                <td>Total Amount</td>
+                <td>
+                    <?php 
+                        echo "$ " . number_format($details->totalAmount,2);
+                    ?>
+                </td>
+            </tr>
+            <tr>
+                <td style="border:none;"></td>
+                <td style="border:none;"></td>
+                <td style="border:none;"></td>
+                <td style="border:none;"></td>
+                <td style="border-left:none; border-button:none; border-top:none;"></td>
+                <td>Discount</td>
+                <td>
+                    @if($details->discount!=null)
+                        {{$details->discount . " %"}}
+                    @else
+                        0 %
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td style="border:none;"></td>
+                <td style="border:none;"></td>
+                <td style="border:none;"></td>
+                <td style="border:none;"></td>
+                <td style="border-left:none; border-button:none; border-top:none;"></td>
+                <td>COD</td>
+                <td>
+                    @if($details->cod!=null)
+                        {{$details->cod . " %"}}
+                    @else
+                        0 %
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td style="border:none;"></td>
+                <td style="border:none;"></td>
+                <td style="border:none;"></td>
+                <td style="border:none;"></td>
+                <td style="border-left:none; border-button:none; border-top:none;"></td>
+                <td>Grand Total</td>
+                <td>
+                    <?php 
+                        echo "$ " . number_format($details->grandTotal,2);
+                    ?>
+                </td>
+            </tr>
         </tbody>
     </table>
         </div>

@@ -13,6 +13,7 @@ use App\Village;
 use Auth;
 use Carbon\Carbon;
 use App\Channel;
+use App\Brand;
 use Illuminate\Support\Facades\Input;
 //use vendor\symfony\console\Input\input;
 
@@ -31,7 +32,13 @@ class customerController extends Controller
         $communes = Commune::pluck('name','id')->all();
         $villages = Village::pluck('name','id')->all();
         $channels = Channel::pluck('name','id')->all();
-        return view('admin.customer.index',compact('customer','provinces','districts','communes','villages','channels'));
+        if(Auth::user()->position->name =='SD'){
+            $brandid = Auth::user()->brand->id;
+            $customers = Customer::where('brand_id','=',$brandid)->get();
+            return view('admin.customerSD.index',compact('customers','channels'));
+        }else{
+             return view('admin.customer.index',compact('customer','provinces','districts','communes','villages','channels'));
+        }
     }
 
     /**
@@ -42,13 +49,16 @@ class customerController extends Controller
 
     public function create()
     {
-         $provinces = Province::pluck('name','id')->all();
-         $districts = District::pluck('name','id')->all();
-         $communes = Commune::pluck('name','id')->all();
-         $villages = Village::pluck('name','id')->all();
-         $channels = Channel::pluck('name','id')->all();
-        return view('admin.customer.create',compact('provinces','districts','communes','villages','channels'));
-         
+        $provinces = Province::pluck('name','id')->all();
+        $districts = District::pluck('name','id')->all();
+        $communes = Commune::pluck('name','id')->all();
+        $villages = Village::pluck('name','id')->all();
+        $channels = Channel::pluck('name','id')->all();
+        if(Auth::user()->position->name =='SD'){
+            return view('admin.customerSD.create',compact('channels'));
+        }else{
+            return view('admin.customer.create',compact('provinces','districts','communes','villages','channels'));
+        }
     }
 
     /**
@@ -62,17 +72,8 @@ class customerController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'contactNo' => 'required|string|min:8',
-            'homeNo' => 'required|string|max:255',
-            'streetNo' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'channel_id' => 'required',
-            'village_id' => 'required',
-            'district_id' => 'required',
-            'commune_id' => 'required',
-            'province_id' => 'required',
         ]);
             $customer = new Customer;
-            //$input = $request->all();
             $customer->user_id = Auth::user()->id;
             $customer->name = Input::get("name");
             $customer->contactNo = Input::get("contactNo");
@@ -84,11 +85,15 @@ class customerController extends Controller
             $customer->district_id = Input::get("district_id");
             $customer->commune_id = Input::get("commune_id");
             $customer->province_id = Input::get("province_id");
+            if(Auth::user()->position->name =='SD'){
+                $brandid = User::where('id','=',Auth::user()->id)->value('brand_id');
+                $customer->brand_id = $brandid;
+            }
             $customer->save();
             if(Auth::user()->position->name =='Sale'){
             	return redirect()->route('purchaseOrders.create')->with('message','This new customer has been created successfully!');
             }else{
-            	return redirect()->route('customers.index')->with('message','This new customer has been created successfully!');
+            	return redirect()->back();
             }
     }
 
@@ -117,7 +122,11 @@ class customerController extends Controller
          $communes = Commune::pluck('name','id')->all();
          $villages = Village::pluck('name','id')->all();
          $channels = Channel::pluck('name','id')->all();
-        return view('admin.customer.edit',compact('customer','provinces','districts','communes','villages','channels'));
+          if(Auth::user()->position->name =='SD'){
+            return view('admin.customerSD.edit',compact('customer','channels'));
+        }else{
+            return view('admin.customer.edit',compact('customer','provinces','districts','communes','villages','channels'));
+        }
     }
 
     /**
@@ -131,15 +140,6 @@ class customerController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|max:255',
-            'contactNo' => 'required|string|min:8',
-            'homeNo' => 'required|string|max:255',
-            'streetNo' => 'required|string|max:255',
-            'location' => 'required|string|max:255',
-            'channel_id' => 'required',
-            'village_id' => 'required',
-            'district_id' => 'required',
-            'commune_id' => 'required',
-            'province_id' => 'required',
         ]);
             $customer = Customer::findOrFail($id);
             $customer->user_id = Auth::user()->id;
@@ -153,6 +153,10 @@ class customerController extends Controller
             $customer->district_id = Input::get("district_id");
             $customer->commune_id = Input::get("commune_id");
             $customer->province_id = Input::get("province_id");
+            if(Auth::user()->position->name =='SD'){
+                $brandid = User::where('id','=',Auth::user()->id)->value('brand_id');
+                $customer->brand_id = $brandid;
+            }
             $customer->save();
             return redirect()->route('customers.index')->with('message','This customer has been updated successfully!');
     }

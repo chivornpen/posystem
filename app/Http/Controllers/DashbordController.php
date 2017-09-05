@@ -52,10 +52,10 @@ class DashbordController extends Controller
             $countunpaid = PurchaseOrder::where('isPayment','=',0)->where('isGenerate','=',1)->get()->count();
             return view('admin.dashbord.index',compact('countpocus','countposd','countinvoices','countexported','countpaid','countunpaid'));
         }elseif (Auth::user()->position->name == 'Sale') {
-         $pocuss = PurchaseOrder::where('customer_id','!=',null)->where('user_id','=',Auth::user()->id)->get();
+         $pocuss = PurchaseOrder::where('user_id','=',Auth::user()->id)->get();
         return view('admin.purchaseOrder.index',compact('pocuss'));
         }elseif (Auth::user()->position->name == 'SD') {
-         $posds = PurchaseOrder::where('customer_id','=',null)->where('user_id','=',Auth::user()->id)->get();
+         $posds = PurchaseOrder::where('user_id','=',Auth::user()->id)->get();
         return view('admin.purchaseOrderSD.index',compact('posds'));
         }
         

@@ -42,7 +42,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(PurchaseOder::class);
     }
-
+    public function purchaseordersds()
+    {
+        return $this->hasMany(Purchaseodersd::class);
+    }
     public function subimports(){
         return $this->hasMany(Subimport::class,'imported_by');
     }

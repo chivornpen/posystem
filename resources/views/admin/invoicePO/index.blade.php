@@ -25,14 +25,14 @@
 <div class="row" id="myPopup">
     <a href="#" class="update_po" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo" data-keyboard="false"  data-backdrop="static"></a>
 </div>
-<div class="showAll table-responsive">
+<div class="showAll">
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
         <div class="panel-heading">
            All Invoices
         </div>
-        <div class="panel-body">
+        <div class="panel-body table-responsive">
            <table with="100%" id="example" class="table table-striped table-bordered table-hover">
         <thead>
             <tr>
@@ -68,8 +68,8 @@
                     <?php 
                         if($details->customer_id==null){
                             echo "<td style='font-size: 11px; font-family: Khmer OS System; '>" . $details->user->nameDisplay . "</td>";
-                            echo "<td style='font-size: 11px; font-family: Khmer OS System; text-align: center;'>" . $details->user->brand->name . "</td>";
-                            echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align:center; '> SD </td>";
+                            echo "<td style='font-size: 11px; font-family: Khmer OS System; text-align: center;'>" . "SD ". $details->user->brand->brandName . "</td>";
+                            echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align:center; '> </td>";
                         }else
                         {
                             echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $details->customer->name . "</td>";
@@ -107,14 +107,14 @@
     </div>
 </div>
 </div>
-<div hidden class="paid table-responsive">
+<div hidden class="paid">
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
         <div class="panel-heading">
            All Invoices Paid
         </div>
-        <div class="panel-body">
+        <div class="panel-body table-responsive">
            <table with="100%" id="example1" class="table table-striped table-bordered table-hover">
         <thead>
             <tr>
@@ -159,8 +159,8 @@
                 <?php 
                     if($paid->customer_id==null){
                         echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $paid->user->nameDisplay . "</td>";
-                        echo "<td style='font-size: 11px; font-family: Khmer OS System;' text-align: center;>" . $paid->user->brand->name . "</td>";
-                        echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align:center;'> SD </td>";
+                        echo "<td style='font-size: 11px; font-family: Khmer OS System;' text-align: center;>" ."SD ". $paid->user->brand->brandName . "</td>";
+                        echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align:center;'> </td>";
                     }else
                     {
                         echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $paid->customer->name . "</td>";
@@ -201,14 +201,14 @@
 <div class="row" id="myPopup2">
     <a href="#" class="update_cradit" data-toggle="modal" data-target="#exampleModal1" data-whatever="@mdo" data-keyboard="false"  data-backdrop="static"></a>
 </div>
-<div hidden class="cradit table-responsive">
+<div hidden class="cradit">
 <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
            All Invoices UnPaid
         </div>
-        <div class="panel-body">
+        <div class="panel-body table-responsive">
            <table with="100%" id="example2" class="table table-striped table-bordered table-hover">
         <thead>
             <tr>
@@ -243,8 +243,8 @@
                 <?php 
                         if($cradit->customer_id==null){
                             echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $cradit->user->nameDisplay . "</td>";
-                            echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align: center;'>" . $cradit->user->brand->name . "</td>";
-                            echo "<td style='font-size: 11px; font-family: Khmer OS System; text-align:center;'> SD </td>";
+                            echo "<td style='font-size: 11px; font-family: Khmer OS System;text-align: center;'>" ."SD ". $cradit->user->brand->brandName . "</td>";
+                            echo "<td style='font-size: 11px; font-family: Khmer OS System; text-align:center;'> </td>";
                         }else
                         {
                             echo "<td style='font-size: 11px; font-family: Khmer OS System;'>" . $cradit->customer->name . "</td>";

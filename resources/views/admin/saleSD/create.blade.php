@@ -11,7 +11,7 @@
             <div id="mypopup"></div>
             <div class="row">
               <div class="col-lg-12">
-                {!!Form::open(['action'=>'PurchaseOrderController@store','method'=>'POST','id'=>'myFormPO'])!!}
+                {!!Form::open(['action'=>'SaleSDController@store','method'=>'POST','id'=>'myFormPO'])!!}
                   {{csrf_field()}}
                       <div class="row">
                           <div class="col-lg-3">
@@ -27,18 +27,18 @@
                         </div>
                           <div class="col-lg-8 hideChange">
                            <div class="form-group {{ $errors->has('customer_id') ? ' has-error' : '' }}">
-                            {!!Form::label('customer_id','Customer Name :',[])!!}
-                            <div class="input-group">
-                            <select id="customername" class="form-control customerid" name="customer_id">
+                           {!!Form::label('cus','Customer Name :',[])!!}
+                           <div class="input-group">
+                             <select id="cus" class="form-control customer_id" name="customer_id">
                               <option value="0">Please select customer name</option>
                                 @foreach($customers as $cus)
                                   <option value="{{$cus->id}}">{{$cus->name}}</option>
                                 @endforeach
                                 </select>
-                            <span class="input-group-btn">
-                              <button title="Add New Customer"  type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="getPopupCus()"><i class="fa fa-user-plus" aria-hidden="true"></i> Add</button>
-                            </span>
-                          </div>
+                                <span class="input-group-btn">
+                                  <button title="Add New Customer"  type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal" onclick="getPopupCusSD()"><i class="fa fa-user-plus" aria-hidden="true"></i> Add</button>
+                                </span>
+                            </div>
                             @if ($errors->has('customer_id'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('customer_id') }}</strong>
@@ -49,7 +49,7 @@
                     </div>
                     <div hidden class="mydiv">
                       <div class="row">
-                      <div class="col-lg-2">
+                      <div class="col-lg-4">
                            <div class="form-group {{ $errors->has('customerid') ? ' has-error' : '' }}">
                             {!!Form::label('customerid','Customer ID :',[])!!}
                             {!!Form::text('customerid',null,['class'=>'form-control cusId','readonly'=>'readonly','disabled'=>'true'])!!}
@@ -60,10 +60,10 @@
                             @endif
                           </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-lg-4">
                              <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
                               {!!Form::label('name','Customer Name :',[])!!}
-                              {!!Form::text('name',null,['class'=>'form-control cusname','readonly'=>'readonly','disabled'=>'true'])!!}
+                              {!!Form::text('name',null,['class'=>'form-control cusname','disabled'=>'true'])!!}
                               @if ($errors->has('name'))
                                   <span class="help-block">
                                       <strong>{{ $errors->first('name') }}</strong>
@@ -71,35 +71,13 @@
                               @endif
                             </div>
                           </div>
-                          <div class="col-lg-2">
-                             <div class="form-group {{ $errors->has('homeNo') ? ' has-error' : '' }}">
-                              {!!Form::label('homeNo','Home No :',[])!!}
-                              {!!Form::text('homeNo',null,['class'=>'form-control cusHomeNo','readonly'=>'readonly','disabled'=>'true'])!!}
-                              @if ($errors->has('homeNo'))
+                          <div class="col-lg-4">
+                             <div class="form-group {{ $errors->has('contactNo') ? ' has-error' : '' }}">
+                              {!!Form::label('contactNo','Customer ContactNo :',[])!!}
+                              {!!Form::text('contactNo',null,['class'=>'form-control contactNo','disabled'=>'true'])!!}
+                              @if ($errors->has('contactNo'))
                                   <span class="help-block">
-                                      <strong>{{ $errors->first('homeNo') }}</strong>
-                                  </span>
-                              @endif
-                            </div>
-                          </div>
-                          <div class="col-lg-2">
-                             <div class="form-group {{ $errors->has('streetNo') ? ' has-error' : '' }}">
-                              {!!Form::label('streetNo','Street No :',[])!!}
-                              {!!Form::text('streetNo',null,['class'=>'form-control cusStreetNo','readonly'=>'readonly','disabled'=>'true'])!!}
-                              @if ($errors->has('streetNo'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('streetNo') }}</strong>
-                                  </span>
-                              @endif
-                            </div>
-                          </div>
-                          <div class="col-lg-3">
-                             <div class="form-group {{ $errors->has('channel_id') ? ' has-error' : '' }}">
-                              {!!Form::label('channel_id','Channel :',[])!!}
-                              {!!Form::text('channel_id',null,['class'=>'form-control channel','readonly'=>'readonly','disabled'=>'true'])!!}
-                              @if ($errors->has('channel_id'))
-                                  <span class="help-block">
-                                      <strong>{{ $errors->first('channel_id') }}</strong>
+                                      <strong>{{ $errors->first('contactNo') }}</strong>
                                   </span>
                               @endif
                             </div>
@@ -109,8 +87,13 @@
                         <div class="row">
                           <div class="col-lg-4">
                             <div class="form-group {{ $errors->has('product_id') ? ' has-error' : '' }}">
-                              {!!Form::label('product_id','Product Name',[])!!}
-                              {!!Form::select('product_id',[null=>'---Please select product---']+$product_name,null,['class'=>'form-control productId'])!!}
+                            {!!Form::label('pro','Product Name :',[])!!}
+                             <select id="pro" class="form-control productId" name="customer_id">
+                              <option value="{{null}}">Please select product name</option>
+                                @foreach($products as $pro)
+                                  <option value="{{$pro->id}}">{{$pro->name}}</option>
+                                @endforeach
+                              </select>
                                 @if ($errors->has('product_id'))
                                   <span class="help-block">
                                       <strong>{{ $errors->first('product_id') }}</strong>
@@ -143,7 +126,7 @@
                           <div class="col-lg-2">
                             <div class="form-group {{ $errors->has('unitPrice') ? ' has-error' : '' }}">
                                 {!!Form::label('unitPrice','Unit Price',[])!!}
-                                {!!Form::text('unitPrice',0,['class'=>'form-control price','readonly'=>'readonly'])!!}
+                                {!!Form::number('unitPrice',0,['class'=>'form-control price','readonly'=>'readonly','min'=>'0','autocomplete'=>'off'])!!}
                                   @if ($errors->has('unitPrice'))
                                     <span class="help-block">
                                       <strong>{{ $errors->first('unitPrice') }}</strong>
@@ -165,7 +148,7 @@
                         </div>
                         <div class="row">
                           <div class="col-lg-12">
-                             <a disabled class="btn btn-primary btn-sm add" onclick="addOrderCus()" ><i class="fa fa-cart-plus" aria-hidden="true"></i> Add</a>
+                             <a disabled class="btn btn-success btn-sm add" onclick="addOrderSDSale()" ><i class="fa fa-cart-plus" aria-hidden="true"></i> Add</a>
                              <button type="submit" name="btn_back" value="Back" class="btn btn-default btn-sm pull-right"> Back </button>
                           </div>
                         </div>
@@ -184,19 +167,8 @@
                             @endif
                           </div>
                         </div>
-                        <div hidden class="col-lg-8 columnhide">
+                        <div hidden class="col-lg-9 columnhide">
                          
-                        </div>
-                        <div hidden class="col-lg-1 showCheckbox">
-                           <div class="form-group {{ $errors->has('cod') ? ' has-error' : '' }}">
-                            {!!Form::label('cod','COD',[])!!}
-                            {!!Form::checkbox('cod',1,false,['class'=>'form-control cod'])!!}
-                            @if ($errors->has('cod'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('cod') }}</strong>
-                                </span>
-                            @endif
-                          </div>
                         </div>
                       </div>
                       {{----------------------------------------------}}
@@ -219,15 +191,26 @@
                     {!!Form::number('total',0,['class'=>'form-control totalcus','readonly'=>'readonly'])!!}
                   </div>
                 </div>
+                <div class="row" id="discount" hidden>
+                  <dir class="col-lg-8">
+                    
+                  </dir>
+                  <div class="col-lg-2">
+                    {!!Form::label('discount','Discount % :',[])!!}
+                  </div>
+                  <div class="col-lg-2">
+                    {!!Form::number('discount',null,['class'=>'form-control discountcus','autocomplete'=>'off','min'=>'0','max'=>'100'])!!}
+                  </div>
+                </div>
                 <div class="row" id="cod" hidden>
                   <dir class="col-lg-8">
                     
                   </dir>
                   <div class="col-lg-2">
-                    {!!Form::label('cod','COD% :',[])!!}
+                    {!!Form::label('cod','COD % :',[])!!}
                   </div>
                   <div class="col-lg-2">
-                   
+                    {!!Form::number('cod',0,['class'=>'form-control cod','autocomplete'=>'off','min'=>'0','max'=>'100'])!!}
                   </div>
                 </div>
                 <div class="row" id="vat" hidden>
@@ -239,17 +222,6 @@
                   </div>
                   <div class="col-lg-2">
                     {!!Form::number('vat',0,['class'=>'form-control vat','readonly'=>'readonly'])!!}
-                  </div>
-                </div>
-                <div class="row" id="discount" hidden>
-                  <dir class="col-lg-8">
-                    
-                  </dir>
-                  <div class="col-lg-2">
-                    {!!Form::label('discount','Discount% :',[])!!}
-                  </div>
-                  <div class="col-lg-2">
-                    {!!Form::number('discount',null,['class'=>'form-control discountcus','min'=>'0','max'=>'100'])!!}
                   </div>
                 </div>
                 <div class="row">
@@ -266,26 +238,16 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="well-sm">
-                        <button type="submit" disabled="true" name="btn_save" value="Save" class="btn btn-success btn-sm" id="btn_hide"> Save</button>
+                        <button type="submit" disabled="true" name="btn_save" value="Save" class="btn btn-primary btn-sm" id="btn_hide"> Save</button>
                         <button disabled="true" type="submit" name="btn_cancel" value="Cancel" class="btn btn-danger btn-sm btn_hide"> Discard </button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-                
-                    
-                        {!!Form::hidden('codcus',$codcus,['id'=>'codcus'])!!}
-                        <!-- {!!Form::hidden('discus1',$discus1,['id'=>'discus1'])!!}
-                        {!!Form::hidden('discus2',$discus2,['id'=>'discus2'])!!} -->
-                        {!!Form::hidden('setdiscus1',$setdiscus1,['id'=>'setdiscus1'])!!}
-                       <!--  {!!Form::hidden('setdiscus2',$setdiscus2,['id'=>'setdiscus2'])!!} -->
-                       {!!Form::hidden('vat',$vat,['id'=>'vat'])!!}
-                        {!!Form::hidden('discount',null,['id'=>'dis'])!!}
-                        {!!Form::hidden('grandTotal',null,['id'=>'gtotal'])!!}
-                        {!!Form::hidden('qty_pro_in_stock',null,['class'=>'qty_pro_in_stock'])!!}
-                        {!!Form::hidden('tmp_pro_qty',null,['class'=>'tmp_pro_qty'])!!}
-                    
+                    {!!Form::hidden('cus',null,['class'=>'cus'])!!}
+                    {!!Form::hidden('qtySubStock',null,['class'=>'qtySubStock'])!!}
+                    {!!Form::hidden('tmp_pro_qty',null,['class'=>'tmp_pro_qty'])!!}
                 {!!Form::close()!!}
               </div>
             </div>
@@ -298,12 +260,13 @@
 @section('script')
 <script type="text/javascript">
 $(document).ready(function() {
-                $('.customerid').select2();
+                $('.customer_id').select2();
                 //showProduct();
     });
 
-  $('.customerid').on('change',function(e){
+  $('.customer_id').on('change',function(e){
       var cusId= $(this).val();
+      $('.cus').val(cusId);
       var id = 0;
       var num = cusId;
       var count = (num.toString().length);
@@ -334,34 +297,39 @@ $(document).ready(function() {
   $('.productId').on('change',function(e){
       var proId= $(this).val();
       $('.qty').removeAttr('readonly','readonly');
+      $('.price').removeAttr('readonly','readonly');
       $('.qty').val('');
+      $('.price').val(0);
+      $('.price').css('border','1px solid lightblue');
       $('.qty').focus();
       $('.qty').css('border','1px solid lightblue');
       $('.amount').val(0);
       if(proId==''){
+        $('.productId').focus();
         $('.add').attr('disabled','true');
         $('.qty').attr('readonly','readonly');
+        $('.price').attr('readonly','readonly');
+        $('.qty').css('border','1px solid lightblue');
+        $('.price').css('border','1px solid lightblue');
         $('.proId').val(null);
         $('.price').val(0);
         $('.amount').val(0);
-        $('.productId').focus();
       }
-      getProduct(proId);
+      getProductSubStock(proId);
   });
   //---------------------------
-    function getProduct(id){
+    function getProductSubStock(id){
   $.ajax({
     type: 'GET',
-    url:"{{url('/getProduct')}}"+"/"+id,
+    url:"{{url('/getProductSubStock')}}"+"/"+id,
     success:function(response){
       $('.proId').val(response.pro_code);
-      $('.qty_pro_in_stock').val(response.qty_product);
-      if(response.tmp_pro_qty!=null){
-        $('.tmp_pro_qty').val(response.tmp_pro_qty);
-      }else{
-        $('.tmp_pro_qty').val(0);
-      }
-      $('.price').val(response.price); 
+      $('.qtySubStock').val(response.qtySubStock);
+        if(response.tmp_pro_qty!=null){
+          $('.tmp_pro_qty').val(response.tmp_pro_qty);
+        }else{
+          $('.tmp_pro_qty').val(0);
+        }
       },
       error:function(error){
         console.log(error);
@@ -369,9 +337,32 @@ $(document).ready(function() {
   });
 }
 //----------------------------------
+$( ".price" ).keyup(function() {
+  var price = null;
+  var qty = $('.qty').val();
+  price = $('.price').val();
+  if(price<0 || price==""){
+    $('.add').attr('disabled','true');
+    $('.price').css('border','1px solid red');
+    $('.amount').val(0);
+  }else{
+    $('.add').removeAttr('disabled','true');
+    $('.price').css('border','1px solid lightblue');
+    var qty = $('.qty').val();
+    var total = qty * price;
+    var amount = total.toFixed(2);
+    $('.amount').val(amount);
+  }
+  if(qty==""){
+    $('.add').attr('disabled','true');
+    $('.qty').css('border','1px solid red');
+    $('.amount').val(0);
+  }
+});
+//----------------------------------
  $( ".qty" ).keyup(function() {
    var qtys = $('.qty').val();
-   var qty_pro_in_stocks = $('.qty_pro_in_stock').val();
+   var qty_pro_in_stocks = $('.qtySubStock').val();
    var tmp_pro_qtys = $('.tmp_pro_qty').val();
    var qty = null;
    var quantity = null;
@@ -401,6 +392,12 @@ $(document).ready(function() {
       $('.add').attr('disabled','true');
       $('.qty').css('border','1px solid red');
     }
+    var price = $('.price').val();
+    if(price==''){
+    $('.add').attr('disabled','true');
+    $('.price').css('border','1px solid red');
+    $('.amount').val(0);
+  }
 });
  //-----------------------------------
 //------------------------
@@ -416,9 +413,9 @@ $(document).ready(function() {
         $('.grandTotal').val(grandTotal);
   });
   //------------------------------------------------
-  function getPopupCus(){
+  function getPopupCusSD(){
       $.ajax({
-      url:"{{url('/getPopup')}}",
+      url:"{{url('/getPopupCusSD')}}",
       type:'get',
       dataType:'html',
       success:function(data){
@@ -462,40 +459,39 @@ $(document).ready(function() {
   });
 
   };
-function getValueCombo(id,ul,f)
-{
-   $.ajax({
-    method: 'GET',
-      url: ul+id,
-      success:function(response){
-        console.log(response)
-        if(Array.isArray(response)){
+// function getValueCombo(id,ul,f)
+// {
+//    $.ajax({
+//     method: 'GET',
+//       url: ul+id,
+//       success:function(response){
+//         console.log(response)
+//         if(Array.isArray(response)){
 
-            $(f).empty();
-            var serialnumber="<option value=''>---Please select option---</option>";
-            $(f).append(serialnumber);
-            response.map(function(item){
-              console.log(item.name);
-              serialnumber="<option value=" + item.id + ">" + item.name + "</option>";;
-              $(f).append(serialnumber);
-            });
-        }
-      },
-      error:function(error){
-        console.log(error);
-      }
-   })
-};
-//-----------------------
+//             $(f).empty();
+//             var serialnumber="<option value=''>---Please select option---</option>";
+//             $(f).append(serialnumber);
+//             response.map(function(item){
+//               console.log(item.name);
+//               serialnumber="<option value=" + item.id + ">" + item.name + "</option>";;
+//               $(f).append(serialnumber);
+//             });
+//         }
+//       },
+//       error:function(error){
+//         console.log(error);
+//       }
+//    })
+// };
+// //-----------------------
 function getEmailCustomer(id){
     $.ajax({
       method: 'GET',
       url:"{{url('/getCustomer')}}"+"/"+id,
       success:function(response){
-        $('.cusHomeNo').val(response[0].homeNo);
-        $('.cusStreetNo').val(response[0].streetNo);
+        $('.contactNo').val(response[0].contactNo);
         $('.cusname').val(response[0].name);
-        $('.channel').val(response[1].description);
+        //$('.channel').val(response[1].description);
       },
       error:function(error){
         console.log(error);
@@ -503,14 +499,14 @@ function getEmailCustomer(id){
     });
   }
    //-------------------
-  function addOrderCus(){
+  function addOrderSDSale(){
   var proid =$(".productId").val();
   var qty = $(".qty").val();
   var price =$(".price").val();
   var amount = $(".amount").val();
   //console.log([scores,studentid]);
   $.ajax({
-    url:"{{url('/addOrderCus')}}"+"/"+proid+"/"+qty+"/"+price+"/"+amount,
+    url:"{{url('/addOrderSDSale')}}"+"/"+proid+"/"+qty+"/"+price+"/"+amount,
     type:'get',
     dataType: 'json',
     success:function(data){
@@ -520,13 +516,16 @@ function getEmailCustomer(id){
       $('.proId').val(null);
       $('.qty').val(null)
       $('.qty').attr('readonly','readonly');
+      $('.price').attr('readonly','readonly');
       $(".price").val(0);
       $(".amount").val(0);
       $(".total").val(1000);
+      $('#discount').fadeIn(1000);
+      $('#cod').fadeIn(1000);
       $('#btn_hide').removeAttr('disabled','true');
     $('.btn_hide').removeAttr('disabled','true');
-      showProductCus();
-      getTotalCus();
+      showProductCussd();
+      getTotalCussd();
     },
     error:function(error){
       console.log(error)
@@ -534,9 +533,9 @@ function getEmailCustomer(id){
   });
 }
  //-------------------------
-  function showProductCus(){
+  function showProductCussd(){
     $.ajax({
-  url:"{{url('/showProductCus')}}",
+  url:"{{url('/showProductCussd')}}",
   type: 'get',
   dataType: 'html',
   success:function(data){
@@ -550,9 +549,9 @@ function getEmailCustomer(id){
  
   //------------------------
   //-------------------
-  function getTotalCus() {
+  function getTotalCussd() {
 $.ajax({
-  url:"{{url('/getTotalCus')}}",
+  url:"{{url('/getTotalCussd')}}",
   type:'get',
   success:function(data){
       
@@ -565,32 +564,51 @@ $.ajax({
   $('.columnhide').fadeIn(1000);
   $('.showCheckbox').fadeIn(1000);
   $('#MyProList').fadeIn(1000);
-  var setdiscus1 = $('#setdiscus1').val();
-  if(totalcus >= setdiscus1){
-          $('#discount').fadeIn(1000);
-          $('.discountcus').val(0);
-          $('.grandTotalcus').val(total);
-          $( ".discountcus" ).keyup(function() {
-            $('.cod').filter(':checkbox').removeAttr('checked');
+  $('.discountcus').val(0);
+  $('.grandTotalcus').val(total);
+  $( ".discountcus" ).keyup(function() {
+            $('.cod').val(0);
             var dis = $(this).val();
             if(dis<0){
                 $('.discountcus').css('border','1px solid red');
                 $('#btn_hide').attr('disabled','true');
+                $('.grandTotalcus').val(0);
             }else if(dis>100){
                 $('.discountcus').css('border','1px solid red');
                 $('#btn_hide').attr('disabled','true');
+                $('.grandTotalcus').val(0);
             }else{
                 $('#btn_hide').removeAttr('disabled','true');
                  $('.discountcus').css('border','1px solid lightblue');
+                graTotalcus = totalcus - (totalcus * dis)/100;
+                grandTotalcus = graTotalcus.toFixed(2);
+                $('.grandTotalcus').val(grandTotalcus);
             }
-            graTotalcus = totalcus - (totalcus * dis)/100;
-            grandTotalcus = graTotalcus.toFixed(2);
-          $('.grandTotalcus').val(grandTotalcus);
-          });          
-  }else{
-      $('#discount').fadeOut(1000);
-      $('.grandTotalcus').val(total);
-  }
+        });
+  $( ".cod" ).keyup(function() {
+            var dis = $('.discountcus').val();
+            var cod = $(this).val();
+            if(cod<0){
+                $('.cod').css('border','1px solid red');
+                $('#btn_hide').attr('disabled','true');
+                $('.grandTotalcus').val(0);
+            }else if(cod>100){
+                $('.cod').css('border','1px solid red');
+                $('#btn_hide').attr('disabled','true');
+                $('.grandTotalcus').val(0);
+            }else{
+                $('.cod').css('border','1px solid lightblue');
+            }
+            if(cod>=0 && cod<100 && dis>0 && dis <100){
+              $('#btn_hide').removeAttr('disabled','true');
+                $('.cod').css('border','1px solid lightblue');
+                var dis = $('.discountcus').val();
+                graTotal = totalcus - (totalcus * dis)/100;
+                grandTotal = graTotal - (graTotal * cod)/100;
+                grandTotalcus = grandTotal.toFixed(2);
+                $('.grandTotalcus').val(grandTotalcus);
+            }
+        });
   $("#myFormPO").submit(function(){
     var dis = $('.discountcus').val();
     var grandTotal = $(".grandTotalcus").val();
@@ -607,10 +625,10 @@ $.ajax({
 
   }
  //-------------------------------
-function removeOrderCus(id){
+function removeOrderCussd(id){
   $.ajax({
     method: 'GET',
-    url:"{{url('/removeOrderCus')}}"+"/"+id,
+    url:"{{url('/removeOrderCussd')}}"+"/"+id,
     success:function(data){
       $(".productId").val('');
       $('.proId').val(null);
@@ -618,15 +636,18 @@ function removeOrderCus(id){
       $('.qty').attr('readonly','readonly');
       $(".price").val(0);
       $(".amount").val(0);
+      getTotalCussd(); 
       var count = $('table tr').length;
       if(count==2){
       $('#btn_hide').attr('disabled','true');
       $('.btn_hide').attr('disabled','true');
+      $('#discount').fadeOut('slow');
+      $('#cod').fadeOut('slow');
      }
-      getTotalCus(); 
       $(".table tr#"+data).remove();
       $('.cod').attr('checked',false);
       $('.discountcus').val(0);
+      $('.cod').val(0);
       
     },
     error:function(error){
@@ -635,36 +656,36 @@ function removeOrderCus(id){
   });
 }
 //------------------------
-$(document).ready(function(){
-$('.cod').on('change',function(){
-  if (this.checked) {
-    var totalcus =0;
-    var grandTotalcus =0;
-    var totalcus = $('.totalcus').val();
-    var codcus = $('#codcus').val();
-    var discountcus = $('.discountcus').val();
-      if(discountcus!=''){
-        var totaldis = totalcus - totalcus * discountcus/100;
-        var grandTotal = totaldis - totaldis * codcus/100;
-            grandTotalcus = grandTotal.toFixed(2);
-         $('.grandTotalcus').val(grandTotalcus);
-      }else{
-        var codcus = $('#codcus').val();
-        var totalcus = $('.totalcus').val();
-        var grandTotal = totalcus - (totalcus * codcus)/100;
-            grandTotalcus = grandTotal.toFixed(2);
-        $('.grandTotalcus').val(grandTotalcus);
-      }
-  } else {
-      var dis = $('.discountcus').val();
-      var totalcus = $('.totalcus').val();
-      var grandTotal = totalcus - (totalcus * dis)/100;
-          grandTotalcus = grandTotal.toFixed(2);
-      $('.grandTotalcus').val(grandTotalcus);
+// $(document).ready(function(){
+// $('.cod').on('change',function(){
+//   if (this.checked) {
+//     var totalcus =0;
+//     var grandTotalcus =0;
+//     var totalcus = $('.totalcus').val();
+//     var codcus = $('#codcus').val();
+//     var discountcus = $('.discountcus').val();
+//       if(discountcus!=''){
+//         var totaldis = totalcus - totalcus * discountcus/100;
+//         var grandTotal = totaldis - totaldis * codcus/100;
+//             grandTotalcus = grandTotal.toFixed(2);
+//          $('.grandTotalcus').val(grandTotalcus);
+//       }else{
+//         var codcus = $('#codcus').val();
+//         var totalcus = $('.totalcus').val();
+//         var grandTotal = totalcus - (totalcus * codcus)/100;
+//             grandTotalcus = grandTotal.toFixed(2);
+//         $('.grandTotalcus').val(grandTotalcus);
+//       }
+//   } else {
+//       var dis = $('.discountcus').val();
+//       var totalcus = $('.totalcus').val();
+//       var grandTotal = totalcus - (totalcus * dis)/100;
+//           grandTotalcus = grandTotal.toFixed(2);
+//       $('.grandTotalcus').val(grandTotalcus);
       
-    }
- });
-});
+//     }
+//  });
+// });
    
 </script>
 

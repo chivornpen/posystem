@@ -14,7 +14,7 @@
                <div class="col-lg-3">
                   <div class="form-group {{ $errors->has('poDate') ? ' has-error' : '' }}">
                     {!!Form::label('poDate','Purchase Order Date :',[])!!}
-                    {!!Form::date('poDate',null,['class'=>'form-control'])!!}
+                    {!!Form::text('poDate',Carbon\Carbon::parse(\Carbon\Carbon::now())->format('d-M-Y'),['class'=>'form-control','readonly'=>'readonly'])!!}
                     @if ($errors->has('poDate'))
                         <span class="help-block">
                             <strong>{{ $errors->first('poDate') }}</strong>
@@ -191,6 +191,7 @@
       $('.qty').focus();
       $('.amount').val(0);
       if(proId==''){
+        $('.productId').focus();
         $('.add').attr('disabled','true');
         $('.qty').val('');
         $('.qty').attr('readonly','readonly');
@@ -224,7 +225,8 @@
    }else if(quantities >= 0 && quantities > qty_pro_in_stock){
       $('.add').attr('disabled','true');
       $('.qty').css('border','1px solid red');
-      alert("Stock available only: "+qty_pro_in_stock+" items!");
+       var tmp_qtys = qty_pro_in_stock - quantity;
+      alert("Stock available only: "+tmp_qtys+" items!");
       $('.qty').val(null)
       $(".amount").val(0);
 

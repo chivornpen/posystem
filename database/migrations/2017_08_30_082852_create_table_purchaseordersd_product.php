@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableTmpEditPurchaseorder extends Migration
+class CreateTablePurchaseordersdProduct extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateTableTmpEditPurchaseorder extends Migration
      */
     public function up()
     {
-        Schema::create('tmpeditpurchaseorders', function (Blueprint $table) {
+        Schema::create('purchaseordersd_product', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('purchaseorder_id');
+            $table->integer('purchaseordersd_id');
             $table->integer('product_id');
             $table->integer('qty');
             $table->double('unitPrice');
             $table->double('amount');
             $table->integer('user_id');
-            $table->string('recordStatus')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -32,6 +32,6 @@ class CreateTableTmpEditPurchaseorder extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tmpeditpurchaseorders');
+        Schema::dropIfExists('purchaseordersd_product');
     }
 }

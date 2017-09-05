@@ -1,3 +1,60 @@
+                  <div class="row">
+                      <div class="col-lg-3">
+                           <div class="form-group {{ $errors->has('customerid') ? ' has-error' : '' }}">
+                            {!!Form::label('customerid','Customer ID :',[])!!}
+                           <input type="id" name="id" class="form-control" disabled="true" value="<?php echo "CAM-CUS-" . sprintf('%06d',$customerid);?>">
+                            @if ($errors->has('customerid'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('customerid') }}</strong>
+                                </span>
+                            @endif
+                          </div>
+                        </div>
+                        <div class="col-lg-3">
+                             <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
+                              {!!Form::label('name','Name :',[])!!}
+                              {!!Form::text('name',$cusname,['class'=>'form-control','disabled'=>'true'])!!}
+                              @if ($errors->has('name'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('name') }}</strong>
+                                  </span>
+                              @endif
+                            </div>
+                          </div>
+                          <div class="col-lg-2">
+                             <div class="form-group {{ $errors->has('contactNo') ? ' has-error' : '' }}">
+                              {!!Form::label('contactNo','ContactNo :',[])!!}
+                              {!!Form::text('contactNo',$phone,['class'=>'form-control','disabled'=>'true'])!!}
+                              @if ($errors->has('contactNo'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('contactNo') }}</strong>
+                                  </span>
+                              @endif
+                            </div>
+                          </div>
+                          <div class="col-lg-2">
+                             <div class="form-group {{ $errors->has('contactNo') ? ' has-error' : '' }}">
+                              {!!Form::label('contactNo','Channel :',[])!!}
+                              {!!Form::text('contactNo',$channel,['class'=>'form-control','disabled'=>'true'])!!}
+                              @if ($errors->has('contactNo'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('contactNo') }}</strong>
+                                  </span>
+                              @endif
+                            </div>
+                          </div>
+                          <div class="col-lg-2">
+                             <div class="form-group {{ $errors->has('contactNo') ? ' has-error' : '' }}">
+                              {!!Form::label('contactNo','Edit PO By :',[])!!}
+                              {!!Form::text('contactNo',$username,['class'=>'form-control','disabled'=>'true'])!!}
+                              @if ($errors->has('contactNo'))
+                                  <span class="help-block">
+                                      <strong>{{ $errors->first('contactNo') }}</strong>
+                                  </span>
+                              @endif
+                            </div>
+                          </div>
+                        </div>
    <div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default table-responsive">

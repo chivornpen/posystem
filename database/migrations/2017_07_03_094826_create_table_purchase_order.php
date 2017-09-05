@@ -17,6 +17,8 @@ class CreateTablePurchaseOrder extends Migration
             $table->increments('id');
             $table->date('poDate');
             $table->date('dueDate')->nullable();
+            $table->date('paidDate')->nullable();
+            $table->date('invoiceDate')->nullable();
             $table->double('totalAmount');
             $table->double('discount')->default(0);
             $table->double('vat')->nullable();
@@ -26,6 +28,8 @@ class CreateTablePurchaseOrder extends Migration
             $table->integer('customer_id')->nullable();
             $table->double('cod')->default(0);
             $table->double('rate')->default(0);
+            $table->double('paid')->nullable();
+            $table->double('cradit')->nullable();
             $table->tinyInteger('isGenerate')->default(0);
             $table->tinyInteger('isPayment')->default(0);
             $table->tinyInteger('isDelivery')->default(0);
