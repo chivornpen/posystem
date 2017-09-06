@@ -61,9 +61,43 @@ class SaleSDController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //dd($request->all());
-         if(Input::get('btn_save')){
+    { 
+         if(Input::get('btn_yes')){
+            $po = new Purchaseordersd;
+            $po->poDate = Carbon::now();
+            $po->dueDate = Input::get('dueDate');
+            $po->customer_id = Input::get('cus');
+            $po->totalAmount = Input::get('total');
+            $po->grandTotal = Input::get('grandTotal');
+            if(Input::get('discount')!=null){
+                $po->discount = Input::get('discount');
+            }else{
+                $po->discount = 0;
+            }            
+            $po->user_id = Auth::user()->id;
+            $po->isGenerate =0;
+            $po->isDelivery =1;
+            $po->cod = Input::get('cod');
+            $po->save();
+            $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
+                foreach ($tmps as $tmp) {
+                $po->products()->attach($tmp->product_id,
+                    ['unitPrice'=>$tmp->unitPrice,
+                    'qty'=>$tmp->qty,
+                    'amount'=>$tmp->amount,
+                    'user_id'=>$tmp->user_id]);
+                }
+            $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
+            foreach ($tmps as $tmp) {
+                $tmp->delete();
+            }
+            //-----cut sub stock------------
+                //your code here
+            //------------------------------
+            return redirect()->route('saleSD.index');
+        }
+        //------------------btn_no----------------
+        if(Input::get('btn_no')){
             $po = new Purchaseordersd;
             $po->poDate = Carbon::now();
             $po->dueDate = Input::get('dueDate');

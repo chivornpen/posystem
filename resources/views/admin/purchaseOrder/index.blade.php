@@ -19,9 +19,9 @@
        <table with="100%" id="example" class="table table-striped table-responsive table-bordered table-hover">
         <thead>
             <tr>
-                <th>PO Number</th>
-                <th>Date</th>
-                <th>Total Amount</th>
+                <th>PONumber</th>
+                <th>PODate</th>
+                <th>Amount</th>
                 <th>Discount</th>
                 <th>Customer</th>
                 <th>Action</th>

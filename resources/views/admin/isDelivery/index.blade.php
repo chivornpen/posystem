@@ -17,7 +17,7 @@
            <div class="panel-heading">
            All Invoices Created
         </div>
-        <div class="panel-body">
+        <div class="panel-body table-responsive">
         
        <table with="100%" id="example" class="table table-striped table-bordered table-hover">
         <thead>

@@ -122,7 +122,7 @@ class TmpEditPurchaseorderController extends Controller
         $cusid = Purchaseorder::where('id','=',$id)->value('customer_id');
         if($cusid!=null){
             $customerid = Purchaseorder::where('id','=',$id)->value('customer_id');
-            $userid = Purchaseorder::where('id','=',$id)->value('user_id');
+            $userid = TpmEditPurchaseOrder::where('id','=',$id)->value('user_id');
             $username = User::where('id','=',$userid)->value('nameDisplay');
             $cusname = Customer::where('id','=',$customerid)->value('name');
             $phone = Customer::where('id','=',$customerid)->value('contactNo');
@@ -131,7 +131,8 @@ class TmpEditPurchaseorderController extends Controller
             return view('admin.purchaseOrder.showVerifyPopup',compact('pos','customerid','cusname','phone','channel','username'));
         }else{
             $userid = Purchaseorder::where('id','=',$id)->value('user_id');
-            $username = User::where('id','=',$userid)->value('nameDisplay');
+            $user_id = TpmEditPurchaseOrder::where('id','=',$id)->value('user_id');
+            $username = User::where('id','=',$user_id)->value('nameDisplay');
             $phone = User::where('id','=',$userid)->value('contactNum');
             $customerid = Customer::where('contactNo','=',$phone)->value('id');
             $cusname = Customer::where('id','=',$customerid)->value('name');

@@ -1,7 +1,7 @@
                   <div class="row">
                       <div class="col-lg-3">
                            <div class="form-group {{ $errors->has('customerid') ? ' has-error' : '' }}">
-                            {!!Form::label('customerid','Customer ID :',[])!!}
+                            {!!Form::label('customerid','Customer Number :',[])!!}
                            <input type="id" name="id" class="form-control" disabled="true" value="<?php echo "CAM-CUS-" . sprintf('%06d',$customerid);?>">
                             @if ($errors->has('customerid'))
                                 <span class="help-block">
