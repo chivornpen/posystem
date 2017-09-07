@@ -230,6 +230,9 @@
                                     <a href="{{ route('invoicePO.index')}}">New Invoice</a>
                                 </li>
                                 <li>
+                                    <a href="{{ route('invoicePO.create')}}">New Invoice</a>
+                                </li>
+                                <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#summa"><i class="fa fa-list-alt" aria-hidden="true"></i> Summary Invoices <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="summa" class="collapse nav nav-second-level">
                                         <li>

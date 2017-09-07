@@ -13,7 +13,7 @@
                       <div class="col-lg-12">
                          <div class="form-group {{ $errors->has('qty') ? ' has-error' : '' }}">
                               {!!Form::label('qty','Quantity : ',[])!!}
-                              {!!Form::text('qty',$qty,['class'=>'form-control','required'=>'true','autocomplete'=>'off'])!!}
+                              {!!Form::text('qty',$qty,['class'=>'form-control','id'=>'qtyid','required'=>'true','autocomplete'=>'off'])!!}
                               @if ($errors->has('qty'))
                                   <span class="help-block">
                                       <strong>{{ $errors->first('qty') }}</strong>
@@ -23,7 +23,7 @@
                       </div>
                     </div>
                     {!!Form::hidden('poid',$poid,['class'=>'form-control'])!!}
-                    {!!Form::hidden('proid',$proid,['class'=>'form-control'])!!}
+                    {!!Form::hidden('proid',$proid,['class'=>'form-control proid'])!!}
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-success"> Update </button>

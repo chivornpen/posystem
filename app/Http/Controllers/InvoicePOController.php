@@ -36,7 +36,7 @@ class InvoicePOController extends Controller
      */
     public function create()
     {
-
+        dd('test');
     }
 
     /**

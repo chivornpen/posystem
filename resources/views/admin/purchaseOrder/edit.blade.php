@@ -179,7 +179,9 @@
 @section('script')
 <script type="text/javascript">
 
-
+$(document).ready(function(){
+  $.fn.modal.Constructor.prototype.enforceFocus = function () {};
+});
 function getPopupEditProduct(proid){
         var poid = $('#poid').val();
         $.ajax({
