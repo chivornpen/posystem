@@ -238,7 +238,7 @@
                   <div class="row">
                     <div class="col-lg-12">
                       <div class="well-sm">
-                        <button type="submit" disabled="true" name="btn_save" value="Save" class="btn btn-primary btn-sm" id="btn_hide"> Save</button>
+                      <button type="button" disabled="true" class="btn btn-primary btn-sm" id="btn_hide" data-toggle="modal" data-target="#exampleModal1" data-whatever="@mdo"> Save </button>
                         <button disabled="true" type="submit" name="btn_cancel" value="Cancel" class="btn btn-danger btn-sm btn_hide"> Discard </button>
                       </div>
                     </div>
@@ -248,7 +248,7 @@
                     {!!Form::hidden('cus',null,['class'=>'cus'])!!}
                     {!!Form::hidden('qtySubStock',null,['class'=>'qtySubStock'])!!}
                     {!!Form::hidden('tmp_pro_qty',null,['class'=>'tmp_pro_qty'])!!}
-                {!!Form::close()!!}
+
               </div>
             </div>
           </div>
@@ -256,6 +256,31 @@
     </div>
   </div>
 </div>
+{{------------------Pop Up----------}}
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="exampleModalLabel"> Message</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-lg-12">
+              <h4>Do you want to cut stock now?</h4>
+              </div>
+            </div>
+          </div>
+
+                  <div class="modal-footer">
+                    <button type="submit" name="btn_yes" value="yes" class="btn btn-primary btn-sm"> Yes </button>
+                    <button type="submit" name="btn_no" value="no" class="btn btn-danger btn-sm"> No </button>
+                  </div>
+            {!!Form::close()!!}
+    </div>
+  </div>
+</div>
+{{-------------------}}
 @stop
 @section('script')
 <script type="text/javascript">

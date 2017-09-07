@@ -36,8 +36,8 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-lg-12">
-        <table class="table table-responsive" cellspacing="0">
+    <div class="col-lg-12 table-responsive">
+        <table class="table" cellspacing="0">
             <thead>
                 <tr class="bg-primary">
                     <th>Invoice Number</th>
@@ -70,7 +70,7 @@
 </div>
 <div class="row">
     <div class="col-lg-12">
-        <div class="panel panel-default">
+        <div class="panel panel-default table-responsive">
             <table with="100%" id="example" class="table table-bordered table-hover">
         <thead>
             <tr>

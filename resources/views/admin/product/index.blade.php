@@ -99,13 +99,13 @@
         <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="fa fa-plus" aria-hidden="true"></i> Add New</button>
     </div>
 </div>
-<div class="row table-responsive">
+<div class="row">
     <div class="col-lg-12">
         <div class="panel panel-default">
             <div class="panel-heading">
            All Products
         </div>
-        <div class="panel-body">
+        <div class="panel-body table-responsive">
         
        <table with="100%" id="example" class="table table-striped table-bordered table-hover">
         <thead>
