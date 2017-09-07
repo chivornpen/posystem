@@ -230,15 +230,18 @@
                                     <a href="{{ route('invoicePO.index')}}">New Invoice</a>
                                 </li>
                                 <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#summa"><i class="fa fa-list-alt" aria-hidden="true"></i> Summary Invoices <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#summa">Summary Invoices <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="summa" class="collapse nav nav-second-level">
                                         <li>
-                                            <a href="{{ route('summaryInvs.index')}}">All Summary Invocie</a>
+                                            <a href="{{ route('summaryInvs.index')}}">&nbsp; &nbsp;&nbsp;&nbsp;All Summary Invocie</a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('summaryInvs.create')}}">Create Summary Invocie</a>
+                                            <a href="{{ route('summaryInvs.create')}}"> &nbsp;&nbsp;&nbsp;&nbsp;Create Summary Invocie</a>
                                         </li>
                                     </ul>
+                                </li>
+                                <li>
+                                    <a href="{{route('invoicePO.create')}}">Create Exchange Invoice</a>
                                 </li>
                             </ul>
                         </li>

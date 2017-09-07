@@ -6,7 +6,7 @@
             <div class="panel-heading">
                 Exchange Product
             </div>
-            <div class="panel-body">
+            <div class="panel-body table-responsive">
                 {!! Form::open(['method'=>'post', 'action'=>'ProductExchange@store'])!!}
                     <div class="row">
                         <div class="col-lg-12">
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 {!! Form::close() !!}
-                <div id="viewInvoice">
+                <div id="viewInvoice" style="margin-right: 1%;">
 
                 </div>
             </div>
