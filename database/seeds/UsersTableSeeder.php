@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
         $user_superuser->email = 'camsofts@gmail.com';
         $user_superuser->password = bcrypt('camsofts');
         $user_superuser->contactNum = '';
-        $user_superuser->brand = '';
+        $user_superuser->brand_id = null;
         $user_superuser->is_log = 0;
         $user_superuser->position_id = 1;
         $user_superuser->zone_id = 0;
@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder
         $user_admin->email = 'admin@gmail.com';
         $user_admin->password = bcrypt('admin');
         $user_admin->contactNum = '';
-        $user_admin->brand = '';
+        $user_admin->brand_id = null;
         $user_admin->is_log = 0;
         $user_admin->position_id = 2;
         $user_admin->zone_id = 0;
