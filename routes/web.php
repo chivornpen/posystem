@@ -218,11 +218,6 @@ Route::get('/admin/sdstock/current/{id}','SdStockController@ShowCurrentRecordSdS
 Route::get('/admin/sdstock/histories/{id}','SdStockController@ShowHistoryRecordSdStock');//show histories record import
 Route::get('/sdstock/adminView/{id}','SdStockController@show');//Show record of each brand by ID and View it by Admin
 
-<<<<<<< HEAD
-
-=======
->>>>>>> b1f8797353da853fed316f06e96b3b89732f41d2
-
 //Product Exchange Route
 Route::resource('/exchange','ProductExchange');
 Route::get('/exchange/showRecord/{id}','ProductExchange@showRecord');
@@ -242,12 +237,6 @@ Route::get('/welcome1',function (){
     return "hello";
 });
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> b1f8797353da853fed316f06e96b3b89732f41d2
 // Route::get('/getEndNoCus/{customer_id}',function($customer_id){
 // 	 	$endNo = Usage::select('endNo')->where('customer_id','=', $customer_id)->orderBy('created_at', 'desc')->value('endNo');
 // 	 	if($endNo==''){
@@ -257,7 +246,3 @@ Route::get('/welcome1',function (){
 // 	 	}
         
 // });
-<<<<<<< HEAD
-
-=======
->>>>>>> b1f8797353da853fed316f06e96b3b89732f41d2
