@@ -23,7 +23,7 @@
                     @endforeach
                 </table>
             </div>
-            <h5><smal>Customer : {{$purchaseOrder->customer->name}}</smal></h5>
+            <h5><smal>Customer : {{$user_name}}</smal></h5>
             <h5><smal>Order By : {{$purchaseOrder->user->name}}</smal></h5>
             <h5><smal>Total Amount : {{"$ ".$purchaseOrder->totalAmount}}</smal></h5>
             <h5><smal>Discount : {{$purchaseOrder->discount}} %</smal></h5>

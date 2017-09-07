@@ -240,9 +240,11 @@
                                         </li>
                                     </ul>
                                 </li>
+
                                 <li>
                                     <a href="{{route('invoicePO.create')}}">Create Exchange Invoice</a>
                                 </li>
+
                             </ul>
                         </li>
                         <li><a href="javascript:;" data-toggle="collapse" data-target="#Stock"><i class="fa fa-industry" aria-hidden="true"></i> Stock Management <i class="fa fa-fw fa-caret-down"></i></a>
@@ -291,6 +293,23 @@
                                 </li>
 
                                 {{--end Exchange-menu--}}
+
+
+                                {{--return_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#return"><i class="fa fa-retweet" aria-hidden="true"></i> Product Return <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="return" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="#">Return</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Views</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end return-menu--}}
+
+
 
 
                                 <li>

@@ -177,8 +177,16 @@ class StockoutController extends Controller
     public function show($id)
     {
         //views detail of stock invoice
+        $user_name="";
         $purchaseOrder = Purchaseorder::findOrFail($id);
-        return view('admin/stock_out/views',compact('purchaseOrder'));
+        $customer_id = $purchaseOrder->customer_id;
+        if($customer_id){
+            $user_name =$purchaseOrder->customer->name;
+        }else{
+            $contact = $purchaseOrder->user->contactNum;
+            $user_name= Customer::where('contactNo','=',$contact)->value('name');
+        }
+        return view('admin/stock_out/views',compact('purchaseOrder','user_name'));
     }
 
     public function edit($id)

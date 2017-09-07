@@ -12,7 +12,6 @@
                     <td style="text-align: center;">{!! $v->pivot->qty !!}</td>
                     <td style="text-align: center;">{!! $v->pivot->expd !!}</td>
                 </tr>
-
             @endforeach
         </tbody>
     </table>
