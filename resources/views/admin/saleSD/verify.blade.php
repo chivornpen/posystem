@@ -3,7 +3,6 @@
 <div>
   @include('nav.message')
 </div>
-
 {{----------------------------------}}
     <div class="row">
       <div class="col-lg-12">

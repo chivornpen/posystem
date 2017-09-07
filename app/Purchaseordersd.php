@@ -20,4 +20,7 @@ class Purchaseordersd extends Model
     {
         return $this->belongsTo(User::class);
     }
+     public function stockoutsds(){
+        return $this->hasOne(Stockoutsd::class);
+    }
 }

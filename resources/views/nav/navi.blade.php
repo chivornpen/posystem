@@ -230,7 +230,14 @@
                                     <a href="{{ route('invoicePO.index')}}">New Invoice</a>
                                 </li>
                                 <li>
+<<<<<<< HEAD
+                                    <a href="{{ route('invoicePO.create')}}">New Invoice</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#summa"><i class="fa fa-list-alt" aria-hidden="true"></i> Summary Invoices <i class="fa fa-fw fa-caret-down"></i></a>
+=======
                                     <a href="javascript:;" data-toggle="collapse" data-target="#summa">Summary Invoices <i class="fa fa-fw fa-caret-down"></i></a>
+>>>>>>> d4b2d6909564a232a0b62e8b3ea018fa7f65ba5e
                                     <ul id="summa" class="collapse nav nav-second-level">
                                         <li>
                                             <a href="{{ route('summaryInvs.index')}}">&nbsp; &nbsp;&nbsp;&nbsp;All Summary Invocie</a>

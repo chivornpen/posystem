@@ -39,6 +39,9 @@ class InvoicePOController extends Controller
      */
     public function create()
     {
+<<<<<<< HEAD
+        dd('test');
+=======
         $exchange = Exchange::all();
         return view('admin.invoicePO.exchangeInvoice',compact('exchange'));
     }
@@ -97,6 +100,7 @@ class InvoicePOController extends Controller
 
                return "<div style='color: #0d6aad; margin-left: 10px;'>created successfully...</div>";
            }
+>>>>>>> d4b2d6909564a232a0b62e8b3ea018fa7f65ba5e
     }
 
 
