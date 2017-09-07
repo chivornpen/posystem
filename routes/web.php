@@ -218,11 +218,19 @@ Route::get('/admin/sdstock/current/{id}','SdStockController@ShowCurrentRecordSdS
 Route::get('/admin/sdstock/histories/{id}','SdStockController@ShowHistoryRecordSdStock');//show histories record import
 Route::get('/sdstock/adminView/{id}','SdStockController@show');//Show record of each brand by ID and View it by Admin
 
-
 //Product Exchange Route
 Route::resource('/exchange','ProductExchange');
 Route::get('/exchange/showRecord/{id}','ProductExchange@showRecord');
 Route::get('/exchange/save/{importI}/{productI}/{qty}/{expd}/{stockout}','ProductExchange@saveRecord');//save data when exchange
+Route::get('/exchange/viewDetail/{id}','ProductExchange@detail');
+
+
+//create Exchange invoice
+Route::get('/invoicePO/VUXchangeInvoice/{id}','InvoicePOController@view');
+Route::get('/invoicePo/Xchange/{id}','InvoicePOController@createXchangeInvoice');
+
+
+
 
 
 Route::get('/welcome1',function (){

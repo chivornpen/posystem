@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exchange;
+use App\Stockout;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Purchaseorder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Auth;
 use Carbon\Carbon;
@@ -36,26 +39,77 @@ class InvoicePOController extends Controller
      */
     public function create()
     {
+<<<<<<< HEAD
         dd('test');
+=======
+        $exchange = Exchange::all();
+        return view('admin.invoicePO.exchangeInvoice',compact('exchange'));
+    }
+    public function view($id){//View invoice exchange by
+        if($id){
+            $ex = Exchange::findOrFail($id);
+            $view = $ex->products;
+        }else{
+            $view=false;
+        }
+        return view('admin.invoicePO.viewExchangeInvoice',compact('view','id'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function createXchangeInvoice($id){
+
+           if($id){
+               $user_id =0;
+               $customer_id=0;
+               $now = Carbon::now()->toDateString();
+               $result = DB::table('exchange_product')->selectRaw('product_id, sum(qty) as total')->where('exchange_id','=',$id)->groupBy('product_id')->get();
+               $exchange = Exchange::findOrFail($id);
+               $stockoutID=$exchange->stockout->id;
+               $stockout = Stockout::findOrFail($stockoutID);
+               $purchaseorderID=$stockout->purchaseorder_id;
+               $purchaseorder = Purchaseorder::findOrFail($purchaseorderID);
+               $user_id= $purchaseorder->user_id;
+               $customer_id= $purchaseorder->customer_id;
+
+               $purchaseorder = new Purchaseorder();
+               $purchaseorder->poDate= $now;
+               $purchaseorder->dueDate= $now;
+               $purchaseorder->paidDate= $now;
+               $purchaseorder->invoiceDate= $now;
+               $purchaseorder->totalAmount= 0;
+               $purchaseorder->discount= 0;
+               $purchaseorder->vat= 0;
+               $purchaseorder->diposit= 0;
+               $purchaseorder->user_id= $user_id;
+               $purchaseorder->printedBy= 0;
+               $purchaseorder->customer_id= $customer_id;
+               $purchaseorder->cod= 0;
+               $purchaseorder->rate= 0;
+               $purchaseorder->isGenerate= 0;
+               $purchaseorder->isPayment= 1;
+               $purchaseorder->paid= 0;
+               $purchaseorder->cradit= 0;
+               $purchaseorder->isDelivery= 0;
+               $purchaseorder->save();
+               $purchaseorderId = $purchaseorder->id;
+                       foreach ($result as $re){
+                           $purchaseorder->products()->attach($re->product_id,['qty'=>$re->total,'unitPrice'=>0,'amount'=>0,'user_id'=>$user_id]);
+                       }
+
+               $exchange->purchaseorder_id=$purchaseorderId;
+               $exchange->save();
+
+               return "<div style='color: #0d6aad; margin-left: 10px;'>created successfully...</div>";
+           }
+>>>>>>> d4b2d6909564a232a0b62e8b3ea018fa7f65ba5e
+    }
+
+
     public function store()
     {
-        
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         $details = Purchaseorder::findOrFail($id);
@@ -183,4 +237,22 @@ class InvoicePOController extends Controller
         $cradits = PurchaseOrder::where('isPayment','=',0)->get();
         return view('admin.invoicePO.index',compact('pos','paids','cradits','id'));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

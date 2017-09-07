@@ -1,6 +1,15 @@
 @if($data)
     <br>
-    <div><h4>Invoice Detail</h4></div>
+        <label style="color:red; font-family:'Times New Roman',Serif;">Customer Name:</label>
+        <label style="color:dodgerblue; font-family: 'Khmer OS Siemreap',Serif;"> {{$user_name}}</label>
+    <br>
+        <label style="color:red; font-family:'Times New Roman',Serif;">Phone Number:</label>
+        <label style="color:dodgerblue; font-family: 'Khmer OS Siemreap',Serif;"> {{$phone}}</label>
+    <br>
+        <label style="color:red; font-family:'Times New Roman',Serif;">Location:</label>
+        <label style="color:dodgerblue; font-family: 'Khmer OS Siemreap',Serif;"> {{$location}}</label>
+    <br>
+    <br>
     <table class="table table-bordered" style="box-shadow: 2px 1px 3px 0px gray" id="Exchange">
         <thead>
         <tr>

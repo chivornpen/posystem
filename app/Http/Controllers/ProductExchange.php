@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
 use App\Exchange;
 use App\Import;
 use App\Product;
+use App\Purchaseorder;
 use App\Stockout;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,7 +18,30 @@ class ProductExchange extends Controller
 
     public function index()
     {
-       return view('admin.ProductExchange.index');
+        $exchange = Exchange::all();
+       return view('admin.ProductExchange.index',compact('exchange'));
+    }
+
+    //View Detail of Exchange
+    public function detail($id){
+        $exchange = Exchange::findOrFail($id);
+        $data = $exchange->products;
+
+        $stockoutId = $exchange->stockout_id;
+        $stockout = Stockout::findOrFail($stockoutId);
+        $purchaseoderId= $stockout->purchaseorder_id;
+
+        $user_name="";
+        $Purchase = Purchaseorder::findOrFail($purchaseoderId);
+        $customer_id = $Purchase->customer_id;
+        if($customer_id){
+            $user_name =$Purchase->customer->name;
+        }else{
+            $contact = $Purchase->user->contactNum;
+            $user_name= Customer::where('contactNo','=',$contact)->value('name');
+        }
+
+        return view('admin.ProductExchange.detail',compact('data','user_name'));
     }
 
 
@@ -29,18 +54,39 @@ class ProductExchange extends Controller
 
 
     public function showRecord($id){
+
+        $user_name="";
+        $phone="";
+        $location ="";
+
         if($id!=0){
             $stockoutID = Stockout::where('purchaseorder_id','=',$id)->value('id');
             $stockoutFilter = Stockout::findOrFail($stockoutID);
             $data = $stockoutFilter->imports;
+            $Purchase = Purchaseorder::findOrFail($id);
+            $customer_id = $Purchase->customer_id;
+            if($customer_id){
+                $user_name =$Purchase->customer->name;
+                $phone=$Purchase->customer->contactNo;
+                $location=$Purchase->customer->location;
+            }else{
+                $phone = $Purchase->user->contactNum;
+                $user_name= Customer::where('contactNo','=',$phone)->value('name');
+                $location=Customer::where('contactNo','=',$phone)->value('location');
+            }
         }else{
             $data=false;
         }
 
-        return view('admin.ProductExchange.viewInvoice',compact('data','stockoutID'));
+        return view('admin.ProductExchange.viewInvoice',compact('data','stockoutID','user_name','phone','location'));
     }
+
+
     public function saveRecord($importId, $productId,$qty, $expd, $stockoutId){
         $check= Exchange::where('stockout_id','=',$stockoutId)->value('stockout_id');
+        $user_name="";
+        $phone="";
+        $location ="";
         if(!$check){
             $insert = new Exchange();
             $insert->stockout_id=$stockoutId;
@@ -66,8 +112,23 @@ class ProductExchange extends Controller
 
         $stockoutFilter = Stockout::findOrFail($stockoutId);
         $data = $stockoutFilter->imports;
+        $purchaseorderId = $stockoutFilter->purchaseorder_id;
         $stockoutID = $stockoutId;
-        return view('admin.ProductExchange.viewInvoice',compact('data','stockoutID'));
+
+        $Purchase = Purchaseorder::findOrFail($purchaseorderId);
+        $customer_id = $Purchase->customer_id;
+        if($customer_id){
+            $user_name =$Purchase->customer->name;
+            $phone=$Purchase->customer->contactNo;
+            $location=$Purchase->customer->location;
+        }else{
+            $phone = $Purchase->user->contactNum;
+            $user_name= Customer::where('contactNo','=',$phone)->value('name');
+            $location=Customer::where('contactNo','=',$phone)->value('location');
+        }
+
+
+        return view('admin.ProductExchange.viewInvoice',compact('data','stockoutID','user_name','phone','location'));
     }
 
 
