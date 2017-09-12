@@ -195,6 +195,7 @@
         $('.add').attr('disabled','true');
         $('.qty').val('');
         $('.qty').attr('readonly','readonly');
+         $('.qty').css('border','1px solid lightblue');
         $('.proId').val(null);
         $('.price').val(0);
         $('.amount').val(0);

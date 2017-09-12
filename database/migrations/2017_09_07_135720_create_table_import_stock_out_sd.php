@@ -15,8 +15,8 @@ class CreateTableImportStockOutSd extends Migration
     {
         Schema::create('import_stockoutsd', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('stockout_id');
-            $table->integer('import_id');
+            $table->integer('stockoutsd_id');
+            $table->integer('subimport_id');
             $table->integer('product_id');
             $table->integer('qty');
             $table->date('expd');
