@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exchange;
+use App\Returnpro;
 use App\Stockout;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -39,10 +40,15 @@ class InvoicePOController extends Controller
      */
     public function create()
     {
-        dd('test');
         $exchange = Exchange::all();
         return view('admin.invoicePO.exchangeInvoice',compact('exchange'));
     }
+    //show invoice have to return to customer
+    public function ProductReturn(){
+        $productReturn = Returnpro::where('isGenerate','=',0)->get();
+        return view('admin.invoicePO.invoiceReturnProductCreate',compact('productReturn'));
+    }
+
     public function view($id){//View invoice exchange by
         if($id){
             $ex = Exchange::findOrFail($id);
@@ -52,6 +58,84 @@ class InvoicePOController extends Controller
         }
         return view('admin.invoicePO.viewExchangeInvoice',compact('view','id'));
     }
+    //show conten invoice return when chose in drop down
+    public function showContentInvoiceReturn($returnId,$status){
+
+        if($returnId!=0){
+            $returnpro = DB::table('product_returnpro')->where('returnpro_id',$returnId)->selectRaw('product_id, sum(qtyreturn) as QR, sum(qtyorder) as QO, sum(qtyreturn)+sum(qtyorder) as TQ')->groupBy('product_id')->get();
+        }else{
+            $returnpro=false;
+        }
+        return view('admin.invoicePO.viewProReturnInvoice',compact('returnpro','status','returnId'));
+    }
+
+    //create Invoice Product Return
+    public function ProductReturnInvoice($returnId,$status){
+        $productId = 0;
+        $quantities = 0;
+        $unitprice = 0;
+        $amount = 0;
+        $now = Carbon::now()->toDateString();
+        $returnPro = Returnpro::findOrFail($returnId)->value('stockout_id');
+        $purchaseOrderId = Stockout::findOrFail($returnPro)->value('purchaseorder_id');
+
+        $purchaseorder = Purchaseorder::findOrFail($purchaseOrderId);
+        $user_id= $purchaseorder->user_id;
+        $customer_id= $purchaseorder->customer_id;
+
+//        $purchaseorder = new Purchaseorder();
+//        $purchaseorder->poDate= $now;
+//        $purchaseorder->dueDate= $now;
+//        $purchaseorder->paidDate= $now;
+//        $purchaseorder->invoiceDate= $now;
+//        $purchaseorder->totalAmount= 0;
+//        $purchaseorder->discount= 0;
+//        $purchaseorder->vat= 0;
+//        $purchaseorder->diposit= 0;
+//        $purchaseorder->user_id= $user_id;
+//        $purchaseorder->printedBy= 0;
+//        $purchaseorder->customer_id= $customer_id;
+//        $purchaseorder->cod= 0;
+//        $purchaseorder->rate= 0;
+//        $purchaseorder->isGenerate= 0;
+//        $purchaseorder->isPayment= 1;
+//        $purchaseorder->paid= 0;
+//        $purchaseorder->cradit= 0;
+//        $purchaseorder->isDelivery= 0;
+//        $purchaseorder->save();
+//        $purchaseorderId = $purchaseorder->id;
+
+
+        $returnpro = DB::table('product_returnpro')->where('returnpro_id',$returnId)->selectRaw('product_id, sum(qtyreturn) as QR, sum(qtyorder) as QO, sum(qtyreturn)+sum(qtyorder) as TQ')->groupBy('product_id')->get();
+        foreach ($returnpro as $p){
+            $unitprice= DB::table('purchaseorder_product')->where([['purchaseorder_id','=',$purchaseOrderId],['product_id','=',$p->product_id],])->value('unitPrice');
+            dump($unitprice);
+//               if($status==1){//company paid
+//                   $quantities= $p->QR;
+//               }elseif($status==2){//customer paid
+//                   $quantities= $p->QO;
+//               }
+        }
+
+        return "hello i'm working....";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function createXchangeInvoice($id){
 

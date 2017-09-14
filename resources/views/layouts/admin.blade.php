@@ -13,6 +13,7 @@
 
     <!-- Bootstrap Core CSS -->
     @yield('css')
+    <link rel="stylesheet" href="{{asset('css/mycss.css')}}">
     <!-- <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"> -->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <!-- DataTables CSS -->

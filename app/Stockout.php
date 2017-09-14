@@ -21,4 +21,8 @@ class Stockout extends Model
         return $this->hasOne(Exchange::class);
     }
 
+    public function returnpro(){
+        return $this->hasOne(Returnpro::class);
+    }
+
 }

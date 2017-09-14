@@ -39,6 +39,7 @@
                     dataType: 'html',
                     success:function (data) {
                         $("#viewXchange").html(data);
+
                         $(document).ready(function () {
                             $("#exchangeInvoice").DataTable({});
                         });

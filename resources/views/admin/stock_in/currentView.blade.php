@@ -17,8 +17,8 @@
                         <tr>
                             <td style="text-align: center;">{{$id->product_code}}</td>
                             <td style="text-align: center;">{{$id->pivot->qty}}</td>
-                            <td style="text-align: center;">{{\Carbon\Carbon::parse($id->mfd)->format('d-M-Y')}}</td>
-                            <td style="text-align: center;">{{\Carbon\Carbon::parse($id->expd)->format('d-M-Y')}}</td>
+                            <td style="text-align: center;">{{\Carbon\Carbon::parse($id->pivot->mfd)->format('d-M-Y')}}</td>
+                            <td style="text-align: center;">{{\Carbon\Carbon::parse($id->pivot->expd)->format('d-M-Y')}}</td>
                         </tr>
                     @endforeach
                 </table>

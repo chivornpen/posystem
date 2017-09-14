@@ -21,6 +21,7 @@
                         <tbody>
                         <?php $i=1;?>
                             @foreach($exchange as $ex)
+                                @if($ex->stockout->id)
                                 <tr>
                                     <td style="text-align: center;">{!! $i++ !!}</td>
                                     <td style="text-align: center;">{!! "CAM-IN-".sprintf('%06d',$ex->stockout->purchaseorder_id) !!}</td>
@@ -30,6 +31,7 @@
                                         <a href="#" title="Views" onclick="viewDetail('{{$ex->id}}')" data-toggle="modal" data-target="#viewExchangeDetail"><i class="fa fa-outdent"></i></a>
                                     </td>
                                 </tr>
+                                @endif
                             @endforeach
                         </tbody>
 

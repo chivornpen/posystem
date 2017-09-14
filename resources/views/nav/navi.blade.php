@@ -241,9 +241,13 @@
                                         </li>
                                     </ul>
                                 </li>
-
                                 <li>
-                                    <a href="{{route('invoicePO.create')}}">Create Exchange Invoice</a>
+                                    <a href="{{route('invoicePO.create')}}"><i class="fa fa-exchange" aria-hidden="true"></i> Create Invoice Exchange </a>
+                                </li>
+
+                                {{--create invoice product return--}}
+                                <li>
+                                    <a href="{{url('/invoicePo/ProductReturn/view')}}"><i class="fa fa-share" aria-hidden="true"></i> Create Invoice Return</a>
                                 </li>
 
                             </ul>
@@ -300,19 +304,15 @@
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#return"><i class="fa fa-retweet" aria-hidden="true"></i> Product Return <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="return" class="collapse nav nav-second-level">
                                         <li>
-                                            <a href="#">Return</a>
+                                            <a href="{{route('return.create')}}">Return</a>
                                         </li>
                                         <li>
-                                            <a href="#">Views</a>
+                                            <a href="{{route('return.index')}}">Views</a>
                                         </li>
                                     </ul>
                                 </li>
 
                                 {{--end return-menu--}}
-
-
-
-
                                 <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#cat"><i class="fa fa-tags" aria-hidden="true"></i> Category <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="cat" class="collapse nav nav-second-level">
@@ -363,7 +363,6 @@
 
                                 {{--end SD stock-in-menu--}}
 
-
                                 {{--SD stock_out_menu --}}
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockout"><i class="fa fa-truck" aria-hidden="true"></i> Stock Out <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="sDstockout" class="collapse nav nav-second-level">
@@ -375,7 +374,26 @@
                                         </li>
                                     </ul>
                                 </li>
-
                                 {{--end stock-out-menu--}}
                             </ul>
                         </li>
+        {{--END SD STOCK MANAGEMENT MENU--}}
+
+        {{--Report MANAGEMENT MENU--}}
+
+                        <li><a href="javascript:;" data-toggle="collapse" data-target="#report"><i class="fa fa-file-text" aria-hidden="true"></i> Report <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="report" class="collapse nav nav-second-level">
+                                {{--SD stock_in_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#stockReport"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock Report <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="stockReport" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="#">Report</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end SD stock-in-menu--}}
+
+                            </ul>
+                        </li>
+        {{--Report MANAGEMENT MENU--}}

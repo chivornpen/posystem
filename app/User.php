@@ -49,4 +49,8 @@ class User extends Authenticatable
     public function subimports(){
         return $this->hasMany(Subimport::class,'imported_by');
     }
+    public function returnpro()
+    {
+        return $this->hasOne(Returnpro::class);
+    }
 }

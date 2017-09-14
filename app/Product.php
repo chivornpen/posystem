@@ -58,4 +58,12 @@ class Product extends Model
     public function exchanges(){
         return $this->belongsToMany(Exchange::class)->withTimestamps()->withPivot('qty','expd');
     }
+
+    public  function returnpros(){
+        return $this->belongsToMany(Product::class)->withTimestamps()->withPivot('qtyreturn','qtyorder');
+
+    }
+
+
+
 }

@@ -229,6 +229,49 @@ Route::get('/exchange/viewDetail/{id}','ProductExchange@detail');
 Route::get('/invoicePO/VUXchangeInvoice/{id}','InvoicePOController@view');
 Route::get('/invoicePo/Xchange/{id}','InvoicePOController@createXchangeInvoice');
 
+//ProductReturn
+Route::resource('/return','ProductReturn');
+Route::get('/return/VUinvoice/{id}','ProductReturn@show');//view invoice onchange comboBox
+
+Route::get('/return/ReturnAll/{id}/{userId}','ProductReturn@SaveReturnAll');//save record return all
+Route::get('/return/save/one/{stId}/{Qty}/{qty}/{proID}/{impId}/{returnBy}/{Inv}','ProductReturn@save');//save return one by one
+Route::get('/return/viewProductReturn/{returnId}/{status}/{stockoutId}','ProductReturn@viewProductReturn'); //view product return
+
+//show invoice return in drop down selector
+Route::get('/invoicePo/ProductReturn/view','InvoicePOController@ProductReturn');//show invoice have to return in comboBox
+
+//show conten invoice return when chose in drop down
+Route::get('/invoicePo/showcontent/view/{returnId}/{status}','InvoicePOController@showContentInvoiceReturn');
+
+//create Invoice Product Return
+Route::get('/invoicePo/ProductReturn/invoice/create/{returnId}/{status}','InvoicePOController@ProductReturnInvoice');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
