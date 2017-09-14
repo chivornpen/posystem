@@ -18,6 +18,7 @@ class CreateStockoutsTable extends Migration
             $table->dateTime('stockoutDate');
             $table->integer('purchaseorder_id');
             $table->integer('user_id');
+            $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
     }

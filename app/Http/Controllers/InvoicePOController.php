@@ -75,6 +75,8 @@ class InvoicePOController extends Controller
         $quantities = 0;
         $unitprice = 0;
         $amount = 0;
+        $discount = 0;
+        $cod = 0;
         $now = Carbon::now()->toDateString();
         $returnPro = Returnpro::findOrFail($returnId)->value('stockout_id');
         $purchaseOrderId = Stockout::findOrFail($returnPro)->value('purchaseorder_id');
@@ -82,60 +84,69 @@ class InvoicePOController extends Controller
         $purchaseorder = Purchaseorder::findOrFail($purchaseOrderId);
         $user_id= $purchaseorder->user_id;
         $customer_id= $purchaseorder->customer_id;
+        $discount= $purchaseorder->discount;
+        $cod = $purchaseorder->cod;
 
-//        $purchaseorder = new Purchaseorder();
-//        $purchaseorder->poDate= $now;
-//        $purchaseorder->dueDate= $now;
-//        $purchaseorder->paidDate= $now;
-//        $purchaseorder->invoiceDate= $now;
-//        $purchaseorder->totalAmount= 0;
-//        $purchaseorder->discount= 0;
-//        $purchaseorder->vat= 0;
-//        $purchaseorder->diposit= 0;
-//        $purchaseorder->user_id= $user_id;
-//        $purchaseorder->printedBy= 0;
-//        $purchaseorder->customer_id= $customer_id;
-//        $purchaseorder->cod= 0;
-//        $purchaseorder->rate= 0;
-//        $purchaseorder->isGenerate= 0;
-//        $purchaseorder->isPayment= 1;
-//        $purchaseorder->paid= 0;
-//        $purchaseorder->cradit= 0;
-//        $purchaseorder->isDelivery= 0;
-//        $purchaseorder->save();
-//        $purchaseorderId = $purchaseorder->id;
-
+        $purchaseorder = new Purchaseorder();
+        $purchaseorder->poDate= $now;
+        $purchaseorder->dueDate= $now;
+        $purchaseorder->paidDate= $now;
+        $purchaseorder->invoiceDate= $now;
+        $purchaseorder->totalAmount= 0;
+        $purchaseorder->discount= $discount;
+        $purchaseorder->vat= 0;
+        $purchaseorder->diposit= 0;
+        $purchaseorder->user_id= $user_id;
+        $purchaseorder->printedBy= 0;
+        $purchaseorder->customer_id= $customer_id;
+        $purchaseorder->cod= $cod;
+        $purchaseorder->rate= 0;
+        $purchaseorder->isGenerate= 0;
+        $purchaseorder->isPayment= 1;
+        $purchaseorder->paid= 0;
+        $purchaseorder->cradit= 0;
+        $purchaseorder->isDelivery= 1;
+        $purchaseorder->save();
+        $purchaseorderId = $purchaseorder->id;
 
         $returnpro = DB::table('product_returnpro')->where('returnpro_id',$returnId)->selectRaw('product_id, sum(qtyreturn) as QR, sum(qtyorder) as QO, sum(qtyreturn)+sum(qtyorder) as TQ')->groupBy('product_id')->get();
         foreach ($returnpro as $p){
             $unitprice= DB::table('purchaseorder_product')->where([['purchaseorder_id','=',$purchaseOrderId],['product_id','=',$p->product_id],])->value('unitPrice');
-            dump($unitprice);
-//               if($status==1){//company paid
-//                   $quantities= $p->QR;
-//               }elseif($status==2){//customer paid
-//                   $quantities= $p->QO;
-//               }
+               $product_id = $p->product_id;
+                if($status==1){//company paid
+                    $quantities= $p->QR;
+//                  echo "$amount =$amount+($unitprice*$quantities)"."<br>";
+                    $pAmount=($unitprice*$quantities);
+                    $amount =$amount+($unitprice*$quantities);
+                    $purchaseorder->products()->attach($product_id,['qty'=>$quantities,'unitPrice'=>$unitprice,'amount'=>$pAmount,'user_id'=>$user_id]);
+                }elseif($status==2){//customer paid
+                    $quantities= $p->QO;
+//                  echo "$amount =$amount+($unitprice*$quantities)"."<br>";
+                    $pAmount=($unitprice*$quantities);
+                    $amount =$amount+($unitprice*$quantities);
+                    if($quantities==0){
+                        $purchaseorder->products()->attach($product_id,['qty'=>$quantities,'unitPrice'=>$unitprice,'amount'=>$pAmount,'user_id'=>$user_id]);
+                    }
+                }
         }
+        $grandTotal = $amount-($amount*$discount/100);
+        $paid = $grandTotal-($grandTotal*$cod/100);
 
-        return "hello i'm working....";
+        $purchaseorderUpdate = Purchaseorder::findOrFail($purchaseorderId);
+        $purchaseorderUpdate->totalAmount= $amount;
+        $purchaseorderUpdate->paid= round($paid,2,PHP_ROUND_HALF_UP);
+        $purchaseorderUpdate->save();
+
+        $returnProduct = Returnpro::findOrFail($returnId);
+        $returnProduct->isGenerate=1;
+        $returnProduct-> purchaseorder_id = $purchaseorderId;
+        $returnProduct->save();
+
+        $stockout = Stockout::findOrFail($returnPro);
+        $stockout->status=1;
+        $stockout->save();
+
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     public function createXchangeInvoice($id){
 
@@ -176,9 +187,10 @@ class InvoicePOController extends Controller
                        foreach ($result as $re){
                            $purchaseorder->products()->attach($re->product_id,['qty'=>$re->total,'unitPrice'=>0,'amount'=>0,'user_id'=>$user_id]);
                        }
-
                $exchange->purchaseorder_id=$purchaseorderId;
                $exchange->save();
+               $stockout->status=1;
+               $stockout->save();
 
                return "<div style='color: #0d6aad; margin-left: 10px;'>created successfully...</div>";
            }

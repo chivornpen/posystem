@@ -47,7 +47,7 @@ class ProductExchange extends Controller
 
     public function create()//show Invoice number in comboBox
     {
-        $stockout = Stockout::select('purchaseorder_id')->get();
+        $stockout = Stockout::where('status','=',0)->select('purchaseorder_id')->get();
         return view('admin.ProductExchange.create',compact('stockout'));
     }
 
@@ -81,7 +81,7 @@ class ProductExchange extends Controller
     }
 
 
-    public function saveRecord($importId, $productId,$qty, $expd, $stockoutId){
+    public function saveRecord($importId, $productId,$qty, $expd, $stockoutId){//Exchange product
         $check= Exchange::where('stockout_id','=',$stockoutId)->value('stockout_id');
         $user_name="";
         $phone="";
