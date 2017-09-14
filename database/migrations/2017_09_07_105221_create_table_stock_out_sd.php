@@ -18,6 +18,7 @@ class CreateTableStockOutSd extends Migration
             $table->dateTime('stockoutDate');
             $table->integer('purchaseordersd_id');
             $table->integer('user_id');
+            $table->integer('brand_id')->nullable();
             $table->timestamps();
         });
     }

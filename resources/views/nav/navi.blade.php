@@ -367,10 +367,10 @@
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockout"><i class="fa fa-truck" aria-hidden="true"></i> Stock Out <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="sDstockout" class="collapse nav nav-second-level">
                                         <li>
-                                            <a href="#">Export</a>
+                                            <a href="{{route('stockoutsd.create')}}">Export</a>
                                         </li>
                                         <li>
-                                            <a href="#">Views</a>
+                                            <a href="{{route('stockoutsd.index')}}">Views</a>
                                         </li>
                                     </ul>
                                 </li>

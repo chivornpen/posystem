@@ -57,6 +57,7 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('stocks','StockController');
 	Route::resource('setValues','SetValueController');
 	Route::resource('verifys','TmpEditPurchaseorderController');
+	Route::resource('stockoutsd','StockoutSdController');
 	Route::get('/inv','InvoiceController@inv');
 	Route::get('/invoice','InvoiceController@invoice');
 	Route::resource('summaryInvs','CraditPOController');
@@ -138,6 +139,9 @@ Route::get('/getProductSubStockEdit/{id}',function($id){
 		$product_code = Product::where('id','=', $id)->value('product_code');
 	 	return response()->json(['pro_code'=>$product_code,'qtySubStock'=>$qtySubStock,'tmp_pro_qty'=>$oldQty]);
 	});
+
+Route::get('/getIdPoSd/{id}','StockoutsdController@getIdPoSd');//Route for event onchange in combobox invoice number
+Route::get('/viewDetailStockoutSd/{id}','StockoutsdController@viewDetailStockoutSd');//View detail stock out of sd
 //------------------------get product to select combobox-------------------------
 Route::get('/getProduct/{id}',function($id){
 		$oldQty = TpmPurchaseOrder::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->value('qty');

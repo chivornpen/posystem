@@ -17,6 +17,7 @@ use App\Tmppurchaseordercussd;
 use App\Tmpeditpurchaseordercussd;
 use App\Product;
 use App\User;
+use App\Stockoutsd;
 
 class SaleSDController extends Controller
 {
@@ -26,8 +27,8 @@ class SaleSDController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {     $sale= array();
-        
+    {     
+        $sale= array();
         if(Auth::user()->position->name == 'SD'){
             $brandid = Auth::user()->brand->id;
             $userids = User::where('brand_id','=',$brandid)->get();
@@ -80,6 +81,7 @@ class SaleSDController extends Controller
             $po->isDelivery =1;
             $po->cod = Input::get('cod');
             $po->save();
+            $invoice = $po->id;
             $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
                 foreach ($tmps as $tmp) {
                 $po->products()->attach($tmp->product_id,
@@ -93,25 +95,29 @@ class SaleSDController extends Controller
                 $tmp->delete();
             }
             //-----cut sub stock------------
-            $invoice = $po->id;
+            $brandId = Auth::user()->brand->id;
             $add1year = Carbon::now()->addYear(1)->toDateString();
             $purchase = Purchaseordersd::findOrFail($invoice);
             $products = $purchase->products()->get();// Get all product by Invoice/Purchase Order
 
-            $stockout = new Stockoutsd();//Insert to table stockout
-            $stockout->stockoutDate = Carbon::now();
-            $stockout->purchaseordersd_id =$invoice;
-            $stockout->user_id = $user_id;
-            $stockout->save();
-            $stockout_id = $stockout->id;
+            $stockoutsd = new Stockoutsd();//Insert to table stockout
+            $stockoutsd->stockoutDate = Carbon::now();
+            $stockoutsd->purchaseordersd_id =$invoice;
+            $stockoutsd->user_id = Auth::user()->id;
+             $stockoutsd->brand_id = $brandId;
+            $stockoutsd->save();
+            $stockoutsd_id = $stockoutsd->id;
 
             foreach ($products as $product) {
                 $qtyIn = $product->pivot->qty;
                 $product_id = $product->id;
                 $qt = $qtyIn;
-                $result = DB::select("SELECT id, qty, subimport_id FROM `subimport_product` WHERE product_id = {$product_id} AND qty > 0 "); // Select all product in import
+                
+                $result = DB::table('subimport_product')->where([['product_id','=',$product_id],['brand_id','=',$brandId],['qty','>',0],])->select('id', 'qty','subimport_id')->get();
+                 // Select all product in import
                 foreach ($result as $r){
-                    $res = DB::table('subimport_product')->select('id', 'qty', 'import_id','product_id', 'mfd', 'expd')->where([['subimport_id','=',$r->subimport_id],['product_id','=',$product_id],['qty','>',0],['expd','>',$add1year],])->get();//select one by one from import
+                    $res = DB::table('subimport_product')->select('id', 'qty', 'subimport_id','product_id', 'mfd', 'expd')->where([['subimport_id','=',$r->subimport_id],['product_id','=',$product_id],['brand_id','=',$brandId],['qty','>',0],['expd','>',$add1year],])->get();//select one by one from import
+                    //dd($res);
                     if($res){
                         foreach ($res as $s) {
                             $qt = $qt;
@@ -120,14 +126,17 @@ class SaleSDController extends Controller
                                     $m = $s->qty - $qt;
                                     if ($m >= 0) {
                                         DB::table('subimport_product')->where('id', $s->id)->update(array('qty' => $m));
-                                        $brandId = Auth::user()->brand->id;
-                                        $bqty = DB::select("SELECT qty FROM `brand_product` WHERE product_id = {$product_id} AND brand_id = {$brandId}");
-                                        $uqty = ($bqty - $qtyIn);
-                                        DB::table('brand_product')->where('id', $s->id)->where('brand_id','=',$brandId)->update(array('qty' => $m));
-                                        $Up = Purchaseordersd::findOrFail($invoiceN);//Update table purchaseorder in field isDelivery to 1
+                                        $bqtys = DB::select("SELECT qty FROM `brand_product` WHERE product_id = {$product_id} AND brand_id = {$brandId}");
+                                         $baseqty="";
+                                        foreach ($bqtys as $bqty) {
+                                           $baseqty=$bqty->qty;
+                                        }
+                                        $uqty = ($baseqty - $qtyIn);
+                                        DB::table('brand_product')->where('brand_id','=',$brandId)->where('product_id', $product_id)->update(array('qty' => $uqty));
+                                        $Up = Purchaseordersd::findOrFail($invoice);//Update table purchaseorder in field isDelivery to 1
                                         $Up->isDelivery = 1;
                                         $Up->save();
-                                        DB::table('import_stockoutsd')->insert(['stockout_id' => $stockout_id, 'import_id' => $s->import_id, 'product_id' => $product_id, 'qty' => $qt, 'expd' => $s->expd]);
+                                        DB::table('import_stockoutsd')->insert(['stockoutsd_id' => $stockoutsd_id, 'subimport_id' => $s->subimport_id, 'product_id' => $product_id, 'qty' => $qt, 'expd' => $s->expd]);
                                         $j = $product_id;
                                             $a = 0;
                                     }
@@ -138,25 +147,29 @@ class SaleSDController extends Controller
                                     if ($a >= $qtyIn) {
                                         $m = $s->qty - $qt;
                                         DB::table('subimport_product')->where('id', $s->id)->update(array('qty' => $m));
-                                        $brandId = Auth::user()->brand->id;
-                                        $bqty = DB::select("SELECT qty FROM `brand_product` WHERE product_id = {$product_id} AND brand_id = {$brandId}");
-                                        $uqty = ($bqty - $qtyIn);
-                                        DB::table('brand_product')->where('id', $s->id)->where('brand_id','=',$brandId)->update(array('qty' => $m));
-                                        $Up = Purchaseorder::findOrFail($invoiceN);//Update field delivery to 1
+                                        $bqtys = DB::select("SELECT qty FROM `brand_product` WHERE product_id = {$product_id} AND brand_id = {$brandId}");//select qty from brand product
+                                        $baseqty="";
+                                        foreach ($bqtys as $bqty) {
+                                           $baseqty=$bqty->qty;
+                                        }
+
+                                        $uqty = ($baseqty - $qtyIn);
+                                        DB::table('brand_product')->where('brand_id','=',$brandId)->where('product_id', $product_id)->update(array('qty' => $uqty));
+                                        $Up = Purchaseordersd::findOrFail($invoice);//Update field delivery to 1
                                         $Up->isDelivery = 1;
                                         $Up->save();
                                         //insert record to table subimport / into substock detail
-                                        DB::table('import_stockoutsd')->insert(['stockout_id' => $stockout_id, 'import_id' => $s->import_id, 'product_id' => $product_id, 'qty' => $qt, 'expd' => $s->expd]);
+                                        DB::table('import_stockoutsd')->insert(['stockoutsd_id' => $stockoutsd_id, 'subimport_id' => $s->subimport_id, 'product_id' => $product_id, 'qty' => $qt, 'expd' => $s->expd]);
                                         $j = $product_id;
                                         $a = 0;
+                                    }elseif ($a < $qtyIn) {
+                                        $m = $qt - $s->qty;
+                                        $qt = $m;
+                                            DB::table('subimport_product')->where('id', $s->id)->update(array('qty' => 0));
+                                            DB::table('import_stockoutsd')->insert(['stockoutsd_id' => $stockoutsd_id, 'subimport_id' => $s->subimport_id, 'product_id' => $product_id, 'qty' => $s->qty, 'expd' => $s->expd]);
                                     }
                                 }
-                            } elseif ($a < $qtyIn) {
-                                $m = $qt - $s->qty;
-                                $qt = $m;
-                                    DB::table('subimport_product')->where('id', $s->id)->update(array('qty' => 0));
-                                    DB::table('import_stockoutsd')->insert(['stockout_id' => $stockout_id, 'import_id' => $s->import_id, 'product_id' => $product_id, 'qty' => $s->qty, 'expd' => $s->expd]);
-                            }
+                            } 
                         }
                     }
                 }

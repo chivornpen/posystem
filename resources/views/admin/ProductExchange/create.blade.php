@@ -66,6 +66,8 @@
            Qty=qty;
            stId = stockoutId;
 
+           document.getElementById('exQty').value=Qty;
+
         }
         function checkQty() {
 
