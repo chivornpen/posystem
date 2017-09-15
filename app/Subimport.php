@@ -20,4 +20,7 @@ class Subimport extends Model
     public  function products(){
         return $this->belongsToMany(Product::class,'subimport_product','subimport_id','product_id')->withTimestamps()->withPivot('qty','mfd', 'expd');
     }
+    public  function stockoutsds(){
+        return $this->belongsToMany(Stockoutsd::class,'import_stockoutsd')->withTimestamps()->withPivot('product_id','qty','expd','status');
+    }
 }

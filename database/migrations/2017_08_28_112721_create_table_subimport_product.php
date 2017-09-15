@@ -16,7 +16,7 @@ class CreateTableSubimportProduct extends Migration
         Schema::create('subimport_product', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('subimport_id');
-            $table->tinyInteger('brand_id');
+            $table->integer('brand_id')->nullable();
             $table->integer('product_id');
             $table->integer('qty');
             $table->date('mfd');

@@ -10,11 +10,9 @@
                             </ul>
 </li>
 {{--------------- start SD---------------}}
-                        <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#POSD"><i class="fa fa-money" aria-hidden="true"></i> SD Managment<i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="POSD" class="collapse nav nav-second-level">
+{{--------------------Order from office---------------}}
                                 <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Purchase Order Office<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Purchaseorder to Supplier<i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="PurchaseOrderSD" class="collapse nav nav-second-level">
                                         <li>
                                             <a href="{{ route('purchaseOrdersSD.index')}}">All Purchase Order</a>
@@ -24,8 +22,10 @@
                                         </li>
                                     </ul>
                                 </li>
+    {{-----------------------end-----------}}
+    {{--------------------Order from office---------------}}
                                 <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#SDsale"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Sale To Customer<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#SDsale"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Purchaseorder To Customer<i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="SDsale" class="collapse nav nav-second-level">
                                         <li>
                                             <a href="{{ route('saleSD.index')}}">All Purchase Order</a>
@@ -35,11 +35,25 @@
                                         </li>
                                     </ul>
                                 </li>
-                            </ul>
-                        </li>
-                        {{---------------end sd--------}}
+    {{-----------------------end-----------}}
 
-                        {{--SD stock_out_menu --}}
+ {{--SD STOCK MANAGEMENT MENU--}}
+                        <li><a href="javascript:;" data-toggle="collapse" data-target="#sdStock"><i class="fa fa-industry" aria-hidden="true"></i> Stock Management <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="sdStock" class="collapse nav nav-second-level">
+
+                                {{--SD stock_in_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockin"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock In <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="sDstockin" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{route('sdstock.index')}}">Views</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end SD stock-in-menu--}}
+
+
+                                {{--SD stock_out_menu --}}
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockout"><i class="fa fa-truck" aria-hidden="true"></i> Stock Out <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="sDstockout" class="collapse nav nav-second-level">
                                         <li>
@@ -52,3 +66,36 @@
                                 </li>
 
                                 {{--end stock-out-menu--}}
+                            </ul>
+                        </li>
+
+
+                        {{--Exchange_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#exchange"><i class="fa fa-exchange" aria-hidden="true"></i> Product Exchange SD <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="exchange" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{route('exchangesd.create')}}">Exchange</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('exchangesd.index')}}">Views</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{URL::to('/admin/createPoExchange')}}"><i class="fa fa-exchange" aria-hidden="true"></i> Create Invoice Exchange </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end Exchange-menu--}}
+                                {{--return_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#return"><i class="fa fa-retweet" aria-hidden="true"></i> Product Return <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="return" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{route('return.create')}}">Return</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('return.index')}}">Views</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end return-menu--}}

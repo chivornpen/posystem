@@ -13,7 +13,10 @@ class Stockoutsd extends Model
         return $this->belongsTo(Purchaseordersd::class);
     }
 
+    public function exchangesd(){
+        return $this->hasOne(Exchangesd::class,'stockoutsd_id');
+    }
     public  function subimports(){
-        return $this->belongsToMany(Subimport::class)->withTimestamps()->withPivot('product_id','qty','expd','status');
+        return $this->belongsToMany(Subimport::class,'import_stockoutsd')->withTimestamps()->withPivot('product_id','qty','expd','status');
     }
 }

@@ -23,4 +23,7 @@ class Purchaseordersd extends Model
      public function stockoutsds(){
         return $this->hasOne(Stockoutsd::class);
     }
+    public function exchangesd(){
+        return $this->hasOne(Exchangesd::class,'exchangesd_product');
+    }
 }
