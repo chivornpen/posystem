@@ -6,7 +6,7 @@
             <div class="panel-heading">
                 View Product Exchange
             </div>
-            @if($exchange)
+            @if($exchange->count())
                 <div class="panel-body table-responsive">
                     <table class="table table-bordered" id="viewExchange">
                         <thead>
@@ -34,11 +34,10 @@
                                 @endif
                             @endforeach
                         </tbody>
-
                     </table>
                 </div>
             @else
-                <h4>No record</h4>
+                <h4 style="margin-left: 2%;">No found results</h4>
             @endif
         </div>
         <div class="modal fade" id="viewExchangeDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
