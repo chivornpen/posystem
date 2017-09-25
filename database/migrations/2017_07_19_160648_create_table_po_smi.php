@@ -28,6 +28,6 @@ class CreateTablePoSmi extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('po_smis');
+        Schema::dropIfExists('purchaseorder_summaryinvoice');
     }
 }
