@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-
+    <?php  use Illuminate\Support\Facades\DB; ?>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,6 +13,7 @@
 
     <!-- Bootstrap Core CSS -->
     @yield('css')
+
     <link rel="stylesheet" href="{{asset('css/mycss.css')}}">
     <!-- <link href="{{asset('vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet"> -->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -26,10 +27,7 @@
     <!---<link href="{{asset('dist/css/sb-admin-2.css')}}" rel="stylesheet">-->
         
     <script src="{{asset('js/jquery-1.12.4.js')}}" type="text/javascript"></script>
-    
-    
-    <script src="{{asset('js/select2.full.min.js')}}" type="text/javascript"></script>
-    
+
     <!-- MetisMenu CSS -->
     <link href="{{asset('vendor/metisMenu/metisMenu.min.css')}}" rel="stylesheet">
 
@@ -49,7 +47,8 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    {{--dateTime Picker--}}
+    <link rel="stylesheet" href="{{asset('css/bootstrap-datetimepicker.min.css')}}">
 </head>
 
 <body>
@@ -132,9 +131,15 @@
 
     <!-- jQuery -->
     
-    <!---<script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>-->
+    <script src="{{asset('vendor/jquery/jquery.min.js')}}"></script>
+    {{--@yield('datetimepicker')--}}
+    {{--<script src="{{asset('js/jquery-1.8.3.min.js')}}"></script>--}}
+
+
     @yield('script')
-    
+    {{--datetimepicker--}}
+    <script src="{{asset('js/bootstrap-datetimepicker.js')}}"></script>
+
     <!-- Bootstrap Core JavaScript -->
     <script src="{{asset('vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('vendor/datatables-plugins/dataTables.bootstrap.min.js')}}"></script>
@@ -151,6 +156,9 @@
     
     <!-- Custom Theme JavaScript -->
     <script src="{{asset('js/sb-admin-2.js')}}"></script>
+
+    <script src="{{asset('js/select2.full.min.js')}}" type="text/javascript"></script>
+
 
 
 </body>

@@ -380,20 +380,30 @@
         {{--END SD STOCK MANAGEMENT MENU--}}
 
         {{--Report MANAGEMENT MENU--}}
+                        {{--customer report--}}
+                        <li><a href="javascript:;" data-toggle="collapse" data-target="#Report"><i class="fa fa-file-text" aria-hidden="true"></i> Report <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="Report" class="collapse nav nav-second-level">
 
-                        <li><a href="javascript:;" data-toggle="collapse" data-target="#report"><i class="fa fa-file-text" aria-hidden="true"></i> Report <i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="report" class="collapse nav nav-second-level">
-                                {{--SD stock_in_menu --}}
-                                <li><a href="javascript:;" data-toggle="collapse" data-target="#stockReport"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock Report <i class="fa fa-fw fa-caret-down"></i></a>
-                                    <ul id="stockReport" class="collapse nav nav-second-level">
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#CutomerList"><i class="fa fa fa-users" aria-hidden="true"></i> Customer Report<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="CutomerList" class="collapse nav nav-second-level">
                                         <li>
-                                            <a href="#">Report</a>
+                                            <a href="{{route('report.index')}}">Customer List</a>
                                         </li>
                                     </ul>
                                 </li>
 
-                                {{--end SD stock-in-menu--}}
+
+                                {{--sale report--}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#saleReport"><i class="fa fa fa-archive" aria-hidden="true"></i> Sale Reports <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="saleReport" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{url('report/sale/view')}}">Sale Report</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
 
                             </ul>
                         </li>
+                        {{--sale report--}}
         {{--Report MANAGEMENT MENU--}}

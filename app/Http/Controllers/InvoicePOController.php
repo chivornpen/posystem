@@ -78,7 +78,7 @@ class InvoicePOController extends Controller
         $discount = 0;
         $cod = 0;
         $now = Carbon::now()->toDateString();
-        $returnPro = Returnpro::findOrFail($returnId)->value('stockout_id');
+        $returnPro = Returnpro::where('id',$returnId)->value('stockout_id');
         $purchaseOrderId = Stockout::findOrFail($returnPro)->value('purchaseorder_id');
 
         $purchaseorder = Purchaseorder::findOrFail($purchaseOrderId);

@@ -259,6 +259,12 @@ Route::get('/invoicePo/showcontent/view/{returnId}/{status}','InvoicePOControlle
 //create Invoice Product Return
 Route::get('/invoicePo/ProductReturn/invoice/create/{returnId}/{status}','InvoicePOController@ProductReturnInvoice');
 
+//Report Route
+Route::resource('/report','reportController');
+Route::get('/report/search/{data}','reportController@show');
+
+Route::get('/report/sale/view','reportController@SaleReport');//Sale Report
+
 
 
 

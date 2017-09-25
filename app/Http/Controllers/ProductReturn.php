@@ -120,6 +120,7 @@ class ProductReturn extends Controller
             $returnpro->purchaseorder_id = 0;
             $returnpro->returnBy=$returnBy;
             $returnpro->status="s";
+            $returnpro->isGenerate=0;
             $returnpro->save();
             $returnpro->products()->attach($proId,['qtyreturn'=>$qty,'qtyorder'=>$qtyorder]);
 
