@@ -17,7 +17,7 @@
                             <div class="col-lg-12">
                                 <div class="form-group">
                                     {!! Form::label('stockoutdate','Stock Out Date') !!}
-                                    {!! Form::date('date',\Carbon\Carbon::now(),['class'=>'form-control']) !!}
+                                    {!! Form::date('date',\Carbon\Carbon::now(),['class'=>'form-control','id'=>'stockoutDate']) !!}
                                 </div>
                             </div>
                         </div>
@@ -97,6 +97,8 @@
                            $("#customerName").val(data['userName']);
 
                            $("#invoiceDate").val(data['invoiceDate']);
+
+                           $("#stockoutDate").val(data['invoiceDate'])
                        },
                        error:function (error) {
                          console.log(error);

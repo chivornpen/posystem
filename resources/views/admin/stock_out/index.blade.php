@@ -30,7 +30,7 @@
                                             <tr>
                                                 <td style="text-align: center;">{{"CAM-IN-" . sprintf('%06d',$re->purchaseorder_id)}}</td>
                                                 <td style="text-align: center;">{{Carbon\Carbon::parse($re->stockoutDate)->format('d-M-Y')}}</td>
-                                                <td style="text-align: center;">{{$re->purchaseorder->user->name}}</td>
+                                                <td style="text-align: center;">{{$re->purchaseorder->user->nameDisplay}}</td>
                                                 <td style="text-align: center;">
                                                     <a href="#" onclick="Views(this.id)" id="{{$re->purchaseorder_id}}" style="margin-right:10px;"><i class="fa fa-outdent" data-toggle="modal" data-target="#myModal"></i></a>
                                                 </td>
@@ -43,6 +43,7 @@
                                 @endif
                             </div>
                             <a href="{{url('admin/dashbords')}}" class="btn btn-danger btn-sm">Close</a>
+                            <a href="{{url('stockout/create')}}" class="btn btn-info btn-sm">Create New</a>
                         </div>
                     {{--Modal view import detail--}}
                     <!-- Modal -->
