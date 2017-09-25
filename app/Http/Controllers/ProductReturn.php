@@ -39,7 +39,7 @@ class ProductReturn extends Controller
 
     public function create()
     {
-        $stockout = Stockout::all();
+        $stockout = Stockout::where('status','=',0)->get();
         $user = User::all();
        return view('admin.returnProduct.create',compact('stockout','user'));
     }

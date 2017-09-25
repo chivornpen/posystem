@@ -48,7 +48,7 @@ class Product extends Model
     }
 
     public  function subimports(){
-        return $this->belongsToMany(Product::class,'subimport_product','subimport_id','product_id')->withTimestamps()->withPivot('qty','mfd', 'expd');
+        return $this->belongsToMany(Subimport::class,'subimport_product','subimport_id','product_id')->withTimestamps()->withPivot('qty','mfd', 'expd');
     }
 
     public function brands(){
@@ -58,12 +58,12 @@ class Product extends Model
     public function exchanges(){
         return $this->belongsToMany(Exchange::class)->withTimestamps()->withPivot('qty','expd');
     }
+    public function exchangesd(){
+        return $this->belongsToMany(Exchangesd::class,'exchangesd_product','exchangesd_id','product_id')->withTimestamps()->withPivot('qty','expd');
+    }
 
     public  function returnpros(){
         return $this->belongsToMany(Product::class)->withTimestamps()->withPivot('qtyreturn','qtyorder');
 
     }
-
-
-
 }

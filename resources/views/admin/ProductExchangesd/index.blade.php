@@ -6,7 +6,7 @@
             <div class="panel-heading">
                 View Product Exchange
             </div>
-            @if($exchange->count())
+            @if($exchange)
                 <div class="panel-body table-responsive">
                     <table class="table table-bordered" id="viewExchange">
                         <thead>
@@ -21,23 +21,22 @@
                         <tbody>
                         <?php $i=1;?>
                             @foreach($exchange as $ex)
-                                @if($ex->stockout->id)
                                 <tr>
                                     <td style="text-align: center;">{!! $i++ !!}</td>
-                                    <td style="text-align: center;">{!! "CAM-IN-".sprintf('%06d',$ex->stockout->purchaseorder_id) !!}</td>
+                                    <td style="text-align: center;">{!! "CAM-IN-".sprintf('%06d',$ex->stockoutsd->purchaseordersd_id) !!}</td>
                                     <td style="text-align: center;">{!! $ex->purchaseorder_id ? "CAM-IN-".sprintf('%06d',$ex->purchaseorder_id) : "Not yet" !!}</td>
                                     <td style="text-align: center;">{!! \Carbon\Carbon::parse($ex->created_at)->format('d-M-Y') !!}</td>
                                     <td style="text-align: center;">
                                         <a href="#" title="Views" onclick="viewDetail('{{$ex->id}}')" data-toggle="modal" data-target="#viewExchangeDetail"><i class="fa fa-outdent"></i></a>
                                     </td>
                                 </tr>
-                                @endif
                             @endforeach
                         </tbody>
+
                     </table>
                 </div>
             @else
-                <h4 style="margin-left: 2%;">No found results</h4>
+                <h4>No record</h4>
             @endif
         </div>
         <div class="modal fade" id="viewExchangeDetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -52,7 +51,7 @@
         function viewDetail(id) {
            $.ajax({
                type: 'get',
-               url: "{{url('/exchange/viewDetail')}}"+"/"+id,
+               url: "{{url('/viewDetailExchangesd')}}"+"/"+id,
                dataType: 'html',
                success:function (data) {
                    $('#viewExchangeDetail').html(data);

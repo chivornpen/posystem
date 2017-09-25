@@ -58,6 +58,8 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('setValues','SetValueController');
 	Route::resource('verifys','TmpEditPurchaseorderController');
 	Route::resource('stockoutsd','StockoutSdController');
+	Route::resource('exchangesd','ExchangesdController');
+	Route::get('/createPoExchange','ExchangesdController@createPoExchange');
 	Route::get('/inv','InvoiceController@inv');
 	Route::get('/invoice','InvoiceController@invoice');
 	Route::resource('summaryInvs','CraditPOController');
@@ -142,6 +144,13 @@ Route::get('/getProductSubStockEdit/{id}',function($id){
 
 Route::get('/getIdPoSd/{id}','StockoutsdController@getIdPoSd');//Route for event onchange in combobox invoice number
 Route::get('/viewDetailStockoutSd/{id}','StockoutsdController@viewDetailStockoutSd');//View detail stock out of sd
+//-----------------product exchange of sd ------------------
+Route::get('/showProductExchangeSd/{id}','ExchangesdController@showProductExchangeSd');
+Route::get('/saveExchangesd/{importI}/{productI}/{qty}/{expd}/{stockout}','ExchangesdController@saveExchangesd');//save data when exchange
+Route::get('/viewDetailExchangesd/{id}','ExchangesdController@viewDetailExchangesd');
+Route::get('/listInvoiceExchange/{id}','ExchangesdController@listInvoiceExchange');
+Route::get('/createNewInvoice/{id}','ExchangesdController@createNewInvoice');
+//-------------------------end----------------------------
 //------------------------get product to select combobox-------------------------
 Route::get('/getProduct/{id}',function($id){
 		$oldQty = TpmPurchaseOrder::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->value('qty');
