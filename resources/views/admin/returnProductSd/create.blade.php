@@ -13,7 +13,7 @@
                             <select name="return" id="returnInvId" onchange="viewInvoice()" class="form-control">
                                 <option value="0">Please select</option>
                                 @foreach( $stockout as $invN)
-                                    <option value="{{$invN->purchaseorder_id}}">{!! "CAM-IN-" . sprintf('%06d',$invN->purchaseorder_id) !!}</option>
+                                    <option value="{{$invN->purchaseordersd_id}}">{!! "CAM-IN-" . sprintf('%06d',$invN->purchaseordersd_id) !!}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -53,7 +53,7 @@
                     $("#returnBy").css('border','');
                     $.ajax({
                         type: 'get',
-                        url: "{{url('/return/VUinvoice/')}}"+"/"+InvN,
+                        url: "{{url('/showInvoiceReturn')}}"+"/"+InvN,
                         dataType: 'html',
                         success:function (data) {
                             $("#ReturnInvoice").html(data);
@@ -70,7 +70,7 @@
 
                     $.ajax({
                         type: 'get',
-                        url: "{{url('/return/VUinvoice/')}}"+"/"+0,
+                        url: "{{url('/showInvoiceReturn')}}"+"/"+0,
                         dataType: 'html',
                         success:function (data) {
                             $("#ReturnInvoice").html(data);
@@ -102,7 +102,7 @@
                 var userId=$("#returnBy").val();
                 $.ajax({
                    type: 'get',
-                    url: "{{url('return/ReturnAll/')}}"+"/"+id+"/"+userId,
+                    url: "{{url('ReturnAllProduct/')}}"+"/"+id+"/"+userId,
                     dataType: 'html',
                     success:function (data) {
                        $("#ReturnInvoice").html(data);
@@ -141,7 +141,7 @@
             if(err==""){
                 $.ajax({
                     type: 'get',
-                    url: "{{url('return/save/one')}}"+"/"+stId+"/"+Qty+"/"+qty+"/"+proId+"/"+impId+"/"+returnBy+"/"+InvN,
+                    url: "{{url('returnProductOneByOne')}}"+"/"+stId+"/"+Qty+"/"+qty+"/"+proId+"/"+impId+"/"+returnBy+"/"+InvN,
                     dataType: 'html',
                     success:function (data) {
                         $("#ReturnInvoice").html(data);

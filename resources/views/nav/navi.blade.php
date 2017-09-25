@@ -195,33 +195,7 @@
                                 </li>
                             </ul>
                         </li>
-                        {{--------------- start SD---------------}}
-                        <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#POSD"><i class="fa fa-money" aria-hidden="true"></i> SD Managment<i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="POSD" class="collapse nav nav-second-level">
-                                <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Purchase Order Office<i class="fa fa-fw fa-caret-down"></i></a>
-                                    <ul id="PurchaseOrderSD" class="collapse nav nav-second-level">
-                                        <li>
-                                            <a href="{{ route('purchaseOrdersSD.index')}}">All Purchase Order</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('purchaseOrdersSD.create')}}">Create New Order</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#SDsale"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Sale To Customer<i class="fa fa-fw fa-caret-down"></i></a>
-                                    <ul id="SDsale" class="collapse nav nav-second-level">
-                                        <li>
-                                            <a href="{{ route('saleSD.index')}}">All Purchase Order</a>
-                                        </li>
-                                        
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                        {{---------------end sd--------}}
+                       
                         {{-------Account---------------}}
                         <li>
                             <a href="javascript:;" data-toggle="collapse" data-target="#Account"><i class="fa fa-money" aria-hidden="true"></i> Account Managment<i class="fa fa-fw fa-caret-down"></i></a>
@@ -348,37 +322,6 @@
                         </li>
 
 
-         {{--SD STOCK MANAGEMENT MENU--}}
-                        <li><a href="javascript:;" data-toggle="collapse" data-target="#sdStock"><i class="fa fa-industry" aria-hidden="true"></i> SD Stock Management <i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="sdStock" class="collapse nav nav-second-level">
-
-                                {{--SD stock_in_menu --}}
-                                <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockin"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock In <i class="fa fa-fw fa-caret-down"></i></a>
-                                    <ul id="sDstockin" class="collapse nav nav-second-level">
-                                        <li>
-                                            <a href="{{route('sdstock.index')}}">Views</a>
-                                        </li>
-                                    </ul>
-                                </li>
-
-                                {{--end SD stock-in-menu--}}
-
-                                {{--SD stock_out_menu --}}
-                                <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockout"><i class="fa fa-truck" aria-hidden="true"></i> Stock Out <i class="fa fa-fw fa-caret-down"></i></a>
-                                    <ul id="sDstockout" class="collapse nav nav-second-level">
-                                        <li>
-                                            <a href="{{route('stockoutsd.create')}}">Export</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{route('stockoutsd.index')}}">Views</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                {{--end stock-out-menu--}}
-                            </ul>
-                        </li>
-        {{--END SD STOCK MANAGEMENT MENU--}}
-
         {{--Report MANAGEMENT MENU--}}
                         {{--customer report--}}
                         <li><a href="javascript:;" data-toggle="collapse" data-target="#Report"><i class="fa fa-file-text" aria-hidden="true"></i> Report <i class="fa fa-fw fa-caret-down"></i></a>
@@ -407,3 +350,118 @@
                         </li>
                         {{--sale report--}}
         {{--Report MANAGEMENT MENU--}}
+        {{--Report MANAGEMENT MENU--}}
+
+                        <li><a href="javascript:;" data-toggle="collapse" data-target="#report"><i class="fa fa-file-text" aria-hidden="true"></i> Report <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="report" class="collapse nav nav-second-level">
+                                {{--SD stock_in_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#stockReport"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock Report <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="stockReport" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{ route('stockreport.create')}}">Report Stock In</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Report Stock Out</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('stockreport.index')}}">Report Stock Balance</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end SD stock-in-menu--}}
+
+                            </ul>
+                        </li>
+        {{--Report MANAGEMENT MENU--}}
+
+        {{--------------- start SD---------------}}
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#POSD"><i class="fa fa-user" aria-hidden="true"></i> SD Managment<i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="POSD" class="collapse nav nav-second-level">
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Purchase Order Office<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="PurchaseOrderSD" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{ route('purchaseOrdersSD.index')}}">All Purchase Order</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('purchaseOrdersSD.create')}}">Create New Order</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#SDsale"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Sale To Customer<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="SDsale" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{ route('saleSD.index')}}">All Purchase Order</a>
+                                        </li>
+                                        
+                                    </ul>
+                                </li>
+                                {{--SD STOCK MANAGEMENT MENU--}}
+                        <li><a href="javascript:;" data-toggle="collapse" data-target="#sdStock"><i class="fa fa-industry" aria-hidden="true"></i> SD Stock Management <i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="sdStock" class="collapse nav nav-second-level">
+
+                                {{--SD stock_in_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockin"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock In <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="sDstockin" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{route('sdstock.index')}}">Views</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end SD stock-in-menu--}}
+
+                                {{--SD stock_out_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockout"><i class="fa fa-truck" aria-hidden="true"></i> Stock Out <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="sDstockout" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{route('stockoutsd.create')}}">Export</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('stockoutsd.index')}}">Views</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                {{--end stock-out-menu--}}
+                            </ul>
+                        </li>
+                        {{--Exchange_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#exchange"><i class="fa fa-exchange" aria-hidden="true"></i> Product Exchange SD <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="exchange" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{route('exchangesd.create')}}">Exchange</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('exchangesd.index')}}">Views</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{URL::to('/admin/createPoExchange')}}"><i class="fa fa-exchange" aria-hidden="true"></i> Create Invoice Exchange </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end Exchange-menu--}}
+                                {{--return_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#return"><i class="fa fa-retweet" aria-hidden="true"></i> Product Return <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="return" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{route('productreturnsd.create')}}">Return</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('productreturnsd.index')}}">Views</a>
+                                        </li>
+                                        {{--create invoice product return--}}
+                                        <li>
+                                            <a href="{{URL::to('/admin/createInvoiceReturnzSd')}}"><i class="fa fa-share" aria-hidden="true"></i> Create Invoice Return</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end return-menu--}}
+        {{--END SD STOCK MANAGEMENT MENU--}}
+                            </ul>
+                        </li>
+                        {{---------------end sd--------}}

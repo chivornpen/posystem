@@ -90,10 +90,14 @@
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#return"><i class="fa fa-retweet" aria-hidden="true"></i> Product Return <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="return" class="collapse nav nav-second-level">
                                         <li>
-                                            <a href="{{route('return.create')}}">Return</a>
+                                            <a href="{{route('productreturnsd.create')}}">Return</a>
                                         </li>
                                         <li>
-                                            <a href="{{route('return.index')}}">Views</a>
+                                            <a href="{{route('productreturnsd.index')}}">Views</a>
+                                        </li>
+                                        {{--create invoice product return--}}
+                                        <li>
+                                            <a href="{{URL::to('/admin/createInvoiceReturnzSd')}}"><i class="fa fa-share" aria-hidden="true"></i> Create Invoice Return</a>
                                         </li>
                                     </ul>
                                 </li>

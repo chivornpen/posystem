@@ -59,7 +59,10 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('verifys','TmpEditPurchaseorderController');
 	Route::resource('stockoutsd','StockoutSdController');
 	Route::resource('exchangesd','ExchangesdController');
+	Route::resource('productreturnsd','ProductReturnSDController');
+	Route::resource('stockreport','StockReportController');
 	Route::get('/createPoExchange','ExchangesdController@createPoExchange');
+	Route::get('/createInvoiceReturnzSd','ProductReturnSDController@createInvoiceReturnzSd');
 	Route::get('/inv','InvoiceController@inv');
 	Route::get('/invoice','InvoiceController@invoice');
 	Route::resource('summaryInvs','CraditPOController');
@@ -151,6 +154,20 @@ Route::get('/viewDetailExchangesd/{id}','ExchangesdController@viewDetailExchange
 Route::get('/listInvoiceExchange/{id}','ExchangesdController@listInvoiceExchange');
 Route::get('/createNewInvoice/{id}','ExchangesdController@createNewInvoice');
 //-------------------------end----------------------------
+//------------------------product return of sd--------------
+Route::get('/showInvoiceReturn/{id}','ProductReturnSDController@showInvoiceReturn');//view invoice onchange comboBox
+Route::get('/returnProductOneByOne/{stId}/{Qty}/{qty}/{proID}/{impId}/{returnBy}/{Inv}','ProductReturnSDController@returnProductOneByOne');//save return one by one
+Route::get('/ReturnAllProduct/{id}/{userId}','ProductReturnSDController@ReturnAllProduct');//save record return all
+Route::get('/createInvoiceReturnzSd','ProductReturnSDController@createInvoiceReturnzSd');
+Route::get('/viewProductReturn/{returnId}/{status}/{stockoutId}','ProductReturnSDController@viewProductReturn'); //view product return
+//show conten invoice return when chose in drop down
+Route::get('/showContentInvReturn/{returnId}/{status}','ProductReturnSDController@showContentInvReturn');
+//create Invoice Product Return
+Route::get('/productReturnCreateInv/{returnId}/{status}','ProductReturnSDController@productReturnCreateInv');
+
+
+
+//-----------------------end--------------------
 //------------------------get product to select combobox-------------------------
 Route::get('/getProduct/{id}',function($id){
 		$oldQty = TpmPurchaseOrder::where('product_id','=',$id)->where('user_id','=',Auth::user()->id)->value('qty');

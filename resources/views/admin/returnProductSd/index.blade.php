@@ -25,12 +25,14 @@
                                 @foreach($returnpro as $re)
                                     <tr>
                                         <td style="text-align: center;">{!! $i++ !!}</td>
-                                        <td style="text-align: center;">{!!"CAM-IN-".sprintf("%06d",$re->stockout->purchaseorder_id)!!}</td>
-                                        <td style="text-align: center;">{!! $re->purchaseorder_id ==0 ? "No created Invoice" : "CAM-IN-".sprintf("%06d",$re->purchaseorder_id)   !!}</td>
+                                        <td style="text-align: center;">
+                                            {!!"CAM-IN-".sprintf("%06d",$re->stockoutsd->purchaseordersd_id)!!}
+                                        </td>
+                                        <td style="text-align: center;">{!! $re->purchaseordersd_id ==0 ? "No created Invoice" : "CAM-IN-".sprintf("%06d",$re->purchaseordersd_id)   !!}</td>
                                         <td style="text-align: center;">{!! strtolower($re->status)=="s" ? "Some products" : "Return All" !!}</td>
                                         <td style="text-align: center;">{!! \Carbon\Carbon::parse($re->created_at)->format('d-M-Y') !!}</td>
                                         <td style="text-align: center;">
-                                            <a href="#" title="View Product Return" onclick="ViewProductReturn('{{$re->id}}','{{$re->status}}','{{$re->stockout_id}}')" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a>
+                                            <a href="#" title="View Product Return" onclick="ViewProductReturn('{{$re->id}}','{{$re->status}}','{{$re->stockoutsd_id}}')" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -54,7 +56,7 @@
             function ViewProductReturn(reId,status,stockoutId) {
                 $.ajax({
                     type: 'get',
-                    url: "{{url('return/viewProductReturn')}}"+"/"+reId+"/"+status+"/"+stockoutId,
+                    url: "{{url('viewProductReturn')}}"+"/"+reId+"/"+status+"/"+stockoutId,
                     dataType: 'html',
                     success:function (data) {
                         $("#myModal").html(data);
