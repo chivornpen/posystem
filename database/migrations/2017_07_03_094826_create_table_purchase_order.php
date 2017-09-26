@@ -33,6 +33,7 @@ class CreateTablePurchaseOrder extends Migration
             $table->tinyInteger('isGenerate')->default(0);
             $table->tinyInteger('isPayment')->default(0);
             $table->tinyInteger('isDelivery')->default(0);
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

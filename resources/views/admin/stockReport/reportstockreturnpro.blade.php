@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="panel panel-default">
-      <div class="panel-heading">Stock In Report</div>
+      <div class="panel-heading">Stock Return Report</div>
         <div class="panel-body table-responsive">
           <div class="container">
             <div class='col-md-3'>
@@ -35,7 +35,7 @@
                 <img src="{{url('/images/Logo.JPG')}}" alt="" style="height:20px; float: left;">
               </td>
               <td width="30%">
-                <div style="text-align: center; font-weight: bold; color: blue; font-size: 15px;font-family: 'Khmer OS System';">Report Stock In</div>
+                <div style="text-align: center; font-weight: bold; font-size: 15px;font-family: 'Khmer OS System';color: blue">Report Stock Return</div>
               </td>
               <td width="30%" style="height: 25px;">
                
@@ -54,18 +54,20 @@
             </tr>
           </table>
           <div style="margin-top: 10px;margin-bottom: 5px;font-size: 12px;font-family: 'Khmer OS System';">Reported By: <b>{{Auth::user()->nameDisplay}}</b></div>
-          <table width="1300px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
+          <table width="1360px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
             <thead>
               <tr>
-                <th colspan="5" style="border-top: 1px solid #fff;border-left: 1px solid #fff;"></th>
+                <th colspan="7" style="border-top: 1px solid #fff;border-left: 1px solid #fff;"></th>
                 <th colspan="{{$products->count()}}" style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Product Code</th>
               </tr>
               <tr>
                 <th style="text-align: center;font-size: 11px;font-weight: bold;height: 30px; padding: 2px 5px; font-family: 'Arial';">No</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Return Date</th>
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Invoice Number</th>
-                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Import Date</th>
-                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Company Name</th>
-                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Person Name</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Customer Number</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Customer Name</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Return By</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Status</th>
                 @foreach($products as $pro)
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">{{$pro->product_code}}</th>
                 @endforeach
@@ -73,21 +75,47 @@
             </thead>
             <?php $no=1;?>
             <tbody>
-              @foreach($import as $in)
+              @foreach($returnpros as $returnpro)
               <tr>
                 <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">{{$no++}}</td>
-                <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">{{$in->invoiceNumber}}</td>
-                <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial';">{{Carbon\Carbon::parse($in->impDate)->format('d-M-Y')}}</td>
-                <td style="padding-left: 3px; font-size: 10px;height: 20px; font-family: 'Khmer OS System';">{{$in->supplier->companyname}}</td>
-                <td style="padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{$in->supplier->personname}}</td>
+                <td style="text-align: center;padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{Carbon\Carbon::parse($returnpro->created_at)->format('d-M-Y')}}</td>
+                <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">
+                  <?php 
+                        echo "CAM-IN-" . sprintf('%06d',$returnpro->purchaseorder->id);
+                  ?>
+                </td>
+                @if($returnpro->purchaseorder->customer_id!=null)
+                  <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial';">{{$returnpro->purchaseorder->customer->id}}</td>
+                  <td style="padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{$returnpro->purchaseorder->user->name}}</td>
+                @else
+                  <?php 
+                    $phone = App\User::where('id','=',$returnpro->purchaseorder->user_id)->value('contactNum');
+                    $customer_id = App\Customer::where('contactNo','=',$phone)->value('id');
+                    $customer_name = App\Customer::where('id','=',$customer_id)->value('name');
+                    echo "<td style='text-align: center;font-size: 10px;height: 20px; font-family: Arial;'>" ."CAM-CUS-" . sprintf('%06d',$customer_id)."</td>";
+                    echo "<td style='padding-left: 3px;font-size: 10px;height: 20px; font-family: Arial;'>" .$customer_name . "</td>";
+                  ?>
+                  <td style="padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">
+                      <?php
+                        echo $returnBy = App\User::where('id','=',$returnpro->returnBy)->value('nameDisplay');
+                      ?>
+                  </td>
+                  @if($returnpro->purchaseorder->status=='comp')
+                    <td style="padding-left: 3px;font-size: 10px; color: red; height: 20px; font-family: 'Arial';">Company Paid</td>
+                  @elseif($returnpro->purchaseorder->status=='cusp')
+                    <td style="padding-left: 3px;font-size: 10px; color: blue; height: 20px; font-family: 'Arial';">Customer Paid</td>
+                  @else
+                    <td style="padding-left: 3px;font-size: 10px; height: 20px; font-family: 'Arial';"></td>
+                  @endif
+                @endif
                 @foreach($products as $pro)
                   <?php 
                   $product_id =0;
                   $qty =0;
-                      $histories = DB::table('histories')->where([['importId','=',$in->id],['productId','=',$pro->id],])->get();
-                    foreach ($histories as $his) {
-                      $product_id = $his->productId;
-                      $qty = $his->qty;
+                      $purchaseorders = DB::table('purchaseorder_product')->where([['purchaseorder_id','=',$returnpro->purchaseorder_id],['product_id','=',$pro->id],])->get();
+                    foreach ($purchaseorders as $purchaseorder) {
+                      $product_id = $purchaseorder->product_id;
+                      $qty = $purchaseorder->qty;
                     }
                  ?>
                   @if($pro->id==$product_id)
@@ -162,7 +190,7 @@
               }else{
                 $.ajax({
                   type : 'get',
-                  url : "{{url('/saerchDateStockIn')}}"+"/"+startDate+"/"+endDate,
+                  url : "{{url('/saerchDateStockReturnpro')}}"+"/"+startDate+"/"+endDate,
                   dataType: 'html',
                   success:function (data) {
                     $('.startdate').css('border','1px solid lightblue');

@@ -378,8 +378,8 @@
         //
       }
 });
-    $(window).load(function(){
-       var num =  $('#paid').val();
+    $(window).on('load', function(){
+        var num =  $('#paid').val();
         $('.isPayment').val(num);
         if(num==2){
             $('.showAll').show();

@@ -57,67 +57,65 @@
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; background-color: #2874A6 ;" >
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ route('dashbords.index') }}" style="color: #fff;">Camsofts</a>
-            </div>
-            <!-- /.navbar-header -->
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <a class="navbar-brand" href="{{ route('dashbords.index') }}" style="color: #fff;">Camsofts</a>
+                            </div>
+                            <!-- /.navbar-header -->
 
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a style="color: #fff; font-size: 11px;" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-                        {{ Auth::user()->nameDisplay }}
-                        <span class="caret"></span>                        
-                    </a>
-                    <ul class="dropdown-menu dropdown-user">
-                        <!-- <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                        </li> -->
-                        <li><a href="{{ url('admin/resets',Auth::user()->id)}}"><i class="fa fa-gear fa-fw"></i> Change Password</a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="fa fa-sign-out pull-right" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> Logout
-                            </a>
+                            <ul class="nav navbar-top-links navbar-right">
+                                <li class="dropdown">
+                                    <a style="color: #fff; font-size: 11px;" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                                        {{ Auth::user()->nameDisplay }}
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <!-- <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                                        </li> -->
+                                        <li><a href="{{ url('admin/resets',Auth::user()->id)}}"><i class="fa fa-gear fa-fw"></i> Change Password</a>
+                                        </li>
+                                        <li class="divider"></li>
+                                        <li>
+                                            <a class="fa fa-sign-out pull-right" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> Logout
+                                            </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                {{ csrf_field() }}
-                                {!!Form::hidden('user_id',Auth::user()->id,[])!!}
-                            </form>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-user -->
-                </li>
-                <!-- /.dropdown -->
-            </ul>
-    <!-- /.navbar-top-links -->
-    <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                       
-
-        @if(Auth::user()->position->name == 'Superuser')
-            @include('nav.navi')
-        @elseif(Auth::user()->position->name == 'Administrator')
-            @include('nav.navi')
-        @elseif(Auth::user()->position->name == 'IT')
-            @include('nav.navi')
-        @elseif(Auth::user()->position->name == 'Accountant')
-            @include('nav.account')
-        @elseif(Auth::user()->position->name == 'Sale')
-            @include('nav.sale')
-        @elseif(Auth::user()->position->name == 'Stock')
-            @include('nav.stock')
-        @elseif(Auth::user()->position->name == 'SD')
-            @include('nav.sd')
-        @endif   
-                    </ul>
-            </div>
-        </div>
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                {{ csrf_field() }}
+                                                {!!Form::hidden('user_id',Auth::user()->id,[])!!}
+                                            </form>
+                                        </li>
+                                    </ul>
+                                    <!-- /.dropdown-user -->
+                                </li>
+                                <!-- /.dropdown -->
+                            </ul>
+                    <!-- /.navbar-top-links -->
+                    <div class="navbar-default sidebar" role="navigation">
+                                <div class="sidebar-nav navbar-collapse">
+                                    <ul class="nav" id="side-menu">
+                                        @if(Auth::user()->position->name == 'Superuser')
+                                            @include('nav.navi')
+                                        @elseif(Auth::user()->position->name == 'Administrator')
+                                            @include('nav.navi')
+                                        @elseif(Auth::user()->position->name == 'IT')
+                                            @include('nav.navi')
+                                        @elseif(Auth::user()->position->name == 'Accountant')
+                                            @include('nav.account')
+                                        @elseif(Auth::user()->position->name == 'Sale')
+                                            @include('nav.sale')
+                                        @elseif(Auth::user()->position->name == 'Stock')
+                                            @include('nav.stock')
+                                        @elseif(Auth::user()->position->name == 'SD')
+                                            @include('nav.sd')
+                                        @endif
+                                    </ul>
+                                </div>
+                    </div>
         </nav>
 
         <div id="page-wrapper">

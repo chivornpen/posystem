@@ -32,4 +32,7 @@ class Purchaseorder extends Model
     public function exchange(){
         return $this->hasOne(Exchange::class);
     }
+    public function returnpro(){
+        return $this->hasOne(Returnpro::class);
+    }
 }

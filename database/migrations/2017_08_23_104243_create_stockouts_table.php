@@ -15,7 +15,7 @@ class CreateStockoutsTable extends Migration
     {
         Schema::create('stockouts', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('stockoutDate');
+            $table->date('stockoutDate');
             $table->integer('purchaseorder_id');
             $table->integer('user_id');
             $table->timestamps();

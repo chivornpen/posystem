@@ -22,7 +22,7 @@
                         <div style="clear: both;"></div>
                         <br>
                         <div id="showReportContent">
-                            <img src="{{asset('/images/Logo.jpg')}}" style="height: 15px; width: 110px;"><br><BR>
+                            <img src="{{asset('/images/Logo.jpg')}}" style="height: 15px; width: 110px; margin: 10px 0 10px 0"><br>
                             <p style="font-family: 'Times New Roman',Serif;color: #cf3d54; font-size:12px;"><b>CUSTOMER LIST</b></p>
                             <table border="1px" cellpadding="5px" id="customer" style=" width: 1300px; border-collapse: collapse; border:1px solid #7a7a7a;">
                                 <thead>

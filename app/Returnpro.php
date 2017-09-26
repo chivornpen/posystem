@@ -20,4 +20,7 @@ class Returnpro extends Model
     public function products(){
         return $this->belongsToMany(Product::class)->withTimestamps()->withPivot('qtyreturn','qtyorder');
     }
+    public function purchaseorder(){
+        return $this->belongsTo(Purchaseorder::class,'purchaseorder_id');
+    }
 }

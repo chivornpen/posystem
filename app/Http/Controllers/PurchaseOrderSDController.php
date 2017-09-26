@@ -75,6 +75,7 @@ class PurchaseOrderSDController extends Controller
             $po->printedBy =0;
             $po->isPayment =0;
             $po->isDelivery =0;
+            $po->paid = 0;
             if(Input::get('codsd')!=null){
                 $po->cod = Input::get('codsd');
             }else{
