@@ -38,7 +38,7 @@
     	<table width="100%" border="0px">
         	<tr>
             	<td width="10%">
-                	<img src="{{url('/images/Logo.JPG')}}" alt="" style="height:60px;">
+                	<img src="{{url('/images/Logo.JPG')}}" alt="" style="height:20px;">
                 </td>
                 <td style="text-align:center; font-size:20px;font-family:'Khmer OS Muol Light';​ font-weight: bold; color: blue; ">
                 	វិក្ក័យប័ត្រ<br />

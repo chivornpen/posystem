@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="panel panel-default">
-      <div class="panel-heading">Stock In Report</div>
+      <div class="panel-heading">Stock Exchange Report</div>
         <div class="panel-body table-responsive">
           <div class="container">
             <div class='col-md-3'>
@@ -35,7 +35,7 @@
                 <img src="{{url('/images/Logo.JPG')}}" alt="" style="height:20px; float: left;">
               </td>
               <td width="30%">
-                <div style="text-align: center; font-weight: bold; color: blue; font-size: 15px;font-family: 'Khmer OS System';">Report Stock In</div>
+                <div style="text-align: center; font-weight: bold; font-size: 15px;font-family: 'Khmer OS System';color: blue">Report Stock Exchange</div>
               </td>
               <td width="30%" style="height: 25px;">
                
@@ -62,10 +62,10 @@
               </tr>
               <tr>
                 <th style="text-align: center;font-size: 11px;font-weight: bold;height: 30px; padding: 2px 5px; font-family: 'Arial';">No</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Exchange Date</th>
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Invoice Number</th>
-                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Import Date</th>
-                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Company Name</th>
-                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Person Name</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Customer Number</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Customer Name</th>
                 @foreach($products as $pro)
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">{{$pro->product_code}}</th>
                 @endforeach
@@ -73,21 +73,35 @@
             </thead>
             <?php $no=1;?>
             <tbody>
-              @foreach($import as $in)
+              @foreach($echanges as $echange)
               <tr>
                 <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">{{$no++}}</td>
-                <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">{{$in->invoiceNumber}}</td>
-                <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial';">{{Carbon\Carbon::parse($in->impDate)->format('d-M-Y')}}</td>
-                <td style="padding-left: 3px; font-size: 10px;height: 20px; font-family: 'Khmer OS System';">{{$in->supplier->companyname}}</td>
-                <td style="padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{$in->supplier->personname}}</td>
+                <td style="text-align: center;padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{Carbon\Carbon::parse($echange->created_at)->format('d-M-Y')}}</td>
+                <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">
+                  <?php 
+                        echo "CAM-IN-" . sprintf('%06d',$echange->purchaseorder->id);
+                  ?>
+                </td>
+                @if($echange->purchaseorder->customer_id!=null)
+                  <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial';">{{$echange->purchaseorder->customer->id}}</td>
+                  <td style="padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{$echange->purchaseorder->user->name}}</td>
+                @else
+                  <?php 
+                    $phone = App\User::where('id','=',$echange->purchaseorder->user_id)->value('contactNum');
+                    $customer_id = App\Customer::where('contactNo','=',$phone)->value('id');
+                    $customer_name = App\Customer::where('id','=',$customer_id)->value('name');
+                    echo "<td style='text-align: center;font-size: 10px;height: 20px; font-family: Arial;'>" ."CAM-CUS-" . sprintf('%06d',$customer_id)."</td>";
+                    echo "<td style='padding-left: 3px;font-size: 10px;height: 20px; font-family: Arial;'>" .$customer_name . "</td>";
+                  ?>
+                @endif
                 @foreach($products as $pro)
                   <?php 
                   $product_id =0;
                   $qty =0;
-                      $histories = DB::table('histories')->where([['importId','=',$in->id],['productId','=',$pro->id],])->get();
-                    foreach ($histories as $his) {
-                      $product_id = $his->productId;
-                      $qty = $his->qty;
+                      $purchaseorders = DB::table('purchaseorder_product')->where([['purchaseorder_id','=',$echange->purchaseorder_id],['product_id','=',$pro->id],])->get();
+                    foreach ($purchaseorders as $purchaseorder) {
+                      $product_id = $purchaseorder->product_id;
+                      $qty = $purchaseorder->qty;
                     }
                  ?>
                   @if($pro->id==$product_id)
@@ -162,7 +176,7 @@
               }else{
                 $.ajax({
                   type : 'get',
-                  url : "{{url('/saerchDateStockIn')}}"+"/"+startDate+"/"+endDate,
+                  url : "{{url('/saerchDateStockExchange')}}"+"/"+startDate+"/"+endDate,
                   dataType: 'html',
                   success:function (data) {
                     $('.startdate').css('border','1px solid lightblue');

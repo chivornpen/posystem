@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
 use App\Import;
+use App\Stockout;
+use App\History;
+use App\Exchange;
+use App\Returnpro;
+use Illuminate\Support\Facades\DB;
 
 class StockReportController extends Controller
 {
@@ -86,5 +91,62 @@ class StockReportController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function saerchDateStockIn($startDate, $endDate)
+    {
+        $startDate = strtotime( "$startDate" );  
+        $endDate = strtotime( "$endDate" ); 
+        $begin = date('Y-m-d', $startDate );
+        $end = date('Y-m-d', $endDate );
+        $products = Product::all();
+        $import = Import::whereBetween('impDate', [$begin, $end])->get();
+        return view('admin.stockReport.searchdatestockin',compact('products','import','begin','end'));
+    }
+    public function saerchDateStockOut($startDate, $endDate)
+    {
+        $startDate = strtotime( "$startDate" );  
+        $endDate = strtotime( "$endDate" ); 
+        $begin = date('Y-m-d', $startDate );
+        $end = date('Y-m-d', $endDate );
+        $products = Product::all();
+        $stockOut = Stockout::whereBetween('stockoutDate', [$begin, $end])->get();
+        return view('admin.stockReport.searchdatestockout',compact('products','stockOut','begin','end'));
+    }
+    public function reportStockOut(){
+        $products = Product::all();
+        $stockOut = Stockout::all();
+        return view('admin.stockReport.reportStockOut',compact('products','stockOut'));
+    }
+    public function reportStockReturn()
+    {
+        $returnpros = Returnpro::where('purchaseorder_id','!=',0)->get();
+        $products = Product::all();
+       return view('admin.stockReport.reportstockreturnpro',compact('returnpros','products')); 
+    }
+    public function reportStockExchange()
+    {
+        $echanges = Exchange::all();
+        $products = Product::all();
+       return view('admin.stockReport.reportstockexchnge',compact('echanges','products')); 
+    }
+    public function saerchDateStockExchange($startDate, $endDate)
+    {
+        $startDate = strtotime( "$startDate" );  
+        $endDate = strtotime( "$endDate" ); 
+        $begin = date('Y-m-d', $startDate );
+        $end = date('Y-m-d', $endDate );
+        $products = Product::all();
+        $echanges = Exchange::whereBetween('created_at', [$begin, $end])->get();
+        return view('admin.stockReport.searchdatestockexchange',compact('products','echanges','begin','end'));
+    }
+    public function saerchDateStockReturnpro($startDate, $endDate)
+    {
+        $startDate = strtotime( "$startDate" );  
+        $endDate = strtotime( "$endDate" ); 
+        $begin = date('Y-m-d', $startDate );
+        $end = date('Y-m-d', $endDate );
+        $products = Product::all();
+        $returnpros = Returnpro::whereBetween('created_at', [$begin, $end])->get();
+        return view('admin.stockReport.searchdatestockreturnpro',compact('products','returnpros','begin','end'));
     }
 }
