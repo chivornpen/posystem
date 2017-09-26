@@ -86,24 +86,30 @@ class ProductReturn extends Controller
                 foreach ($result as $re){
                     $Import_qty=0;
                     $UpQty=0;
-                    $product=Product::findOrFail($re->product_id);
-                    $product_qty = $product->qty;
+                    $product_qty=Product::where('id',$re->product_id)->value('qty');
                     $import_product = DB::table('import_product')->where([['importId','=',$re->import_id],['productId','=',$re->product_id],['expd','=',$re->expd]])->select('qty')->get();
                     foreach ($import_product as $q){
                         $Import_qty=$q->qty;
                         $UpQty =$Import_qty+$re->qty;
                     }
                     DB::table('import_product')->where([['importId','=',$re->import_id],['productId','=',$re->product_id],['expd','=',$re->expd],])->update(['qty'=>$UpQty]);
-                    $product->qty = $product_qty+$re->qty;
-                    $product->save();
+                    $UQty = $product_qty+$re->qty;
+                    DB::table('products')->where('id',$re->product_id)->update(['qty'=>$UQty]);
                 }
                 DB::table('import_stockout')->where('stockout_id',$id)->update(['status'=>1]);
+                $purchaseorder = Stockout::where('id',$id)->value('purchaseorder_id');
+                $pur = Purchaseorder::findOrFail($purchaseorder);
+                $pur->status = "ra";
+                $pur->save();
                 $return = new Returnpro();
                 $return->stockout_id=$id;
                 $return->purchaseorder_id=0;
                 $return->returnBy=$userId;
                 $return->status="a";
                 $return->save();
+                $stockout = Stockout::find($id);
+                $stockout->status = 1;
+                $stockout->save();
                 return "<h5 style='color: darkblue;'>Returned successfully...</h5>";
             }
         }

@@ -265,6 +265,23 @@ Route::get('/report/search/{data}','reportController@show');
 
 Route::get('/report/sale/view','reportController@SaleReport');//Sale Report
 
+Route::get('/report/sale/search/{saleName}/{startDate}/{endDate}','reportController@SaleReportSearch');//search sale report
+
+
+//Payment Report
+Route::get('/report/payment/views/report','reportController@paymentReport');//payment Report
+//payment report search
+Route::get('/report/payment/search/report/{custName}/{startDate}/{endDate}','reportController@paymentReportSearch');//payment Report search
+
+
+//customer credit Report
+Route::get('/report/customerCredit/views/report','reportController@customerCredit');//payment Report
+//cutomer credit report search
+Route::get('/report/customerCredit/search/report/{cusName}/{startDate}/{endDate}','reportController@customerCreditSearch');//payment Report search
+
+
+
+
 
 
 

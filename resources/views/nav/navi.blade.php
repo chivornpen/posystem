@@ -402,8 +402,23 @@
                                     </ul>
                                 </li>
 
+                                {{--Payment Report--}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#paymentReport"><i class="fa fa fa-paypal" aria-hidden="true"></i> Payment Reports <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="paymentReport" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{url('/report/payment/views/report')}}">Payment Report</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#customerCredit"><i class="fa fa fa-cc" aria-hidden="true"></i> Customer Credit <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="customerCredit" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{url('/report/customerCredit/views/report')}}">Customer Credit Report</a>
+                                        </li>
+                                    </ul>
+                                </li>
 
                             </ul>
                         </li>
-                        {{--sale report--}}
         {{--Report MANAGEMENT MENU--}}

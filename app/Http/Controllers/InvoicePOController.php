@@ -79,7 +79,7 @@ class InvoicePOController extends Controller
         $cod = 0;
         $now = Carbon::now()->toDateString();
         $returnPro = Returnpro::where('id',$returnId)->value('stockout_id');
-        $purchaseOrderId = Stockout::findOrFail($returnPro)->value('purchaseorder_id');
+        $purchaseOrderId = Stockout::where('id',$returnPro)->value('purchaseorder_id');
 
         $purchaseorder = Purchaseorder::findOrFail($purchaseOrderId);
         $user_id= $purchaseorder->user_id;
@@ -106,11 +106,18 @@ class InvoicePOController extends Controller
         $purchaseorder->paid= 0;
         $purchaseorder->cradit= 0;
         $purchaseorder->isDelivery= 1;
+        if($status==1){
+            $purchaseorder->status= "comp";//company paid
+        }else{
+            $purchaseorder->status= "cusp";//customer paid
+        }
         $purchaseorder->save();
         $purchaseorderId = $purchaseorder->id;
 
         $returnpro = DB::table('product_returnpro')->where('returnpro_id',$returnId)->selectRaw('product_id, sum(qtyreturn) as QR, sum(qtyorder) as QO, sum(qtyreturn)+sum(qtyorder) as TQ')->groupBy('product_id')->get();
+
         foreach ($returnpro as $p){
+//            echo $purchaseOrderId."<br>";
             $unitprice= DB::table('purchaseorder_product')->where([['purchaseorder_id','=',$purchaseOrderId],['product_id','=',$p->product_id],])->value('unitPrice');
                $product_id = $p->product_id;
                 if($status==1){//company paid
@@ -124,11 +131,10 @@ class InvoicePOController extends Controller
 //                  echo "$amount =$amount+($unitprice*$quantities)"."<br>";
                     $pAmount=($unitprice*$quantities);
                     $amount =$amount+($unitprice*$quantities);
-                    if($quantities==0){
-                        $purchaseorder->products()->attach($product_id,['qty'=>$quantities,'unitPrice'=>$unitprice,'amount'=>$pAmount,'user_id'=>$user_id]);
-                    }
+                    $purchaseorder->products()->attach($product_id,['qty'=>$quantities,'unitPrice'=>$unitprice,'amount'=>$pAmount,'user_id'=>$user_id]);
                 }
         }
+
         $grandTotal = $amount-($amount*$discount/100);
         $paid = $grandTotal-($grandTotal*$cod/100);
 
@@ -155,11 +161,11 @@ class InvoicePOController extends Controller
                $customer_id=0;
                $now = Carbon::now()->toDateString();
                $result = DB::table('exchange_product')->selectRaw('product_id, sum(qty) as total')->where('exchange_id','=',$id)->groupBy('product_id')->get();
-               $exchange = Exchange::findOrFail($id);
+               $exchange = Exchange::find($id);
                $stockoutID=$exchange->stockout->id;
-               $stockout = Stockout::findOrFail($stockoutID);
+               $stockout = Stockout::find($stockoutID);
                $purchaseorderID=$stockout->purchaseorder_id;
-               $purchaseorder = Purchaseorder::findOrFail($purchaseorderID);
+               $purchaseorder = Purchaseorder::find($purchaseorderID);
                $user_id= $purchaseorder->user_id;
                $customer_id= $purchaseorder->customer_id;
 
@@ -182,6 +188,7 @@ class InvoicePOController extends Controller
                $purchaseorder->paid= 0;
                $purchaseorder->cradit= 0;
                $purchaseorder->isDelivery= 0;
+               $purchaseorder->status= "ex";
                $purchaseorder->save();
                $purchaseorderId = $purchaseorder->id;
                        foreach ($result as $re){
