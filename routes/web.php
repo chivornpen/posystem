@@ -61,6 +61,9 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('exchangesd','ExchangesdController');
 	Route::resource('productreturnsd','ProductReturnSDController');
 	Route::resource('stockreport','StockReportController');
+	Route::get('/reportStockOut','StockReportController@reportStockOut');
+	Route::get('/reportStockExchange','StockReportController@reportStockExchange');
+	Route::get('/reportStockReturn','StockReportController@reportStockReturn');
 	Route::get('/createPoExchange','ExchangesdController@createPoExchange');
 	Route::get('/createInvoiceReturnzSd','ProductReturnSDController@createInvoiceReturnzSd');
 	Route::get('/inv','InvoiceController@inv');
@@ -76,6 +79,11 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::post('/updateProCussd','SaleSDController@updateProCussd');
 });
 //endAdmin
+Route::get('/saerchDateStockIn/{startDate}/{endDate}','StockReportController@saerchDateStockIn');
+Route::get('/saerchDateStockOut/{startDate}/{endDate}','StockReportController@saerchDateStockOut');
+Route::get('/saerchDateStockExchange/{startDate}/{endDate}','StockReportController@saerchDateStockExchange');
+Route::get('/saerchDateStockReturnpro/{startDate}/{endDate}','StockReportController@saerchDateStockReturnpro');
+
 //----------------------select customer------------------
 Route::get('/getCustomer/{id}',function($id){
 	 	$customers = Customer::where('id','=', $id)->first();

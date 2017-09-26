@@ -361,10 +361,16 @@
                                             <a href="{{ route('stockreport.create')}}">Report Stock In</a>
                                         </li>
                                         <li>
-                                            <a href="#">Report Stock Out</a>
+                                            <a href="{{URL::to('/admin/reportStockOut')}}">Report Stock Out</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('stockreport.index')}}">Report Stock Balance</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{URL::to('/admin/reportStockExchange')}}">Report Stock Exchange</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{URL::to('/admin/reportStockReturn')}}">Report Stock Return</a>
                                         </li>
                                     </ul>
                                 </li>
