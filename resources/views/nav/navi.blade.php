@@ -425,7 +425,6 @@
                                     </ul>
                                 </li>
                                 {{--end SD stock-in-menu--}}
-<<<<<<< HEAD
 
         {{--END SD STOCK MANAGEMENT MENU--}}
                             </ul>
