@@ -11,7 +11,7 @@
                     <div class="row">
                         <div class='col-md-3'>
                             <div class="form-group">
-                                <select name="salename" id="salename" class="form-control">
+                                <select name="salename" id="salename" class="form-control" onchange="SaleReportSearch()">
                                     <option value="0">Please select sale name</option>
                                     @foreach($users as $user)
                                         <option value="{{$user->id}}">{!! $user->nameDisplay !!}</option>
@@ -19,7 +19,6 @@
                                 </select>
                             </div>
                         </div>
-
                         <div class='col-md-3'>
                             <div class="form-group">
                                 <div class='input-group date' id='StartDate' data-date="" data-date-format="dd-MM-yyyy" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
@@ -45,88 +44,177 @@
                             </div>
                         </div>
                     </div>
+                    @if(strtolower(\Illuminate\Support\Facades\Auth::user()->position->name)=="administrator")
+                        <div class="row">
+                            <div class='col-md-3'>
+                                <div class="form-group">
+                                    <select name="brandName" id="brandName" class="form-control" onchange="SaleReportSearch()">
+                                        <option value="0">Brand name</option>
+                                        @foreach($brands as $b)
+                                            <option value="{{$b->id}}">{!! $b->brandName !!}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
                     <div class="container-fluid">
                         <div style="overflow-x: scroll;">
                             <div id="SaleReport" >
                                 @if($purchaseorder->count())
                                     <img src="{{asset('/images/Logo.jpg')}}" style="height: 15px; width: 110px; margin: 10px 0 10px 0"><br>
                                     <p style="font-family: 'Times New Roman',Serif;color: #cf3d54; font-size:12px;"><b> SALE REPORTS</b></p>
-
-                                    <table border="1px" cellpadding="5px" id="customer" style=" width: 2500px; border-collapse: collapse; border:1px solid #7a7a7a;">
-                                        <thead>
-                                        <tr>
-                                            <td colspan="8" style="border-top: 1px solid white; border-left: 1px solid white;"></td>
-                                            <td colspan="2" style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;">Promotion</td>
-                                            <td colspan="{{$product->count()}}" style=" font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding: 3px;">Product Code</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding:2px 8px;">No</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Sale Date</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px;">Sale Name</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer ID</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Name</td>
-                                            <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Invoice Number</td>
-                                            <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Status</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Total Amount</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Discount (%)</td>
-                                            <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px;">COD (%)</td>
-                                            @if($product->count())
-                                                @foreach($product as $pro)
-                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px; text-align: center; padding: 5px;">{{$pro->product_code}}</td>
-                                                @endforeach
-                                            @endif
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <?php $i=1;?>
-                                        @foreach($purchaseorder as $purchase)
-                                            <tr>
-                                                <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{{$i++}}</td>
-                                                <td style="text-align: center; font-family: 'Times New Roman'; font-size: 12px;padding:2px 8px;">{!! \Carbon\Carbon::parse($purchase->poDate)->format('d-M-Y') !!}</td>
-                                                <td style="font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px;">{!!strtoupper(\App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
-                                                <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->customer_id ? "CAM-CUS-".sprintf('%06d',$purchase->customer_id) : "CAM-CUS-".sprintf('%06d',\App\Customer::where('contactNo','=',\App\User::where('id',$purchase->user_id)->value('contactNum'))->value('id')) !!}</td>
-                                                <td style=" font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! strtoupper($purchase->customer_id ? \App\Customer::where('id',$purchase->customer_id)->value('name') : \App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
-                                                <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{{ "CAM-IN-".sprintf('%06d', $purchase->id)}}</td>
-
-                                                @if("comp" ==strtolower($purchase->status))
-                                                    <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color:red;">{!! "Company Paid"  !!}</td>
-                                                @elseif("cusp"==strtolower($purchase->status))
-                                                    <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color:red;">{!! "Customer Paid"  !!}</td>
-                                                @elseif($purchase->id == \App\Exchange::where('purchaseorder_id',$purchase->id)->value('purchaseorder_id'))
-                                                    <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color: #db4f13;">{!! "Exchange"  !!}</td>
-                                                @elseif("a" == strtolower(\App\Returnpro::where('stockout_id',\App\Stockout::where('purchaseorder_id',$purchase->id)->value('id'))->value('status')))
-                                                    <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color: red;">{!! "Returned All"  !!}</td>
-                                                @else
-                                                    <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color: #0d6aad;">{!! "Ordered"  !!}</td>
-                                                @endif
-
-                                                <td style="font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{!! "$ ". number_format($purchase->totalAmount,2) !!}</td>
-                                                <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->discount!!}</td>
-                                                <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->cod !!}</td>
-                                                @foreach($product as $prod)
-                                                    <?php
-                                                        $proId = "";
-                                                        $proQty="";
-                                                        $products = DB::table('purchaseorder_product')->where([['purchaseorder_id','=',$purchase->id],['product_id','=',$prod->id],])->get();
-                                                        foreach($products as $row){
-                                                            $proId = $row->product_id;
-                                                            $proQty= $row->qty;
-                                                        }
-                                                    ?>
-                                                    @if($prod->id == $proId)
-                                                        <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px; color: red;">{!! $proQty !!}</td>
-                                                    @else
-                                                        <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! "0" !!}</td>
+                                    @if(strtolower(\Illuminate\Support\Facades\Auth::user()->position->name)!=="sd")
+                                            <table border="1px" cellpadding="5px" id="customer" style=" width: 2500px; border-collapse: collapse; border:1px solid #7a7a7a;">
+                                                <thead>
+                                                <tr>
+                                                    <td colspan="8" style="border-top: 1px solid white; border-left: 1px solid white;"></td>
+                                                    <td colspan="2" style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;">Promotion</td>
+                                                    <td colspan="{{$product->count()}}" style=" font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding: 3px;">Product Code</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding:2px 8px;">No</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Sale Date</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px;">Sale Name</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Number</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Name</td>
+                                                    <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Invoice Number</td>
+                                                    <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Status</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Total Amount</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Discount (%)</td>
+                                                    <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px;">COD (%)</td>
+                                                    @if($product->count())
+                                                        @foreach($product as $pro)
+                                                            <td style="font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px; text-align: center; padding: 5px;">{{$pro->product_code}}</td>
+                                                        @endforeach
                                                     @endif
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php $i=1;?>
+                                                @foreach($purchaseorder as $purchase)
+                                                    <tr>
+                                                        <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{{$i++}}</td>
+                                                        <td style="text-align: center; font-family: 'Times New Roman'; font-size: 12px;padding:2px 8px;">{!! \Carbon\Carbon::parse($purchase->poDate)->format('d-M-Y') !!}</td>
+                                                        <td style="font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px;">{!!strtoupper(\App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
+                                                        <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->customer_id ? "CAM-CUS-".sprintf('%06d',$purchase->customer_id) : "CAM-CUS-".sprintf('%06d',\App\Customer::where('contactNo','=',\App\User::where('id',$purchase->user_id)->value('contactNum'))->value('id')) !!}</td>
+                                                        <td style=" font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! strtoupper($purchase->customer_id ? \App\Customer::where('id',$purchase->customer_id)->value('name') : \App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
+                                                        <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{{ "CAM-IN-".sprintf('%06d', $purchase->id)}}</td>
+
+                                                        @if("comp" ==strtolower($purchase->status))
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color:red;">{!! "Company Paid"  !!}</td>
+                                                        @elseif("cusp"==strtolower($purchase->status))
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color:red;">{!! "Customer Paid"  !!}</td>
+                                                        @elseif($purchase->id == \App\Exchange::where('purchaseorder_id',$purchase->id)->value('purchaseorder_id'))
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color: #db4f13;">{!! "Exchange"  !!}</td>
+                                                        @elseif("a" == strtolower(\App\Returnpro::where('stockout_id',\App\Stockout::where('purchaseorder_id',$purchase->id)->value('id'))->value('status')))
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color: red;">{!! "Returned All"  !!}</td>
+                                                        @else
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color: #0d6aad;">{!! "Ordered"  !!}</td>
+                                                        @endif
+
+                                                        <td style="font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{!! "$ ". number_format($purchase->totalAmount,2) !!}</td>
+                                                        <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->discount!!}</td>
+                                                        <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->cod !!}</td>
+                                                        @foreach($product as $prod)
+                                                            <?php
+                                                                $proId = "";
+                                                                $proQty="";
+                                                                $products = DB::table('purchaseorder_product')->where([['purchaseorder_id','=',$purchase->id],['product_id','=',$prod->id],])->get();
+                                                                foreach($products as $row){
+                                                                    $proId = $row->product_id;
+                                                                    $proQty= $row->qty;
+                                                                }
+                                                            ?>
+                                                            @if($prod->id == $proId)
+                                                                <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px; color: red;">{!! $proQty !!}</td>
+                                                            @else
+                                                                <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! "0" !!}</td>
+                                                            @endif
+                                                        @endforeach
+                                                    </tr>
                                                 @endforeach
-                                            </tr>
-                                        @endforeach
-                                        </tbody>
-                                    </table>
+                                                </tbody>
+                                            </table>
+                                    @else
+                                        <table border="1px" cellpadding="5px" id="customer" style=" width: 2200px; border-collapse: collapse; border:1px solid #7a7a7a;">
+                                            <thead>
+                                                <tr>
+                                                    <td colspan="8" style="border-top: 1px solid white; border-left: 1px solid white;"></td>
+                                                    <td colspan="2" style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;">Promotion</td>
+                                                    <td colspan="{{$product->count()}}" style=" font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding: 3px;">Product Code</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding:2px 8px;">No</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Sale Date</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px;">Sale Name</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Number</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Name</td>
+                                                    <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Invoice Number</td>
+                                                    <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Status</td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Grand Total ($) </td>
+                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Discount (%)</td>
+                                                    <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px;">COD (%)</td>
+                                                    @if($product->count())
+                                                        @foreach($product as $pro)
+                                                            <td style="font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px; text-align: center; padding: 5px;">{{$pro->product_code}}</td>
+                                                        @endforeach
+                                                    @endif
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php $i=1;?>
+                                                @foreach($purchaseorder as $purchase)
+                                                    <tr>
+                                                        <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{{$i++}}</td>
+                                                        <td style="text-align: center; font-family: 'Times New Roman'; font-size: 12px;padding:2px 8px;">{!! \Carbon\Carbon::parse($purchase->poDate)->format('d-M-Y') !!}</td>
+                                                        <td style="font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px;">{!!strtoupper(\App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
+                                                        <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->customer_id ? sprintf('%06d',$purchase->customer_id) : "CAM-CUS-".sprintf('%06d',\App\Customer::where('contactNo','=',\App\User::where('id',$purchase->user_id)->value('contactNum'))->value('id')) !!}</td>
+                                                        <td style=" font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! strtoupper($purchase->customer_id ? \App\Customer::where('id',$purchase->customer_id)->value('name') : \App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
+                                                        <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{{ sprintf('%06d', $purchase->id)}}</td>
+
+                                                        @if("comp" ==strtolower($purchase->status))
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color:red;">{!! "Company Paid"  !!}</td>
+                                                        @elseif("cusp"==strtolower($purchase->status))
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color:red;">{!! "Customer Paid"  !!}</td>
+                                                        @elseif('ex' == strtolower($purchase->status))
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color: #db4f13;">{!! "Exchange"  !!}</td>
+                                                        @elseif('ra' == strtolower($purchase->status))
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color: red;">{!! "Returned All"  !!}</td>
+                                                        @else
+                                                            <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color: #0d6aad;">{!! "Ordered"  !!}</td>
+                                                        @endif
+                                                        <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{!! number_format($purchase->grandTotal,2) !!}</td>
+                                                        <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{!! $purchase->discount !!}</td>
+                                                        <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{!! $purchase->cod !!}</td>
+                                                        @foreach($product as $pro)
+                                                            <?php
+                                                            $proId = "";
+                                                            $proQty="";
+                                                            $products = DB::table('purchaseordersd_product')->where([['purchaseordersd_id','=',$purchase->id],['product_id','=',$pro->id],])->get();
+                                                            foreach($products as $row){
+                                                                $proId = $row->product_id;
+                                                                $proQty= $row->qty;
+                                                            }
+                                                            ?>
+                                                            @if($pro->id == $proId)
+                                                                <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px; color: red;">{!! $proQty !!}</td>
+                                                            @else
+                                                                <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! "0" !!}</td>
+                                                            @endif
+
+                                                        @endforeach
+
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+
+                                        </table>
+                                    @endif
                                     </div>
                                     <br>
-                                    <a href="#" class="btn-primary btn-sm" title="Print" id="btnPrintReport"><i class="fa fa-print" aria-hidden="true"></i></a>
-                                    <a href="#" class="btn-primary btn-sm" title="Excel" id="btnExportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></a>
+                                    <a style="text-decoration:none;" href="#" class="btn-primary btn-sm" title="Print" id="btnPrintReport"><i class="fa fa-print" aria-hidden="true"></i> Print</a>
+                                    <a style="text-decoration:none;" href="#" class="btn-success btn-sm" title="Excel" id="btnExportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel</a>
                                     <br><br>
                             @else
                                 <h5>No found results</h5><br>
@@ -148,6 +236,7 @@
             var saleName = $('#salename').val();
             var startDate = $('#SDate').val();
             var endDate = $('#EDate').val();
+            var brand = $('#brandName').val();
             var error = "";
 
                 if(startDate==""){
@@ -156,10 +245,23 @@
                 if(endDate=="" || endDate<startDate){
                    endDate = 0;
                 }
+                if(brand!=0){
+                    $('#salename').attr('disabled',true);
+                    saleName=0;
+                }else{
+                    $('#salename').attr('disabled',false);
+                }
+
+                if(saleName!=0){
+                    $('#brandName').attr('disabled',true);
+                    brand=0;
+                }else {
+                    $('#brandName').attr('disabled',false);
+                }
             if(error==""){
                 $.ajax({
                    type: 'get',
-                    url: "{{url('report/sale/search/')}}"+"/"+saleName+"/"+startDate+"/"+endDate,
+                    url: "{{url('report/sale/search/')}}"+"/"+saleName+"/"+startDate+"/"+endDate+"/"+brand,
                     dataType: 'html',
                     success:function (data) {
                         $('#SaleReport').html(data);

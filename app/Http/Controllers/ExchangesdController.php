@@ -230,6 +230,7 @@ class ExchangesdController extends Controller
                $purchaseordersd->isGenerate= 0;
                $purchaseordersd->grandTotal= 0;
                $purchaseordersd->isDelivery= 0;
+               $purchaseordersd->status= "ex";
                $purchaseordersd->save();
                $purchaseorderId = $purchaseordersd->id;
                        foreach ($result as $re){

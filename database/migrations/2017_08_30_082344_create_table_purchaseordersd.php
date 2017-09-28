@@ -25,6 +25,7 @@ class CreateTablePurchaseordersd extends Migration
             $table->double('grandTotal')->nullable();
             $table->tinyInteger('isGenerate')->nullable();
             $table->tinyInteger('isDelivery')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

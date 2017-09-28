@@ -12,7 +12,7 @@
 {{--------------- start SD---------------}}
 {{--------------------Order from office---------------}}
                                 <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Purchaseorder to Supplier<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> To Supplier<i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="PurchaseOrderSD" class="collapse nav nav-second-level">
                                         <li>
                                             <a href="{{ route('purchaseOrdersSD.index')}}">All Purchase Order</a>
@@ -25,7 +25,7 @@
     {{-----------------------end-----------}}
     {{--------------------Order from office---------------}}
                                 <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#SDsale"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Purchaseorder To Customer<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#SDsale"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> To Customer<i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="SDsale" class="collapse nav nav-second-level">
                                         <li>
                                             <a href="{{ route('saleSD.index')}}">All Purchase Order</a>

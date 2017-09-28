@@ -5,7 +5,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">Stock Balance Report</div>
         <div class="panel-body table-responsive">
-          <div class="content">
+          <div class="content" style="margin-top: 20px;">
           <table border="0px" width="1300">
             <tr>
               <td width="30%">
