@@ -195,6 +195,13 @@ class ProductReturnSDController extends Controller
                 $return->returnBy=$userId;
                 $return->status="a";
                 $return->save();
+
+                $purchaseorderSd_id = Stockoutsd::where('id',$id)->value('purchaseordersd_id');
+                $purchaseorderSD = Purchaseordersd::find($purchaseorderSd_id);
+                $purchaseorderSD->status="ra";
+                $purchaseorderSD->save();
+
+
                 return "<h5 style='color: darkblue;'>Returned successfully...</h5>";
             }
         }
@@ -241,8 +248,8 @@ class ProductReturnSDController extends Controller
         $discount = 0;
         $cod = 0;
         $now = Carbon::now()->toDateString();
-        $returnPro = Returnprosd::findOrFail($returnId)->value('stockoutsd_id');
-        $purchaseOrderId = Stockoutsd::findOrFail($returnPro)->value('purchaseordersd_id');
+        $returnPro = Returnprosd::where('id',$returnId)->value('stockoutsd_id');
+        $purchaseOrderId = Stockoutsd::where('id',$returnPro)->value('purchaseordersd_id');
 
 
 //Have problem here have to solve it as soon as............
@@ -264,6 +271,12 @@ class ProductReturnSDController extends Controller
         $purchaseorder->isGenerate= 0;
         $purchaseorder->grandTotal= 0;
         $purchaseorder->isDelivery= 1;
+        if($status==1){
+            $purchaseorder->status= "comp";
+        }
+        if($status==2){
+            $purchaseorder->status= "cusp";
+        }
         $purchaseorder->save();
         $purchaseorderId = $purchaseorder->id;
 

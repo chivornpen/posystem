@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class='col-md-3'>
                         <div class="form-group">
-                            <select name="custname" id="custname" class="form-control">
+                            <select name="custname" id="custname" class="form-control" onchange="SaleReportSearch()">
                                 <option value="0">Please select customer name</option>
                                 @foreach($customer as $cus)
                                     <option value="{{$cus->id}}">{!! $cus->name !!}</option>

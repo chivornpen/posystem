@@ -390,8 +390,7 @@
 
         {{--Report MANAGEMENT MENU--}}
         {{--------------- start SD---------------}}
-                        <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#POSD"><i class="fa fa-user" aria-hidden="true"></i> SD Managment<i class="fa fa-fw fa-caret-down"></i></a>
+                        <li><a href="javascript:;" data-toggle="collapse" data-target="#POSD"><i class="fa fa-user" aria-hidden="true"></i> SD Managment<i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="POSD" class="collapse nav nav-second-level">
                                 <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> To Supplier<i class="fa fa-fw fa-caret-down"></i></a>
@@ -404,6 +403,7 @@
                                         </li>
                                     </ul>
                                 </li>
+
                                 <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#SDsale"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> To Customer<i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="SDsale" class="collapse nav nav-second-level">
@@ -416,7 +416,6 @@
                                 {{--SD STOCK MANAGEMENT MENU--}}
                         <li><a href="javascript:;" data-toggle="collapse" data-target="#sdStock"><i class="fa fa-industry" aria-hidden="true"></i> SD Stock Management <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="sdStock" class="collapse nav nav-second-level">
-
                                 {{--SD stock_in_menu --}}
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#sDstockin"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock In <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="sDstockin" class="collapse nav nav-second-level">
@@ -425,8 +424,8 @@
                                         </li>
                                     </ul>
                                 </li>
-
                                 {{--end SD stock-in-menu--}}
+<<<<<<< HEAD
 
         {{--END SD STOCK MANAGEMENT MENU--}}
                             </ul>
@@ -457,5 +456,17 @@
                                 {{--end SD stock-in-menu--}}
                             </ul>
                         </li>
+                            </ul>
+                        </li>
+
+
+
+
+
+
+
+
+                       {{--END SD STOCK MANAGEMENT MENU--}}
+                    </ul>
         {{--Report MANAGEMENT MENU--}}
 
