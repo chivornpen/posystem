@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTableProductReturnpro extends Migration
+class CreateTableHistorySubimportProduct extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateTableProductReturnpro extends Migration
      */
     public function up()
     {
-        Schema::create('product_returnpro', function (Blueprint $table) {
+        Schema::create('subimport_producthistory', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('returnpro_id');
+            $table->integer('subimport_id');
+            $table->integer('brand_id')->nullable();
             $table->integer('product_id');
-            $table->integer('qtyreturn');
-            $table->integer('qtyorder');
+            $table->integer('qty');
+            $table->date('mfd');
+            $table->date('expd');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateTableProductReturnpro extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_returnpro');
+        Schema::dropIfExists('subimport_producthistory');
     }
 }

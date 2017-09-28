@@ -55,12 +55,12 @@
                                 <table border="1px" cellpadding="5px" id="customer" style=" width: 2500px; border-collapse: collapse; border:1px solid #7a7a7a;">
                                     <thead>
                                     <tr>
-                                        <td colspan="10" style="border-top: 1px solid white; border-left: 1px solid white;"></td>
+                                        <td colspan="11" style="border-top: 1px solid white; border-left: 1px solid white;"></td>
                                         <td colspan="{{$product->count()*2}}" style=" font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding: 3px;">Product Code</td>
                                     </tr>
                                     <tr>
                                         <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding:2px 8px;">No</td>
-                                        <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer ID</td>
+                                        <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Number</td>
                                         <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Name</td>
                                         <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Invoice Number</td>
                                         <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Due Date</td>
@@ -124,8 +124,8 @@
                                 </table>
                         </div>
                         <br>
-                        <a href="#" class="btn-primary btn-sm" title="Print" id="btnPrintReport"><i class="fa fa-print" aria-hidden="true"></i></a>
-                        <a href="#" class="btn-primary btn-sm" title="Excel" id="btnExportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i></a>
+                        <a style="text-decoration:none;" href="#" class="btn-primary btn-sm" title="Print" id="btnPrintReport"><i class="fa fa-print" aria-hidden="true"></i> Print</a>
+                        <a style="text-decoration:none;" href="#" class="btn-success btn-sm" title="Excel" id="btnExportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel</a>
                         <br><br>
                         @else
                             <h5>No found results</h5><br>
@@ -172,16 +172,16 @@
 
 
         $(document).ready(function() {
-            $("#salename").select2();
+            $("#custname").select2();
         });
 
         $("#btnPrintReport").click(function () {
-            $("#SaleReport").printThis({
+            $("#CustomerCreditReport").printThis({
                 loadCSS:""
             });
         });
         $("[id$=btnExportExcel]").click(function(e) {
-            window.open('data:application/vnd.ms-excel,' + encodeURIComponent( $('div[id$=SaleReport]').html()));
+            window.open('data:application/vnd.ms-excel,' + encodeURIComponent( $('div[id$=CustomerCreditReport]').html()));
             e.preventDefault();
         });
 

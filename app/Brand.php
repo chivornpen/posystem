@@ -22,4 +22,12 @@ class Brand extends Model
     {
         return $this->hasMany(Customer::class);
     }
+    public function subimports()
+    {
+        return $this->hasMany(Subimport::class);
+    }
+    public function stockoutsds()
+    {
+        return $this->hasMany(Stockoutsd::class);
+    }
 }

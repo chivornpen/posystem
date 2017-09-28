@@ -23,4 +23,7 @@ class Subimport extends Model
     public  function stockoutsds(){
         return $this->belongsToMany(Stockoutsd::class,'import_stockoutsd')->withTimestamps()->withPivot('product_id','qty','expd','status');
     }
+    public function brand(){
+        return $this->belongsTo(Brand::class,'brand_id');
+    }
 }

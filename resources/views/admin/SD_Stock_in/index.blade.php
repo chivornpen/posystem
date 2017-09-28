@@ -6,12 +6,14 @@
     <div class="container-fluid">
         <br>
         {{--select Brand only Administrator --}}
+        @if(Auth::user()->position->name !='SD')
         <select name="Brand" id="Brand" onchange="Brand()" class="form-control form-group">
             <option value="0">Please select brand name</option>
             @foreach( $brand as $b)
             <option value="{{$b->id}}">{!! $b->brandName !!}</option>
             @endforeach
         </select>
+        @endif
             <div id="admin">
                 <div class="panel panel-default">
                     <div class="panel-heading">

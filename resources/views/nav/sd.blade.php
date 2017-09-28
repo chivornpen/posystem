@@ -12,7 +12,7 @@
 {{--------------- start SD---------------}}
 {{--------------------Order from office---------------}}
                                 <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Purchaseorder to Supplier<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> To Supplier<i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="PurchaseOrderSD" class="collapse nav nav-second-level">
                                         <li>
                                             <a href="{{ route('purchaseOrdersSD.index')}}">All Purchase Order</a>
@@ -25,7 +25,7 @@
     {{-----------------------end-----------}}
     {{--------------------Order from office---------------}}
                                 <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#SDsale"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> Purchaseorder To Customer<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#SDsale"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> To Customer<i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="SDsale" class="collapse nav nav-second-level">
                                         <li>
                                             <a href="{{ route('saleSD.index')}}">All Purchase Order</a>
@@ -103,3 +103,27 @@
                                 </li>
 
                                 {{--end return-menu--}}
+
+
+                                {{--SD stock_in_menu --}}
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#sdstockReport"><i class="fa fa-shopping-cart" aria-hidden="true"></i> SD Stock Report <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="sdstockReport" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{ route('sdstockreport.create')}}">Report Stock In</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{URL::to('/admin/sdreportstockout')}}">Report Stock Out</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('sdstockreport.index')}}">Report Stock Balance</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{URL::to('/admin/reportStockExchange')}}">Report Stock Exchange</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{URL::to('/admin/reportStockReturn')}}">Report Stock Return</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                {{--end SD stock-in-menu--}}

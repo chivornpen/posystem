@@ -5,12 +5,12 @@
     <table border="1px" cellpadding="5px" id="customer" style=" width: 2500px; border-collapse: collapse; border:1px solid #7a7a7a;">
         <thead>
         <tr>
-            <td colspan="10" style="border-top: 1px solid white; border-left: 1px solid white;"></td>
+            <td colspan="11" style="border-top: 1px solid white; border-left: 1px solid white;"></td>
             <td colspan="{{$product->count()*2}}" style=" font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding: 3px;">Product Code</td>
         </tr>
         <tr>
             <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding:2px 8px;">No</td>
-            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer ID</td>
+            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Number</td>
             <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Name</td>
             <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Invoice Number</td>
             <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Due Date</td>

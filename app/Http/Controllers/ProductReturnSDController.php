@@ -37,7 +37,7 @@ class ProductReturnSDController extends Controller
     public function create()
     {
         $brandId = Auth::user()->brand->id;
-        $stockout = Stockoutsd::where('brand_id','=',$brandId)->where('status','!=',1)->get();
+        $stockout = Stockoutsd::where('brand_id','=',$brandId)->where('status','=',null)->get();
         $user = User::where('brand_id','=',$brandId)->get();
        return view('admin.returnProductSd.create',compact('stockout','user'));
     }

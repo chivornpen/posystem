@@ -61,6 +61,8 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('exchangesd','ExchangesdController');
 	Route::resource('productreturnsd','ProductReturnSDController');
 	Route::resource('stockreport','StockReportController');
+	Route::resource('sdstockreport','SDStockReportController');
+	Route::get('/sdreportstockout','SDStockReportController@sdreportstockout');
 	Route::get('/reportStockOut','StockReportController@reportStockOut');
 	Route::get('/reportStockExchange','StockReportController@reportStockExchange');
 	Route::get('/reportStockReturn','StockReportController@reportStockReturn');
@@ -83,7 +85,11 @@ Route::get('/saerchDateStockIn/{startDate}/{endDate}','StockReportController@sae
 Route::get('/saerchDateStockOut/{startDate}/{endDate}','StockReportController@saerchDateStockOut');
 Route::get('/saerchDateStockExchange/{startDate}/{endDate}','StockReportController@saerchDateStockExchange');
 Route::get('/saerchDateStockReturnpro/{startDate}/{endDate}','StockReportController@saerchDateStockReturnpro');
-
+//--------------search report sd -----------
+Route::get('/searchIn/{brand_id}/{startDate}/{endDate}','SDStockReportController@searchIn');
+Route::get('/searchOut/{brand_id}/{startDate}/{endDate}','SDStockReportController@searchOut');
+Route::get('/searchBalance/{brand_id}','SDStockReportController@searchBalance');
+//------------------end search---------------
 //----------------------select customer------------------
 Route::get('/getCustomer/{id}',function($id){
 	 	$customers = Customer::where('id','=', $id)->first();
