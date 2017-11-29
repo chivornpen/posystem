@@ -28,7 +28,7 @@
                 <th>No</th>
                 <th>Name</th>
                 <th>Contact</th>
-                <th>Channel/Brand</th>
+                <th>Channel</th>
                 <th>Address</th>
                 <th>Action</th>
             </tr>

@@ -54,16 +54,17 @@
             </tr>
           </table>
           <div style="margin-top: 10px;margin-bottom: 5px;font-size: 12px;font-family: 'Khmer OS System';">Reported By: <b>{{Auth::user()->nameDisplay}}</b></div>
-          <table width="1360px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
+          <table width="1600px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
             <thead>
               <tr>
-                <th colspan="7" style="border-top: 1px solid #fff;border-left: 1px solid #fff;"></th>
+                <th colspan="8" style="border-top: 1px solid #fff;border-left: 1px solid #fff;"></th>
                 <th colspan="{{$products->count()}}" style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Product Code</th>
               </tr>
               <tr>
                 <th style="text-align: center;font-size: 11px;font-weight: bold;height: 30px; padding: 2px 5px; font-family: 'Arial';">No</th>
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Return Date</th>
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Invoice Number</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';"> New Invoice Number</th>
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Customer Number</th>
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Customer Name</th>
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Return By</th>
@@ -79,50 +80,83 @@
               <tr>
                 <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">{{$no++}}</td>
                 <td style="text-align: center;padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{Carbon\Carbon::parse($returnpro->created_at)->format('d-M-Y')}}</td>
-                <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">
-                  <?php 
-                        echo "CAM-IN-" . sprintf('%06d',$returnpro->purchaseorder->id);
+                <td style="text-align: center;padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">
+                    <?php 
+                        echo "CAM-IN-" . sprintf('%06d',$returnpro->stockout->purchaseorder_id);
                   ?>
                 </td>
-                @if($returnpro->purchaseorder->customer_id!=null)
-                  <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial';">{{$returnpro->purchaseorder->customer->id}}</td>
-                  <td style="padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{$returnpro->purchaseorder->user->name}}</td>
+                @if($returnpro->status=='s')
+                  <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">
+                  <?php 
+                        echo "CAM-IN-" . sprintf('%06d',$returnpro->purchaseorder_id);
+                  ?>
+                </td>
+                @else
+                  <td style="text-align: center;font-size: 10px; height: 20px; font-family: 'Arial';">No Created Invoice
+                </td>
+                @endif
+                @if($returnpro->stockout->purchaseorder->customer_id!=null)
+                  <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial';">
+                      <?php 
+                        echo "CAM-CUS-" . sprintf('%06d',$returnpro->stockout->purchaseorder->customer->id);
+                      ?>
+                  </td>
+                  <td style="padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{$returnpro->stockout->purchaseorder->customer->name}}</td>
                 @else
                   <?php 
-                    $phone = App\User::where('id','=',$returnpro->purchaseorder->user_id)->value('contactNum');
+                    $phone = App\User::where('id','=',$returnpro->stockout->purchaseorder->user_id)->value('contactNum');
                     $customer_id = App\Customer::where('contactNo','=',$phone)->value('id');
                     $customer_name = App\Customer::where('id','=',$customer_id)->value('name');
                     echo "<td style='text-align: center;font-size: 10px;height: 20px; font-family: Arial;'>" ."CAM-CUS-" . sprintf('%06d',$customer_id)."</td>";
                     echo "<td style='padding-left: 3px;font-size: 10px;height: 20px; font-family: Arial;'>" .$customer_name . "</td>";
                   ?>
+                  @endif
                   <td style="padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">
                       <?php
                         echo $returnBy = App\User::where('id','=',$returnpro->returnBy)->value('nameDisplay');
                       ?>
                   </td>
-                  @if($returnpro->purchaseorder->status=='comp')
-                    <td style="padding-left: 3px;font-size: 10px; color: red; height: 20px; font-family: 'Arial';">Company Paid</td>
-                  @elseif($returnpro->purchaseorder->status=='cusp')
-                    <td style="padding-left: 3px;font-size: 10px; color: blue; height: 20px; font-family: 'Arial';">Customer Paid</td>
+                  @if($returnpro->status=='s')
+                    @if($returnpro->stockout->purchaseorder->status=='cusp')
+                      <td style="padding-left: 3px;font-size: 10px; height: 20px; font-family: 'Arial';">Customer Paid</td>
+                    @else
+                      <td style="padding-left: 3px;font-size: 10px; height: 20px; font-family: 'Arial';">Company Paid</td>
+                    @endif
                   @else
-                    <td style="padding-left: 3px;font-size: 10px; height: 20px; font-family: 'Arial';"></td>
+                    <td style="padding-left: 3px;font-size: 10px; height: 20px; font-family: 'Arial';">Return All</td>
                   @endif
-                @endif
                 @foreach($products as $pro)
-                  <?php 
+                @if($returnpro->status=='s')
+                <?php 
                   $product_id =0;
                   $qty =0;
-                      $purchaseorders = DB::table('purchaseorder_product')->where([['purchaseorder_id','=',$returnpro->purchaseorder_id],['product_id','=',$pro->id],])->get();
+                    $purchaseorders = DB::table('product_returnpro')->where([['returnpro_id','=',$returnpro->id],['product_id','=',$pro->id],])->get();
                     foreach ($purchaseorders as $purchaseorder) {
                       $product_id = $purchaseorder->product_id;
-                      $qty = $purchaseorder->qty;
+                      $qty = $purchaseorder->qtyreturn;
                     }
                  ?>
                   @if($pro->id==$product_id)
                     <td style="text-align: center;font-size: 10px;height: 20px; color: red; font-family: 'Arial';">{{$qty}}</td>
                   @else
-                    <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial'; ">0</td>
+                    <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial'; "></td>
                   @endif
+                @else
+                  <?php 
+                  $product_id =0;
+                  $qty =0;
+                    $purchaseorderall = DB::table('purchaseorder_product')->where([['purchaseorder_id','=',$returnpro->stockout->purchaseorder_id],['product_id','=',$pro->id],])->get();
+                    foreach ($purchaseorderall as $purchaseorder) {
+                      $product_id = $purchaseorder->product_id;
+                      $qty = $purchaseorder->qty;
+                    }
+                  ?>
+                  @if($pro->id==$product_id)
+                    <td style="text-align: center;font-size: 10px;height: 20px; color: red; font-family: 'Arial';">{{$qty}}</td>
+                  @else
+                    <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial'; "></td>
+                  @endif
+                @endif
                 @endforeach
               </tr>
               @endforeach

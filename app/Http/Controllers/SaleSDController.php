@@ -209,24 +209,15 @@ class SaleSDController extends Controller
             }
             return redirect()->route('saleSD.index');
         }
-        //------------------btn_back---------------
-        if(Input::get('btn_back')){
-            $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
-            foreach ($tmps as $tmp) {
-                $tmp->delete();
-            }
-            return redirect()->back();
-        }
-        //------------------btn_cancel--------------------------
-        if(Input::get('btn_cancel')){
-            $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
-            foreach ($tmps as $tmp) {
-                $tmp->delete();
-            }
-            return redirect()->back();
-        }
     }
-
+    public function cussdcancel()
+    {
+        $tmps = Tmppurchaseordercussd::where('user_id','=',Auth::user()->id)->get();
+            foreach ($tmps as $tmp) {
+                $tmp->delete();
+            }
+            return redirect()->back();
+    }
     /**
      * Display the specified resource.
      *

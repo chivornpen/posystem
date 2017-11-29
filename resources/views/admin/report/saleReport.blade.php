@@ -49,7 +49,7 @@
                             <div class='col-md-3'>
                                 <div class="form-group">
                                     <select name="brandName" id="brandName" class="form-control" onchange="SaleReportSearch()">
-                                        <option value="0">Brand name</option>
+                                        <option value="0">Branch name</option>
                                         @foreach($brands as $b)
                                             <option value="{{$b->id}}">{!! $b->brandName !!}</option>
                                         @endforeach
@@ -96,34 +96,11 @@
                                                     <tr>
                                                         <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{{$i++}}</td>
                                                         <td style="text-align: center; font-family: 'Times New Roman'; font-size: 12px;padding:2px 8px;">{!! \Carbon\Carbon::parse($purchase->poDate)->format('d-M-Y') !!}</td>
-                                                        <td style="font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px;">{!!strtoupper(\App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
+                                                        <td style="font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px;">{!!\App\User::where('id',$purchase->user_id)->value('nameDisplay') !!}</td>
                                                         <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->customer_id ? "CAM-CUS-".sprintf('%06d',$purchase->customer_id) : "CAM-CUS-".sprintf('%06d',\App\Customer::where('contactNo','=',\App\User::where('id',$purchase->user_id)->value('contactNum'))->value('id')) !!}</td>
-                                                        <td style=" font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! strtoupper($purchase->customer_id ? \App\Customer::where('id',$purchase->customer_id)->value('name') : \App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
+                                                        <td style=" font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->customer_id ? \App\Customer::where('id',$purchase->customer_id)->value('name') : \App\User::where('id',$purchase->user_id)->value('nameDisplay') !!}</td>
                                                         <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{{ "CAM-IN-".sprintf('%06d', $purchase->id)}}</td>
 
-<<<<<<< HEAD
-                                    <table border="1px" cellpadding="5px" id="customer" style=" width: 2500px; border-collapse: collapse; border:1px solid #7a7a7a;">
-                                        <thead>
-                                        <tr>
-                                            <td colspan="8" style="border-top: 1px solid white; border-left: 1px solid white;"></td>
-                                            <td colspan="2" style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;">Promotion</td>
-                                            <td colspan="{{$product->count()}}" style=" font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding: 3px;">Product Code</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center; padding:2px 8px;">No</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Sale Date</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px;">Sale Name</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Number</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Customer Name</td>
-                                            <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Invoice Number</td>
-                                            <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px; padding:2px 8px;">Status</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Total Amount</td>
-                                            <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">Discount (%)</td>
-                                            <td style="text-align: center; font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px;">COD (%)</td>
-                                            @if($product->count())
-                                                @foreach($product as $pro)
-                                                    <td style="font-family:'Arial Black',Serif;font-size: 12px;padding:2px 8px; text-align: center; padding: 5px;">{{$pro->product_code}}</td>
-=======
                                                         @if("comp" ==strtolower($purchase->status))
                                                             <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center; color:red;">{!! "Company Paid"  !!}</td>
                                                         @elseif("cusp"==strtolower($purchase->status))
@@ -156,7 +133,6 @@
                                                             @endif
                                                         @endforeach
                                                     </tr>
->>>>>>> 114de4a372d4e505efbad0001be7f6f0526d1911
                                                 @endforeach
                                                 </tbody>
                                             </table>
@@ -192,9 +168,9 @@
                                                     <tr>
                                                         <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{{$i++}}</td>
                                                         <td style="text-align: center; font-family: 'Times New Roman'; font-size: 12px;padding:2px 8px;">{!! \Carbon\Carbon::parse($purchase->poDate)->format('d-M-Y') !!}</td>
-                                                        <td style="font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px;">{!!strtoupper(\App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
+                                                        <td style="font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px;">{!!\App\User::where('id',$purchase->user_id)->value('nameDisplay') !!}</td>
                                                         <td style="text-align: center; font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->customer_id ? sprintf('%06d',$purchase->customer_id) : "CAM-CUS-".sprintf('%06d',\App\Customer::where('contactNo','=',\App\User::where('id',$purchase->user_id)->value('contactNum'))->value('id')) !!}</td>
-                                                        <td style=" font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! strtoupper($purchase->customer_id ? \App\Customer::where('id',$purchase->customer_id)->value('name') : \App\User::where('id',$purchase->user_id)->value('nameDisplay')) !!}</td>
+                                                        <td style=" font-family: 'Times New Roman',Serif;font-size: 12px;padding:2px 8px;">{!! $purchase->customer_id ? \App\Customer::where('id',$purchase->customer_id)->value('name') : \App\User::where('id',$purchase->user_id)->value('nameDisplay') !!}</td>
                                                         <td style=" font-family: 'Khmer OS System',Serif;font-size: 12px;padding:2px 8px; text-align: center;">{{ sprintf('%06d', $purchase->id)}}</td>
 
                                                         @if("comp" ==strtolower($purchase->status))
@@ -240,9 +216,9 @@
                                     <a style="text-decoration:none;" href="#" class="btn-primary btn-sm" title="Print" id="btnPrintReport"><i class="fa fa-print" aria-hidden="true"></i> Print</a>
                                     <a style="text-decoration:none;" href="#" class="btn-success btn-sm" title="Excel" id="btnExportExcel"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Excel</a>
                                     <br><br>
-                            @else
-                                <h5>No found results</h5><br>
-                            @endif
+                                @else
+                                    <h5>No found results</h5><br>
+                                @endif
                         </div>
                     </div>
                 </div>
@@ -269,7 +245,7 @@
                 if(endDate=="" || endDate<startDate){
                    endDate = 0;
                 }
-                if(brand!=0){
+                if(brand>0 ){
                     $('#salename').attr('disabled',true);
                     saleName=0;
                 }else{

@@ -150,8 +150,7 @@
 
     <!-- Morris Charts JavaScript -->
     <script src="{{asset('vendor/raphael/raphael.min.js')}}"></script>
-    <script src="http://cdn.oesmith.co.uk/morris-0.4.1.min.js"></script>
-    
+
     <!-- Custom Theme JavaScript -->
     <script src="{{asset('js/sb-admin-2.js')}}"></script>
 

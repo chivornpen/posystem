@@ -24,21 +24,26 @@
                       </div>
                       <div class="row">
                         <div class="col-lg-12">
-                           <div class="form-group {{ $errors->has('cradit') ? ' has-error' : '' }}">
-                                {!!Form::label('cradit','Cradit: ',[])!!}
-                                {!!Form::text('cradit',null,['class'=>'form-control cradit','readonly'=>'readonly'])!!}
-                                @if ($errors->has('cradit'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('cradit') }}</strong>
-                                    </span>
-                                @endif
+                            <div class="form-group {{ $errors->has('cradit') ? ' has-error' : '' }}">
+                                {!!Form::label('cradit','Credit : ',[])!!}
+                                <div class="input-group">
+                                  {!!Form::text('cradit',null,['class'=>'form-control cradit','readonly'=>'readonly'])!!}
+                                  <span class="input-group-btn">
+                                    <a href="#" class="btn btn-primary" onclick="paidAll()"><i class="fa fa-caret-down" aria-hidden="true"></i> </a>
+                                  </span>
+                                </div>
+                                  @if ($errors->has('cradit'))
+                                      <span class="help-block">
+                                          <strong>{{ $errors->first('cradit') }}</strong>
+                                      </span>
+                                  @endif
                             </div>
+                          </div>
                         </div>
-                      </div>
                       <div class="row">
                         <div class="col-lg-12">
                            <div class="form-group {{ $errors->has('paids') ? ' has-error' : '' }}">
-                                {!!Form::label('paids','Paid: ',[])!!}
+                                {!!Form::label('paids','Paid : ',[])!!}
                                 {!!Form::text('paids',null,['class'=>'form-control paids'])!!}
                                 @if ($errors->has('paids'))
                                     <span class="help-block">
@@ -59,8 +64,3 @@
     </div>
   </div>
 </div>
-@section('script')
-<script type="text/javascript">
-    
-</script>
-@stop

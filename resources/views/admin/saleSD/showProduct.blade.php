@@ -1,5 +1,6 @@
-             
-              <table class="table table-responsive table-bordered table-striped" cellspacing="0">
+@if($tmpdata->count())      
+    <div class="panel panel-default table-responsive">
+        <table class="table table-bordered table-hover table-striped" cellspacing="0">
                   <thead>
                       <tr>
                           <th>No</th>
@@ -38,3 +39,7 @@
                       
                   </tbody>
               </table>
+    </div>      
+@else
+  <h4>No found result</h4>
+@endif

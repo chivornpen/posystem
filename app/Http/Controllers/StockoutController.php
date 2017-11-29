@@ -36,6 +36,7 @@ class StockoutController extends Controller
 
     public function store(Request $re)
     {
+        $now = Carbon::now()->addYear(1)->toDateString('Y-m-d');
         $m = ""; $j=0; $qt=0; $a=0;
         $this->validate($re,[
             'invoiceN'=>'required',
@@ -84,11 +85,10 @@ class StockoutController extends Controller
                         $brand_product_brandId = $B->brand_id;
                     }
 //
-                }
-
-                $result = DB::select("SELECT id, qty, importId FROM `import_product` WHERE productId = {$product_id} AND qty > 0 "); // Select all product in import
+                }      
+                $result = DB::select("SELECT id, qty, importId FROM `import_product` WHERE productId = {$product_id} AND qty > 0"); // Select all product in import
                 foreach ($result as $r){
-                    $res = DB::select("SELECT id, qty, importId,productId, mfd, expd FROM `import_product` WHERE importId = {$r->importId} AND productId={$product_id} AND qty > 0");//select one by one from import
+                    $res = DB::select("SELECT id, qty, importId,productId, mfd, expd FROM `import_product` WHERE importId = {$r->importId} AND productId={$product_id} AND qty > 0 AND expd >{$now}");//select one by one from import
                     foreach ($res as $s){
                         $qt=$qt;
                         if( $a>=$qtyIn | $s->qty >= $qtyIn){
@@ -137,6 +137,7 @@ class StockoutController extends Controller
                                     $uqty = ($bqty-$qtyIn);
                                     $prod ->qty = $uqty;
                                     $prod->save();
+
                                     $Up = Purchaseorder::findOrFail($invoiceN);//Update field delivery to 1
                                     $Up->isDelivery=1;
                                     $Up->save();

@@ -26,4 +26,7 @@ class Purchaseordersd extends Model
     public function exchangesd(){
         return $this->hasOne(Exchangesd::class,'exchangesd_product');
     }
+    public function returnprosd(){
+        return $this->hasOne(Returnprosd::class);
+    }
 }

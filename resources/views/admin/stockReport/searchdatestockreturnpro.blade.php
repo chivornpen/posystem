@@ -23,7 +23,7 @@
             </tr>
           </table>
           <div style="margin-top: 10px;margin-bottom: 5px;font-size: 12px;font-family: 'Khmer OS System';">Reported By: <b>{{Auth::user()->nameDisplay}}</b></div>
-          <table width="1360px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
+          <table width="1600px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
             <thead>
               <tr>
                 <th colspan="7" style="border-top: 1px solid #fff;border-left: 1px solid #fff;"></th>
@@ -54,7 +54,11 @@
                   ?>
                 </td>
                 @if($returnpro->purchaseorder->customer_id!=null)
-                  <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial';">{{$returnpro->purchaseorder->customer->id}}</td>
+                  <td style="text-align: center;font-size: 10px;height: 20px; font-family: 'Arial';">
+                    <?php 
+                        echo "CAM-CUS-" . sprintf('%06d',$returnpro->purchaseorder->customer->id);
+                    ?>
+                    </td>
                   <td style="padding-left: 3px;font-size: 10px;height: 20px; font-family: 'Arial';">{{$returnpro->purchaseorder->user->name}}</td>
                 @else
                   <?php 

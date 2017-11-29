@@ -12,7 +12,7 @@
             <div class='col-md-3'>
               <div class="form-group">
                 <select name="brands" class="form-control brands">
-                  <option value="0">Please select brand name</option>
+                  <option value="0">Please select branch name</option>
                     @foreach($brands as $brand)
                       <option value="{{$brand->id}}">{!! $brand->brandName !!}</option>
                     @endforeach
@@ -24,7 +24,7 @@
             <div hidden class='col-md-3'>
               <div class="form-group">
                 <select name="brands" class="form-control brands">
-                  <option value="0">Please select brand name</option>
+                  <option value="0">Please select branch name</option>
                     @foreach($brands as $brand)
                       <option value="{{$brand->id}}">{!! $brand->brandName !!}</option>
                     @endforeach
@@ -80,7 +80,7 @@
             </tr>
           </table>
           <div style="margin-top: 10px;margin-bottom: 5px;font-size: 12px;font-family: 'Khmer OS System';">Reported By: <b>{{Auth::user()->nameDisplay}}</b></div>
-          <table width="1300px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
+          <table width="1350px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
             <thead>
               <tr>
                 @if(Auth::user()->position->name!='SD')
@@ -97,7 +97,7 @@
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Customer Number</th>
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Customer Name</th>
                 @if(Auth::user()->position->name!='SD')
-                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Brand Name</th>
+                <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">Branch Name</th>
                 @endif
                 @foreach($brandProducts as $brand_pro)
                 <th style="text-align: center;font-size: 11px;font-weight: bold; padding: 2px 5px; font-family: 'Arial';">{!!\App\Product::where('id',$brand_pro->product_id)->value('product_code') !!}</th>

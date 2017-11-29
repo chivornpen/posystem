@@ -170,3 +170,24 @@
     border-color: #5cb85c; }
 .radio-success input[type="radio"]:checked + label::after {
     background-color: #5cb85c; }
+
+.tr-edit{
+    border: 1px solid #9e9f9c;
+}
+
+.td-edit{
+    border: 1px solid #9e9f9c;
+}
+.table-edit{
+
+    border: 1px solid #9e9f9c;
+}
+.padding{
+    padding: 5px 7px;
+}
+.padding-td{
+    padding: 2px 7px;
+}
+.center{
+    text-align: center;
+}

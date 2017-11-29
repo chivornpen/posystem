@@ -70,7 +70,7 @@
                   <div class="col-lg-2">
                     <div class="form-group {{ $errors->has('unitPrice') ? ' has-error' : '' }}">
                         {!!Form::label('unitPrice','Unit Price',[])!!}
-                        {!!Form::text('unitPrice',0,['class'=>'form-control price','readonly'=>'readonly'])!!}
+                        {!!Form::text('unitPrice',0,['class'=>'form-control price'])!!}
                           @if ($errors->has('unitPrice'))
                             <span class="help-block">
                               <strong>{{ $errors->first('unitPrice') }}</strong>
@@ -92,18 +92,17 @@
                 </div>
                 <div class="row">
                   <div class="col-lg-12">
-                    <a disabled class="btn btn-primary btn-sm add" onclick="addOderSD()" ><i class="fa fa-cart-plus" aria-hidden="true"></i> Add</a>
-                     <button type="submit" name="btn_back" value="Back" class="btn btn-default pull-right btn-sm"> Back </button>
+                    <a disabled class="btn btn-primary btn-xs add" onclick="addOderSD()" ><i class="fa fa-cart-plus" aria-hidden="true"></i> Add</a>
+                     <a class="btn btn-info btn-xs" onclick="showProductSD()" ><i class="fa fa-eye" aria-hidden="true"></i> View</a>
+                      <a href="{{url('/admin/sdcancel')}}" class="btn btn-warning btn-xs pull-right">Cancel</a>
                   </div>
                 </div>
               </div>
             {{--------------------------------}}
             
         <div class="row">
-          <div class="col-lg-12">
-            <div class="panel panel-default table-responsive" id="MyProList">
+          <div class="col-lg-12" id="MyProList">
            <!--  table -->
-            </div>
           </div>
         </div>
       <div id="showto" hidden>
@@ -166,7 +165,7 @@
             <div class="col-lg-12">
               <div class="well-sm">
                 <button type="submit" disabled="true" name="btn_save" value="Save" class="btn btn-success btn-sm" id="btn_hide"><i class="icon-save"></i> Save </button>
-                <button disabled="true" type="submit" name="btn_cancel" value="Cancel" class="btn btn-danger btn-sm btn_hide"> Discard </button>
+                <a href="{{url('/admin/sdcancel')}}" class="btn btn-danger btn-sm btn_hide">Discard</a>
               </div>
             </div>
           </div>
@@ -265,6 +264,7 @@ function addOderSD(){
   var price =$(".price").val();
   var amount = $(".amount").val();
   //console.log([scores,studentid]);
+    $('#showto').fadeIn('slow');
   $.ajax({
     type:'get',
     url:"{{url('/addOrderSD')}}"+"/"+proid+"/"+qty+"/"+price+"/"+amount,
@@ -278,7 +278,6 @@ function addOderSD(){
       $(".amount").val(0);
       $('#btn_hide').removeAttr('disabled','true');
       $('.btn_hide').removeAttr('disabled','true');
-      $('.cod').fadeIn('slow');
       showProductSD()
       getTotalSD();
     },
@@ -299,7 +298,6 @@ $.ajax({
   totalsd = data;
   var total = data.toFixed(2);
   $('.totalsd').val(total);
-  $('#showto').fadeIn('slow');
   var setdissd1 = $('#setdissd1').val();
   var setdissd2 = $('#setdissd2').val();
   var codsd = $('#codsd').val();
@@ -414,11 +412,13 @@ $.ajax({
       $('#btn_hide').attr('disabled','true');
       $('.btn_hide').attr('disabled','true');
       $('.cod').hide(100);
+      $('#showto').fadeOut('slow');
      }
       $(".table tr#"+data).remove();
       $('.cod').attr('checked',false);
       $('.discountcus').val(0);
       getTotalSD(); 
+      showProductSD();
       
     },
     error:function(error){

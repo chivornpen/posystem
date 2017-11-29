@@ -30,4 +30,12 @@ class Brand extends Model
     {
         return $this->hasMany(Stockoutsd::class);
     }
+    public function returnprosds()
+    {
+        return $this->hasMany(Returnprosd::class);
+    }
+    public function exchangesds()
+    {
+        return $this->hasMany(Exchangesd::class);
+    }
 }

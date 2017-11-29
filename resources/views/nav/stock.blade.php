@@ -1,9 +1,28 @@
 <li>
                             <a href="{{route('dashbords.index') }}"><i class="fa fa-bell fa-fw"></i> Notifications</a>
 </li>
-<li><a href="javascript:;" data-toggle="collapse" data-target="#Stock"><i class="fa fa-industry" aria-hidden="true"></i> Stock Management <i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="Stock" class="collapse nav nav-second-level">
-
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#cat"><i class="fa fa-tags" aria-hidden="true"></i> Category <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="cat" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{ route('categories.index')}}">All Categories</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('categories.create')}}">Create New Category</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#Pro"><i class="fa fa-product-hunt" aria-hidden="true"></i> Product <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="Pro" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{ route('products.index')}}">All Products</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('products.create')}}">Create New Product</a>
+                                        </li>
+                                    </ul>
+                                </li>
                                {{--stock_in_menu --}}
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#stockin"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock In <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="stockin" class="collapse nav nav-second-level">
@@ -62,39 +81,7 @@
                                 </li>
 
                                 {{--end return-menu--}}
-                                <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#cat"><i class="fa fa-tags" aria-hidden="true"></i> Category <i class="fa fa-fw fa-caret-down"></i></a>
-                                    <ul id="cat" class="collapse nav nav-second-level">
-                                        <li>
-                                            <a href="{{ route('categories.index')}}">All Categories</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('categories.create')}}">Create New Category</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#Pro"><i class="fa fa-product-hunt" aria-hidden="true"></i> Product <i class="fa fa-fw fa-caret-down"></i></a>
-                                    <ul id="Pro" class="collapse nav nav-second-level">
-                                        <li>
-                                            <a href="{{ route('products.index')}}">All Products</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('products.create')}}">Create New Product</a>
-                                        </li>
-                                    </ul>
-                                </li>
-                                <!-- <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#stock"><i class="fa fa-files-o" aria-hidden="true"></i> All Invoices <i class="fa fa-fw fa-caret-down"></i></a>
-                                    <ul id="stock" class="collapse nav nav-second-level">
-                                        <li>
-                                            <a href="{{ route('stocks.index')}}">Update Delivery</a>
-                                        </li>
-                                    </ul>
-                                </li> -->
-                              </li>
-                            </ul>
-                        </li>
+                                
                         <li><a href="javascript:;" data-toggle="collapse" data-target="#stockReport"><i class="fa fa-shopping-cart" aria-hidden="true"></i> Stock Report <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="stockReport" class="collapse nav nav-second-level">
                                         <li>
@@ -111,6 +98,9 @@
                                         </li>
                                         <li>
                                             <a href="{{URL::to('/admin/reportStockReturn')}}">Report Stock Return</a>
+                                        </li>
+                                        <li>
+                                             <a href="{{URL::to('/report/expired/prouduct')}}">Expired Products</a>
                                         </li>
                                     </ul>
                                 </li>

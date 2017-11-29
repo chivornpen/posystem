@@ -48,10 +48,13 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('invoices','InvoiceController');
 	Route::resource('usages','UsageController');
 	Route::resource('purchaseOrders','PurchaseOrderController');
+	Route::get('/cancel','PurchaseOrderController@cancel');
 	Route::resource('saleSD','SaleSDController');
+	Route::get('/cussdcancel','SaleSDController@cussdcancel');
 	Route::resource('suppliers','SupplierController');
 	Route::resource('pricelists','PriceListController');
 	Route::resource('purchaseOrdersSD','PurchaseOrderSDController');
+	Route::get('/sdcancel','PurchaseOrderSDController@sdcancel');
 	Route::resource('invoicePO','InvoicePOController');
 	Route::resource('summaryInv','CraditPOController');
 	Route::resource('stocks','StockController');
@@ -62,7 +65,15 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('productreturnsd','ProductReturnSDController');
 	Route::resource('stockreport','StockReportController');
 	Route::resource('sdstockreport','SDStockReportController');
+	Route::resource('requestpro','RequestproController');
+	Route::get('/discard','RequestproController@discard');
+	Route::get('/createverify','RequestproController@createverify');
+	Route::get('/viewreturnrequest','RequestproController@viewReturnRequest');
+	Route::get('/createreturnrequest','RequestproController@createReturnRequest');
+	Route::post('/confirm','RequestproController@confirm');
 	Route::get('/sdreportstockout','SDStockReportController@sdreportstockout');
+	Route::get('/sdreportstockreturn','SDStockReportController@sdreportstockreturn');
+	Route::get('/sdreportstockexchange','SDStockReportController@sdreportstockexchange');
 	Route::get('/reportStockOut','StockReportController@reportStockOut');
 	Route::get('/reportStockExchange','StockReportController@reportStockExchange');
 	Route::get('/reportStockReturn','StockReportController@reportStockReturn');
@@ -89,6 +100,8 @@ Route::get('/saerchDateStockReturnpro/{startDate}/{endDate}','StockReportControl
 Route::get('/searchIn/{brand_id}/{startDate}/{endDate}','SDStockReportController@searchIn');
 Route::get('/searchOut/{brand_id}/{startDate}/{endDate}','SDStockReportController@searchOut');
 Route::get('/searchBalance/{brand_id}','SDStockReportController@searchBalance');
+Route::get('/searchReturn/{brand_id}/{startDate}/{endDate}','SDStockReportController@searchReturn');
+Route::get('/searchExchange/{brand_id}/{startDate}/{endDate}','SDStockReportController@searchExchange');
 //------------------end search---------------
 //----------------------select customer------------------
 Route::get('/getCustomer/{id}',function($id){
@@ -96,7 +109,18 @@ Route::get('/getCustomer/{id}',function($id){
 	 	$channels = $customers->channel()->select('id','description')->first();
         return response()->json([$customers,$channels]);
 });
+//----------------------
+Route::get('/addRequestpro/{proid}/{qty}','RequestproController@addRequestpro');
+Route::get('/showProduct','RequestproController@showProduct');
+Route::get('/removeRequestpro/{id}','RequestproController@removeRequestpro');
+Route::get('/showDetail/{id}','RequestproController@show');
+Route::get('/getRequestProduct/{id}','RequestproController@getRequestProduct');
+Route::get('/viewrequest/{id}','RequestproController@viewRequest');
+Route::get('/returnsomereqpro/{stId}/{Qty}/{qty}/{proID}/{impId}/{returnBy}/{Inv}','RequestproController@returnSomeRequestProduct');//save return one by one
+Route::get('/returnAll/{id}/{userId}','RequestproController@SaveReturnAll');
+Route::get('/viewproductreturn/{returnId}/{status}/{stockoutId}','RequestproController@viewProductReturn'); //view product return
 //------------------purchaseorder customer---------------
+//-------------------------------
 Route::get('/addOrderCus/{proid}/{qty}/{price}/{amount}','PurchaseOrderController@addOrderCus');
 Route::get('/showProductCus','PurchaseOrderController@showProductCus');
 Route::get('/getPopup','PurchaseOrderController@popupCus');
@@ -310,11 +334,60 @@ Route::get('/report/customerCredit/views/report','reportController@customerCredi
 //cutomer credit report search
 Route::get('/report/customerCredit/search/report/{cusName}/{startDate}/{endDate}','reportController@customerCreditSearch');//payment Report search
 
+//expired_product
+Route::get('/report/expired/prouduct','reportController@expiredProduct');
+
+//SD Stock search by Brand
+Route::get('/report/expired/sdstock/{brandName}','reportController@sdStockSearchByBrand');
+
+//SD Customer Expired search
+Route::get('/report/expired/customerSd/{brandName}','reportController@sdCustomerSearchByBrand');
+
+//Export Request product
+Route::get('/show/requestPro/','RequestproController@showRequestToExport');
+
+Route::post('/export/request/product','RequestproController@exportRequestPro');
+
+Route::get('/export/request/product/detail/{request_id}','RequestproController@showRequestDetail');
+
+Route::get('/show/requested/product','RequestproController@showResquestedProduct');
+
+Route::get('/show/requested/export/detail/{stockoutreId}','RequestproController@showResquestedExport');
+
+///Accounting Route
+Route::get('/account/create/booking','Accounting@index');
+
+Route::post('/account/create/booking/create','Accounting@create');
+
+
+//Account Type
+Route::get('/account/create/acc/type','Accounting@CreateAccType');
+Route::post('/account/create/acc/type/stored','Accounting@storedAccType');
+
+//Chart Account
+Route::get('/account/create/acc/chart','Accounting@CreateAccChart');
+Route::post('/account/create/acc/chart/stored','Accounting@storedAccChart');
+Route::get('/account/get/sign/{id}','Accounting@getSign');
+
+
+Route::get('/account/delete/{id}/{modelName}','Accounting@delete');
+Route::get('/account/edit/{id}/{modelName}','Accounting@edit');
+
+Route::patch('/account/accType/update/{id}','Accounting@update');
+
+Route::get('/account/selectChartAcc/{id}','Accounting@selectChartAcc');
+Route::get('/account/submitBook','Accounting@clearBook');
+Route::get('/account/dTransition/{id}','Accounting@deleteTransition');
 
 
 
+//Account Report
 
+Route::get('/account/report/balance/sheet','Accounting@BalanceSheetReport');
+Route::post('/account/report/filter/date','Accounting@BanlanceSearch');
 
+Route::get('/account/report/trial/balance','Accounting@trialBalance');
+Route::post('/account/report/trial/balance/filter','Accounting@trialBalanceFilter');
 
 
 

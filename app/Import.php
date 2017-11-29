@@ -22,4 +22,8 @@ class Import extends Model
     public  function stockouts(){
         return $this->belongsToMany(Stockout::class)->withTimestamps()->withPivot('product_id','qty','expd','status');
     }
+
+    public function stockoutres(){
+        return $this->belongsToMany(Stockoutre::class)->withTimestamps()->withPivot('product_id','qty','expd','status');
+    }
 }

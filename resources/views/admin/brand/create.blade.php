@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">                
-        <h4 class="page-header"><i class="fa fa-empire" aria-hidden="true"></i> Create New Brand </h4>
+        <h4 class="page-header"><i class="fa fa-empire" aria-hidden="true"></i> Create New Branch </h4>
     </div>
                <!-- /.col-lg-12 -->
 </div>
@@ -16,7 +16,7 @@
           <div class="row">
               <div class="col-lg-6">
                    <div class="form-group {{ $errors->has('brandCode') ? ' has-error' : '' }}">
-                        {!!Form::label('brandCode','Brand Code : ',[])!!}
+                        {!!Form::label('brandCode','Branch Code : ',[])!!}
                         {!!Form::text('brandCode',null,['class'=>'form-control','required'=>'true'])!!}
                         @if ($errors->has('brandCode'))
                             <span class="help-block">
@@ -27,7 +27,7 @@
               </div>
               <div class="col-lg-6">
                    <div class="form-group {{ $errors->has('brandName') ? ' has-error' : '' }}">
-                    {!!Form::label('brandName','Brand Name : ',[])!!}
+                    {!!Form::label('brandName','Branch Name : ',[])!!}
                     {!!Form::text('brandName',null,['class'=>'form-control','required'=>'true'])!!}
                     @if ($errors->has('brandName'))
                         <span class="help-block">

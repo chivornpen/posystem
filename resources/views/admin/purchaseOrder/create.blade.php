@@ -17,7 +17,7 @@
                           <div class="col-lg-3">
                            <div class="form-group {{ $errors->has('poDate') ? ' has-error' : '' }}">
                             {!!Form::label('poDate','Purchase Order Date :',[])!!}
-                            {!!Form::text('poDate',Carbon\Carbon::parse(\Carbon\Carbon::now())->format('d-M-Y'),['class'=>'form-control poDate','readonly'=>'readonly'])!!}
+                            {!!Form::date('poDate',null,['class'=>'form-control poDate','required'=>'true'])!!}
                             @if ($errors->has('poDate'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('poDate') }}</strong>
@@ -165,8 +165,9 @@
                         </div>
                         <div class="row">
                           <div class="col-lg-12">
-                             <a disabled class="btn btn-primary btn-sm add" onclick="addOrderCus()" ><i class="fa fa-cart-plus" aria-hidden="true"></i> Add</a>
-                             <button type="submit" name="btn_back" value="Back" class="btn btn-default btn-sm pull-right"> Back </button>
+                             <a disabled class="btn btn-primary btn-xs add" onclick="addOrderCus()" ><i class="fa fa-cart-plus" aria-hidden="true"></i> Add</a>
+                             <a class="btn btn-info btn-xs" onclick="showProductCus()" ><i class="fa fa-eye" aria-hidden="true"></i> View</a>
+                             <a href="{{url('/admin/cancel')}}" class="btn btn-warning btn-xs pull-right">Cancel</a>
                           </div>
                         </div>
                       </div>
@@ -176,7 +177,7 @@
                       <div hidden class="col-lg-3 columnhide">
                            <div class="form-group {{ $errors->has('dueDate') ? ' has-error' : '' }}">
                             {!!Form::label('dueDate','Due Date :',[])!!}
-                            {!!Form::date('dueDate',null,['class'=>'form-control'])!!}
+                            {!!Form::date('dueDate',null,['class'=>'form-control','required'=>'true'])!!}
                             @if ($errors->has('dueDate'))
                                 <span class="help-block">
                                     <strong>{{ $errors->first('dueDate') }}</strong>
@@ -184,27 +185,30 @@
                             @endif
                           </div>
                         </div>
-                        <div hidden class="col-lg-8 columnhide">
+                        <div hidden class="col-lg-7 columnhide">
                          
                         </div>
-                        <div hidden class="col-lg-1 showCheckbox">
-                           <div class="form-group {{ $errors->has('cod') ? ' has-error' : '' }}">
-                            {!!Form::label('cod','COD',[])!!}
-                            {!!Form::checkbox('cod',1,false,['class'=>'form-control cod'])!!}
-                            @if ($errors->has('cod'))
-                                <span class="help-block">
-                                    <strong>{{ $errors->first('cod') }}</strong>
-                                </span>
-                            @endif
+                        <div hidden class="col-lg-2 showCheckbox">
+                          @if(Auth::user()->position->name !='Sale')
+                          <div class="checkbox checkbox-danger">
+                              <input id="isDelivery" type="checkbox" value="1" name="isDelivery">
+                              <label for="isDelivery" style="color:red;font-weight: bold; font-family: 'Khmer OS Siemreap',Serif;">
+                                 Is Delivery
+                              </label>
+                          </div>
+                          @endif
+                           <div class="checkbox checkbox-success">
+                            <input id="cod" type="checkbox" value="1" name="cod" class="cod">
+                              <label for="cod" style="color:green; font-weight: bold; font-family: 'Khmer OS Siemreap',Serif;">
+                                 Is COD
+                              </label>
                           </div>
                         </div>
                       </div>
                       {{----------------------------------------------}}
                 <div class="row">
-                  <div class="col-lg-12">
-                    <div class="panel panel-default table-responsive" id="MyProList">
+                  <div class="col-lg-12" id="MyProList">
                    <!--  table -->
-                    </div>
                   </div>
                 </div>
               <div id="showto" hidden>
@@ -219,23 +223,12 @@
                     {!!Form::number('total',0,['class'=>'form-control totalcus','readonly'=>'readonly'])!!}
                   </div>
                 </div>
-                <div class="row" id="cod" hidden>
-                  <dir class="col-lg-8">
-                    
-                  </dir>
-                  <div class="col-lg-2">
-                    {!!Form::label('cod','COD% :',[])!!}
-                  </div>
-                  <div class="col-lg-2">
-                   
-                  </div>
-                </div>
                 <div class="row" id="vat" hidden>
                   <dir class="col-lg-8">
                     
                   </dir>
                   <div class="col-lg-2">
-                    {!!Form::label('vat','VAT% :',[])!!}
+                    {!!Form::label('vat','VAT :',[])!!}
                   </div>
                   <div class="col-lg-2">
                     {!!Form::number('vat',0,['class'=>'form-control vat','readonly'=>'readonly'])!!}
@@ -246,10 +239,21 @@
                     
                   </dir>
                   <div class="col-lg-2">
-                    {!!Form::label('discount','Discount% :',[])!!}
+                    {!!Form::label('discount','Discount :',[])!!}
                   </div>
                   <div class="col-lg-2">
                     {!!Form::number('discount',null,['class'=>'form-control discountcus','min'=>'0','max'=>'100'])!!}
+                  </div>
+                </div>
+                <div class="row" id="showcod" hidden>
+                  <dir class="col-lg-8">
+                    
+                  </dir>
+                  <div class="col-lg-2">
+                    {!!Form::label('cod','COD :',[])!!}
+                  </div>
+                  <div class="col-lg-2">
+                   {!!Form::text('cod',null,['class'=>'form-control showcod','readonly'=>'readonly'])!!}
                   </div>
                 </div>
                 <div class="row">
@@ -267,7 +271,7 @@
                     <div class="col-lg-12">
                       <div class="well-sm">
                         <button type="submit" disabled="true" name="btn_save" value="Save" class="btn btn-success btn-sm" id="btn_hide"> Save</button>
-                        <button disabled="true" type="submit" name="btn_cancel" value="Cancel" class="btn btn-danger btn-sm btn_hide"> Discard </button>
+                        <a href="{{url('/admin/cancel')}}" disabled="true" class="btn btn-danger btn-sm btn_hide"> Discard </a>
                       </div>
                     </div>
                   </div>
@@ -396,7 +400,6 @@ $(document).ready(function() {
       alert("Stock available only: "+tmp_qtys+" items!");
       $('.qty').val(null)
       $(".amount").val(0);
-
    }else{
     $('.amount').val(0);
       $('.add').attr('disabled','true');
@@ -510,43 +513,47 @@ function getEmailCustomer(id){
   var price =$(".price").val();
   var amount = $(".amount").val();
   //console.log([scores,studentid]);
-  $.ajax({
-    url:"{{url('/addOrderCus')}}"+"/"+proid+"/"+qty+"/"+price+"/"+amount,
-    type:'get',
-    dataType: 'json',
-    success:function(data){
-      $('.add').attr('disabled','true');
-      $('#showto').fadeIn();
-      $(".productId").val('');
-      $('.proId').val(null);
-      $('.qty').val(null)
-      $('.qty').attr('readonly','readonly');
-      $(".price").val(0);
-      $(".amount").val(0);
-      $(".total").val(1000);
-      $('#btn_hide').removeAttr('disabled','true');
-    $('.btn_hide').removeAttr('disabled','true');
-      showProductCus();
-      getTotalCus();
-    },
-    error:function(error){
-      console.log(error)
-    },
-  });
+  if(qty){
+      $.ajax({
+        url:"{{url('/addOrderCus')}}"+"/"+proid+"/"+qty+"/"+price+"/"+amount,
+        type:'get',
+        dataType: 'json',
+        success:function(data){
+          $('.add').attr('disabled','true');
+          $('#showto').fadeIn();
+          $(".productId").val('');
+          $('.proId').val(null);
+          $('.qty').val(null)
+          $('.qty').attr('readonly','readonly');
+          $(".price").val(0);
+          $(".amount").val(0);
+          $(".total").val(1000);
+          $('#btn_hide').removeAttr('disabled','true');
+          $('.btn_hide').removeAttr('disabled','true');
+          $('.columnhide').fadeIn('slow');
+          $('.showCheckbox').fadeIn('slow');
+          showProductCus();
+          getTotalCus();
+        },
+        error:function(error){
+          console.log(error)
+        },
+      });
+  }
 }
  //-------------------------
   function showProductCus(){
     $.ajax({
-  url:"{{url('/showProductCus')}}",
-  type: 'get',
-  dataType: 'html',
-  success:function(data){
-    $('#MyProList').html(data);
-  },
-  error:function(e){
-    console.log(e);
-  },
-});
+      url:"{{url('/showProductCus')}}",
+      type: 'get',
+      dataType: 'html',
+      success:function(data){
+        $('#MyProList').html(data);
+      },
+      error:function(e){
+        console.log(e);
+      },
+    });
   }
  
   //------------------------
@@ -562,17 +569,16 @@ $.ajax({
   totalcus = data;
   total = data.toFixed(2);
   $('.totalcus').val(total);
-  $('#showto').fadeIn(1000);
-  $('.columnhide').fadeIn(1000);
-  $('.showCheckbox').fadeIn(1000);
-  $('#MyProList').fadeIn(1000);
+  $('#MyProList').fadeIn('slow');
   var setdiscus1 = $('#setdiscus1').val();
   if(totalcus >= setdiscus1){
-          $('#discount').fadeIn(1000);
+          $('#discount').fadeIn('slow');
           $('.discountcus').val(0);
           $('.grandTotalcus').val(total);
           $( ".discountcus" ).keyup(function() {
-            $('.cod').filter(':checkbox').removeAttr('checked');
+            $('.cod').filter(':checkbox').prop('checked',false);
+            $('.showcod').val(0);
+            $('#showcod').fadeOut('slow');
             var dis = $(this).val();
             if(dis<0){
                 $('.discountcus').css('border','1px solid red');
@@ -619,16 +625,19 @@ function removeOrderCus(id){
       $('.qty').attr('readonly','readonly');
       $(".price").val(0);
       $(".amount").val(0);
-      var count = $('table tr').length;
-      if(count==2){
-      $('#btn_hide').attr('disabled','true');
-      $('.btn_hide').attr('disabled','true');
-     }
+      showProductCus();
       getTotalCus(); 
       $(".table tr#"+data).remove();
       $('.cod').attr('checked',false);
       $('.discountcus').val(0);
-      
+      var count = $('table tr').length;
+      if(count==1){
+      $('#btn_hide').attr('disabled','true');
+      $('.btn_hide').attr('disabled','true');
+      $('.columnhide').fadeOut('slow');
+      $('.showCheckbox').fadeOut('slow');
+      $('#showto').fadeOut('slow');
+     }
     },
     error:function(error){
       console.log(error)
@@ -643,6 +652,8 @@ $('.cod').on('change',function(){
     var grandTotalcus =0;
     var totalcus = $('.totalcus').val();
     var codcus = $('#codcus').val();
+    $('.showcod').val(codcus);
+    $('#showcod').fadeIn('slow');
     var discountcus = $('.discountcus').val();
       if(discountcus!=''){
         var totaldis = totalcus - totalcus * discountcus/100;
@@ -657,6 +668,8 @@ $('.cod').on('change',function(){
         $('.grandTotalcus').val(grandTotalcus);
       }
   } else {
+      $('.showcod').val(0);
+      $('#showcod').fadeOut('slow');
       var dis = $('.discountcus').val();
       var totalcus = $('.totalcus').val();
       var grandTotal = totalcus - (totalcus * dis)/100;

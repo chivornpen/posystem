@@ -66,8 +66,7 @@
                             @if($pocus->isDelivery==0)
                             <a href="{{ route('saleSD.edit',$pocus->id)}}" class="btn btn-warning btn-xs" title="Edit"><i class="fa fa-edit"></i></a> 
                             @endif
-                            <a href="{{ route('saleSD.show',$pocus->id)}}" class="btn btn-info btn-xs" title="Show Details"><i class="fa fa-indent" aria-hidden="true"></i></a>
-                            <a href="{{ route('purchaseOrders.edit',$pocus->id)}}" class="btn btn-primary btn-xs" title="Show Details"><i class="fa fa-eye"></i></a>                
+                            <a href="{{ route('saleSD.show',$pocus->id)}}" class="btn btn-info btn-xs" title="Show Details"><i class="fa fa-indent" aria-hidden="true"></i></a>            
                         </td>
                     </tr>
                 @endforeach

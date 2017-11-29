@@ -148,8 +148,9 @@
                         </div>
                         <div class="row">
                           <div class="col-lg-12">
-                             <a disabled class="btn btn-success btn-sm add" onclick="addOrderSDSale()" ><i class="fa fa-cart-plus" aria-hidden="true"></i> Add</a>
-                             <button type="submit" name="btn_back" value="Back" class="btn btn-default btn-sm pull-right"> Back </button>
+                             <a disabled class="btn btn-success btn-xs add" onclick="addOrderSDSale()" ><i class="fa fa-cart-plus" aria-hidden="true"></i> Add</a>
+                             <a class="btn btn-info btn-xs" onclick="showProductCussd()" ><i class="fa fa-eye" aria-hidden="true"></i> View</a>
+                             <a href="{{url('/admin/cussdcancel')}}" class="btn btn-warning btn-xs pull-right"> Cancel </a>
                           </div>
                         </div>
                       </div>
@@ -173,10 +174,8 @@
                       </div>
                       {{----------------------------------------------}}
                 <div class="row">
-                  <div class="col-lg-12">
-                    <div class="panel panel-default table-responsive" id="MyProList">
-                   <!--  table -->
-                    </div>
+                  <div class="col-lg-12" id="MyProList">
+                            <!-- table -->
                   </div>
                 </div>
               <div id="showto" hidden>
@@ -239,7 +238,7 @@
                     <div class="col-lg-12">
                       <div class="well-sm">
                       <button type="button" disabled="true" class="btn btn-primary btn-sm" id="btn_hide" data-toggle="modal" data-target="#exampleModal1" data-whatever="@mdo"> Save </button>
-                        <button disabled="true" type="submit" name="btn_cancel" value="Cancel" class="btn btn-danger btn-sm btn_hide"> Discard </button>
+                        <a href="{{url('/admin/cussdcancel')}}" class="btn btn-danger btn-sm btn_hide"> Discard </a>
                       </div>
                     </div>
                   </div>
@@ -267,7 +266,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-lg-12">
-              <h4>Do you want to cut stock now?</h4>
+              <h4>Do you want to export products now?</h4>
               </div>
             </div>
           </div>
@@ -585,10 +584,8 @@ $.ajax({
   totalcus = data;
   total = data.toFixed(2);
   $('.totalcus').val(total);
-  $('#showto').fadeIn(1000);
-  $('.columnhide').fadeIn(1000);
-  $('.showCheckbox').fadeIn(1000);
-  $('#MyProList').fadeIn(1000);
+  $('.showCheckbox').fadeIn('slow');
+  $('#MyProList').fadeIn('slow');
   $('.discountcus').val(0);
   $('.grandTotalcus').val(total);
   $( ".discountcus" ).keyup(function() {
@@ -661,14 +658,15 @@ function removeOrderCussd(id){
       $('.qty').attr('readonly','readonly');
       $(".price").val(0);
       $(".amount").val(0);
-      getTotalCussd(); 
       var count = $('table tr').length;
       if(count==2){
       $('#btn_hide').attr('disabled','true');
       $('.btn_hide').attr('disabled','true');
-      $('#discount').fadeOut('slow');
-      $('#cod').fadeOut('slow');
+      $('.columnhide').fadeOut('slow');
+      $('#showto').fadeOut('slow');
+      showProductCussd();
      }
+     getTotalCussd(); 
       $(".table tr#"+data).remove();
       $('.cod').attr('checked',false);
       $('.discountcus').val(0);

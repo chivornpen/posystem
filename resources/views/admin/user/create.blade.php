@@ -121,7 +121,7 @@
           </div>
           <div class="col-lg-4">
             <div class="form-group {{ $errors->has('brand_id') ? ' has-error' : '' }}">
-              {!!Form::label('brand_id','Brand Name :',[])!!}
+              {!!Form::label('brand_id','Branch Name :',[])!!}
               {!!Form::select('brand_id',[null=>'---Please select brand---']+$brands,null,['class'=>'form-control'])!!}
               @if ($errors->has('brand_id'))
                   <span class="help-block">

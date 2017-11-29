@@ -103,22 +103,15 @@ class PurchaseOrderSDController extends Controller
             return redirect()->route('purchaseOrdersSD.index');
             
         }
-        if(Input::get('btn_back')){
-            $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
-            foreach ($tmps as $tmp) {
-                $tmp->delete();
-            }
-            return redirect()->back();
-        }
-        if(Input::get('btn_cancel')){
-            $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
-            foreach ($tmps as $tmp) {
-                $tmp->delete();
-            }
-            return redirect()->back();
-        }
     }
-
+    public function sdcancel()
+    {
+        $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
+            foreach ($tmps as $tmp) {
+                $tmp->delete();
+            }
+            return redirect()->back();
+    }
     /**
      * Display the specified resource.
      *

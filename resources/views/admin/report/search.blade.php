@@ -1,7 +1,7 @@
    @if($customer)
         <img src="/images/Logo.jpg" style="height: 15px; width: 110px;">
         <p style="font-family: 'Times New Roman',Serif;color: #cf3d54; font-size:12px;"><b>CUSTOMER LIST</b></p>
-        <table border="1px" cellpadding="5px" id="customer" style=" width: 1200px; border-collapse: collapse; border:1px solid #7a7a7a;">
+        <table border="1px" cellpadding="5px" id="customer" style=" width: 1600px; border-collapse: collapse; border:1px solid #7a7a7a;">
             <thead>
             <tr>
                 <td style="font-family:'Arial Black',Serif;font-size: 12px; text-align: center;padding:2px 8px;">No</td>

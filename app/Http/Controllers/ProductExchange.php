@@ -47,7 +47,7 @@ class ProductExchange extends Controller
 
     public function create()//show Invoice number in comboBox
     {
-        $stockout = Stockout::where('status','=',0)->select('purchaseorder_id')->get();
+        $stockout = Stockout::where('status','=',0)->where('stockoutDate','<',DB::raw('DATE_ADD(stockoutDate, INTERVAL 1 YEAR)'))->select('purchaseorder_id')->get();
         return view('admin.ProductExchange.create',compact('stockout'));
     }
 

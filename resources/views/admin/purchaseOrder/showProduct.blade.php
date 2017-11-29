@@ -1,13 +1,14 @@
-             
-              <table class="table table-responsive table-bordered table-striped" cellspacing="0">
+@if($tmpdata->count())
+              <div class="panel panel-default table-responsive">
+                <table class="table table-bordered table-hover table-striped" cellspacing="0">
                   <thead>
                       <tr>
-                          <th>No</th>
-                          <th>Product Name</th>
-                          <th>Quantity</th>
-                          <th>UnitPrice</th>
-                          <th>Amount</th>
-                          <th>Actions</th>
+                          <th style="text-align: center;">No</th>
+                          <th style="text-align: center;">Product Name</th>
+                          <th style="text-align: center;">Quantities</th>
+                          <th style="text-align: center;">Unit Price</th>
+                          <th style="text-align: center;">Amount</th>
+                          <th style="text-align: center;">Actions</th>
                       </tr>
                   </thead>
                   <?php $no=1;?>
@@ -32,9 +33,13 @@
                             ?>
                           </td>
                           <td width="150px" style="text-align: center;">
-                          <button class="btn btn-danger fa fa-remove btn-xs poid" type="button" onclick="removeOrderCus({{$tmppo->id}})"> Remove</button></td>
+                          <button style="padding: 2px" class="btn btn-danger fa fa-remove btn-xs poid" type="button" onclick="removeOrderCus({{$tmppo->id}})"> Remove</button></td>
                       </tr>
                       @endforeach
                       
                   </tbody>
               </table>
+              </div>       
+      @else
+      <h4>No found result</h4>
+      @endif

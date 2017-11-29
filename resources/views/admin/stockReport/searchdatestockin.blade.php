@@ -24,7 +24,7 @@
             </tr>
           </table>
           <div style="margin-top: 10px;margin-bottom: 5px;font-size: 12px;font-family: 'Khmer OS System';">Reported By: <b>{{Auth::user()->nameDisplay}}</b></div>
-          <table width="1300px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
+          <table width="1600px" class="table-responsive" border="1px" style="border: 1px solid gray; border-collapse: collapse;" cellpadding="5px" cellspacing="0">
             <thead>
               <tr>
                 <th colspan="5" style="border-top: 1px solid #fff;border-left: 1px solid #fff;"></th>

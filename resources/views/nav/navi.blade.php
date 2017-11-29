@@ -11,6 +11,9 @@
                                         <li>
                                             <a href="{{ route('verifys.create')}}">Verify Purchase Order</a>
                                         </li>
+                                        <li>
+                                            <a href="{{URL::to('/admin/createverify')}}">Verify Request Product</a>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li>
@@ -25,13 +28,13 @@
                                     </ul>
                                 </li>
                                 <li>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#Brands"><i class="fa fa-empire" aria-hidden="true"></i> Brands <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#Brands"><i class="fa fa-empire" aria-hidden="true"></i> Branchs <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="Brands" class="collapse nav nav-second-level">
                                         <li>
-                                            <a href="{{ route('brands.index')}}">All Brands</a>
+                                            <a href="{{ route('brands.index')}}">All Branchs</a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('brands.create')}}">Create New Brand</a>
+                                            <a href="{{ route('brands.create')}}">Create New Branch</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -185,7 +188,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrder"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Purchase Order Sale<i class="fa fa-fw fa-caret-down"></i></a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrder"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Purchaseorder<i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="PurchaseOrder" class="collapse nav nav-second-level">
                                 <li>
                                     <a href="{{ route('purchaseOrders.index')}}">All Purchase Order</a>
@@ -200,12 +203,28 @@
                         <li>
                             <a href="javascript:;" data-toggle="collapse" data-target="#Account"><i class="fa fa-money" aria-hidden="true"></i> Account Managment<i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="Account" class="collapse nav nav-second-level">
+
                                 <li>
                                     <a href="{{ route('invoicePO.index')}}">New Invoice</a>
                                 </li>
+
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#create"><i class="fa fa-plus" aria-hidden="true"></i> Create <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="create" class="collapse nav">
+                                        <li>
+                                            <a href="{{url('/account/create/acc/type')}}">&nbsp; &nbsp;&nbsp;&nbsp;Account Type</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{url('/account/create/acc/chart')}}">&nbsp; &nbsp;&nbsp;&nbsp;Chart Of Account</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li>
+                                    <a href="{{url('/account/create/booking')}}"><i class="fa fa-usd" aria-hidden="true"></i> Booking Account</a>
+                                </li>
                                 <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#summa"><i class="fa fa-list-alt" aria-hidden="true"></i> Summary Invoices <i class="fa fa-fw fa-caret-down"></i></a>
-                                    <a href="javascript:;" data-toggle="collapse" data-target="#summa">Summary Invoices <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="summa" class="collapse nav nav-second-level">
                                         <li>
                                             <a href="{{ route('summaryInvs.index')}}">&nbsp; &nbsp;&nbsp;&nbsp;All Summary Invocie</a>
@@ -249,10 +268,16 @@
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#stockout"><i class="fa fa-truck" aria-hidden="true"></i> Stock Out <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="stockout" class="collapse nav nav-second-level">
                                         <li>
-                                            <a href="{{route('stockout.create')}}">Export</a>
+                                            <a href="{{route('stockout.create')}}">Export Products</a>
                                         </li>
                                         <li>
-                                            <a href="{{route('stockout.index')}}">Views</a>
+                                            <a href="{{url('show/requestPro')}}">Export Request</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{route('stockout.index')}}">View Stock Out</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{url('show/requested/product')}}">Views Requested</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -328,6 +353,29 @@
                         <li><a href="javascript:;" data-toggle="collapse" data-target="#Report"><i class="fa fa-file-text" aria-hidden="true"></i> Report <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="Report" class="collapse nav nav-second-level">
 
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#account"><i class="fa fa-line-chart" aria-hidden="true"></i> Account<i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="account" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="#">Income Statement</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">SOE</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{url('account/report/trial/balance')}}">Trial Balance</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{url('/account/report/balance/sheet')}}">Balance Sheet</a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+
+
+
+
+
+
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#CutomerList"><i class="fa fa fa-users" aria-hidden="true"></i> Customer Report<i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="CutomerList" class="collapse nav nav-second-level">
                                         <li>
@@ -380,6 +428,9 @@
                                         <li>
                                             <a href="{{URL::to('/admin/reportStockReturn')}}">Report Stock Return</a>
                                         </li>
+                                        <li>
+                                             <a href="{{URL::to('/report/expired/prouduct')}}">Expired Products</a>
+                                        </li>
                                     </ul>
                                 </li>
 
@@ -387,7 +438,32 @@
                             </ul>
                         </li>
                         {{--sale report--}}
-
+                        {{--start request nav--}}
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#request"><i class="fa fa-level-up" aria-hidden="true"></i> Request Product<i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="request" class="collapse nav nav-second-level">
+                                <li>
+                                    <a href="{{ route('requestpro.index')}}">All Requests</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('requestpro.create')}}"> Request Product</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--end request nav--}}
+                        {{--start return request nav--}}
+                        <li>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#returnreq"><i class="fa fa-retweet" aria-hidden="true"></i> Return Request<i class="fa fa-fw fa-caret-down"></i></a>
+                            <ul id="returnreq" class="collapse nav nav-second-level">
+                                <li>
+                                    <a href="{{URL::to('/admin/viewreturnrequest')}}">View</a>
+                                </li>
+                                <li>
+                                    <a href="{{URL::to('/admin/createreturnrequest')}}"> Return</a>
+                                </li>
+                            </ul>
+                        </li>
+                        {{--end return request nav--}}
         {{--Report MANAGEMENT MENU--}}
         {{--------------- start SD---------------}}
                         <li><a href="javascript:;" data-toggle="collapse" data-target="#POSD"><i class="fa fa-user" aria-hidden="true"></i> SD Managment<i class="fa fa-fw fa-caret-down"></i></a>
@@ -444,10 +520,10 @@
                                             <a href="{{ route('sdstockreport.index')}}">Report Stock Balance</a>
                                         </li>
                                         <li>
-                                            <a href="{{URL::to('/admin/reportStockExchange')}}">Report Stock Exchange</a>
+                                            <a href="{{URL::to('/admin/sdreportstockexchange')}}">Report Stock Exchange</a>
                                         </li>
                                         <li>
-                                            <a href="{{URL::to('/admin/reportStockReturn')}}">Report Stock Return</a>
+                                            <a href="{{URL::to('/admin/sdreportstockreturn')}}">Report Stock Return</a>
                                         </li>
                                     </ul>
                                 </li>
@@ -455,17 +531,5 @@
                                 {{--end SD stock-in-menu--}}
                             </ul>
                         </li>
-                            </ul>
-                        </li>
-
-
-
-
-
-
-
-
-                       {{--END SD STOCK MANAGEMENT MENU--}}
-                    </ul>
         {{--Report MANAGEMENT MENU--}}
-
+                        

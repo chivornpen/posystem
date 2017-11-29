@@ -19,7 +19,7 @@ class stock_in_controller extends Controller
 
     public function index()
     {
-        $import = Import::orderBy('id','dsc')->paginate(10);
+        $import = Import::all();
         return view('admin.stock_in.index', compact('dateImport','import'));
     }
 

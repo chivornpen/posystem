@@ -10,6 +10,7 @@
                             </ul>
 </li>
 {{--------------- start SD---------------}}
+
 {{--------------------Order from office---------------}}
                                 <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#PurchaseOrderSD"><i class="fa fa-shopping-basket" aria-hidden="true"></i></i> To Supplier<i class="fa fa-fw fa-caret-down"></i></a>
@@ -105,9 +106,16 @@
                                 {{--end return-menu--}}
 
 
-                                {{--SD stock_in_menu --}}
-                                <li><a href="javascript:;" data-toggle="collapse" data-target="#sdstockReport"><i class="fa fa-shopping-cart" aria-hidden="true"></i> SD Stock Report <i class="fa fa-fw fa-caret-down"></i></a>
-                                    <ul id="sdstockReport" class="collapse nav nav-second-level">
+
+                                {{--report SD ----}}
+                                   <li><a href="javascript:;" data-toggle="collapse" data-target="#reports"><i class="fa fa-file" aria-hidden="true"></i> Report <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="reports" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{ route('report.index')}}">Customer Lists</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{URL::to('/report/sale/view')}}">Sales</a>
+                                        </li>
                                         <li>
                                             <a href="{{ route('sdstockreport.create')}}">Report Stock In</a>
                                         </li>
@@ -118,12 +126,15 @@
                                             <a href="{{ route('sdstockreport.index')}}">Report Stock Balance</a>
                                         </li>
                                         <li>
-                                            <a href="{{URL::to('/admin/reportStockExchange')}}">Report Stock Exchange</a>
+                                            <a href="{{URL::to('/admin/sdreportstockexchange')}}">Report Stock Exchange</a>
                                         </li>
                                         <li>
-                                            <a href="{{URL::to('/admin/reportStockReturn')}}">Report Stock Return</a>
+                                            <a href="{{URL::to('/admin/sdreportstockreturn')}}">Report Stock Return</a>
+                                        </li>
+                                        <li>
+                                             <a href="{{URL::to('/report/expired/prouduct')}}">Expired Products</a>
                                         </li>
                                     </ul>
                                 </li>
 
-                                {{--end SD stock-in-menu--}}
+                                {{--end SD Report--}}

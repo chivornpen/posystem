@@ -30,7 +30,7 @@ class PurchaseOrderController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->position->name != 'SD'){
+        if(Auth::user()->position->name == 'Administrator'){
             $pocuss = PurchaseOrder::where('customer_id','!=',null)->get();
             return view('admin.purchaseOrder.index',compact('pocuss'));
         }else{
@@ -94,14 +94,18 @@ class PurchaseOrderController extends Controller
             $po->printedBy =0;
             $po->isGenerate =0;
             $po->isPayment =0;
-            $po->isDelivery =0;
             $po->paid = 0;
-            $cod =0;
             $cod = Input::get('cod');
-            if($cod==1){
+            if($cod!=null){
                 $po->cod = Input::get('codcus');
             }else{
                 $po->cod = 0;
+            }
+            $isDelivery = Input::get('isDelivery');
+            if($isDelivery!=null){
+                $po->isDelivery = 1;
+            }else{
+                $po->isDelivery = 0;
             }
             $po->save();
             $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
@@ -116,25 +120,16 @@ class PurchaseOrderController extends Controller
             foreach ($tmps as $tmp) {
                 $tmp->delete();
             }
-            $pocuss = PurchaseOrder::where('customer_id','!=',null)->where('user_id','=',Auth::user()->id)->get();
-            return view('admin.purchaseOrder.index',compact('pocuss'));
+            return $this->index();
         }
-        //------------------btn_back---------------
-        if(Input::get('btn_back')){
-            $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
+    }
+    public function cancel()
+    {
+        $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
             foreach ($tmps as $tmp) {
                 $tmp->delete();
             }
             return redirect()->back();
-        }
-        //------------------btn_cancel--------------------------
-        if(Input::get('btn_cancel')){
-            $tmps = TpmPurchaseOrder::where('user_id','=',Auth::user()->id)->get();
-            foreach ($tmps as $tmp) {
-                $tmp->delete();
-            }
-            return redirect()->back();
-        }
     }
 
     /**

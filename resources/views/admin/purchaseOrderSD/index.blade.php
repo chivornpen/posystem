@@ -58,7 +58,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <button title="Priview Invoice" type="submit" class="btn btn-primary btn-xs"><i class="fa fa-eye"></i></button>
                     </form>
-                    @if($posd->isPayment==0)
+                    @if($posd->isDelivery==0)
                     <a href="{{ route('purchaseOrders.edit',$posd->id)}}" class="btn btn-warning btn-xs" title="Edit"><i class="fa fa-edit"></i></a> 
                 @endif 
                 </td>

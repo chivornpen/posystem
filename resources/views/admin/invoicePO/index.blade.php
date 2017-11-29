@@ -279,7 +279,9 @@
 </div>
 @stop
 @section('script')
+
 <script type="text/javascript">
+
 
     $(document).ready(function() {
          $('#example').DataTable({
@@ -397,5 +399,12 @@
             //
         }
     });
+
+
+
+    function paidAll() {
+        var payall = $('.cradit').val();
+        $('.paids').val(payall);
+    }
 </script>
 @stop

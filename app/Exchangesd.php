@@ -21,4 +21,7 @@ class Exchangesd extends Model
     public function products(){
         return $this->belongsToMany(Product::class)->withTimestamps()->withPivot('qty','expd');
     }
+    public function brand(){
+        return $this->belongsTo(Brand::class,'brand_id');
+    }
 }

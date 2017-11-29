@@ -8,6 +8,10 @@ class Product extends Model
 {
 	protected $table='products';
     protected $fillable = ['product_code','product_barcode','name','description','unitPrice','category_id','user_id','created_at','updated_at'];
+    public function requestpros()
+    {
+        return $this->belongsToMany('App\Requestpro','product_requestpro')->pivot('product_id','qty','user_id');
+    }
     public function purchaseorders()
     {
         return $this->belongsToMany('App\Purchaseorder','purchaseorder_product')->pivot('product_id','unitPrice','qty','amount','user_id');
@@ -36,6 +40,10 @@ class Product extends Model
     {
         return $this->hasMany(Tmppurchaseordercussd::class);
     }
+    public function tmpproreqs()
+    {
+        return $this->hasMany('App\Tmpproreq');
+    }
     public function pricelists()
     {
         return $this->hasMany(Pricelist::class);
@@ -63,7 +71,10 @@ class Product extends Model
     }
 
     public  function returnpros(){
-        return $this->belongsToMany(Product::class)->withTimestamps()->withPivot('qtyreturn','qtyorder');
+        return $this->belongsToMany(Returnpro::class)->withTimestamps()->withPivot('qtyreturn','qtyorder');
 
+    }
+    public  function returnreqpros(){
+        return $this->belongsToMany(Returnreqpro::class)->withTimestamps()->withPivot('qtyreturn','qtyorder');
     }
 }

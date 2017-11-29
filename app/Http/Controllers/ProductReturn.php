@@ -39,7 +39,7 @@ class ProductReturn extends Controller
 
     public function create()
     {
-        $stockout = Stockout::where('status','=',0)->get();
+        $stockout = Stockout::where('status','=',0)->where('stockoutDate','<',DB::raw('DATE_ADD(stockoutDate, INTERVAL 1 YEAR)'))->get();
         $user = User::all();
        return view('admin.returnProduct.create',compact('stockout','user'));
     }

@@ -19,7 +19,7 @@
                                 <table class="table table-bordered " style="border-radius: 5px;" id="import">
                                    <thead>
                                         <tr>
-                                            <th class="font" style="text-align: center;">ID</th>
+                                            <th class="font" style="text-align: center;">No</th>
                                             <th class="font" style="text-align: center;">Import Date</th>
                                             <th class="font" style="text-align: center;">Invoice Date</th>
                                             <th class="font" style="text-align: center;">Invoice Numbers</th>
@@ -28,9 +28,10 @@
                                         </tr>
                                    </thead>
                                     <tbody>
+                                        <?php $n=1; ?>
                                         @foreach($import as $re)
                                             <tr>
-                                                <td style="text-align: center;">{{$re->id}}</td>
+                                                <td style="text-align: center;">{{ $n++ }}</td>
                                                 <td style="text-align: center;">{{Carbon\Carbon::parse($re->impDate)->format('d-M-Y')}}</td>
                                                 <td style="text-align: center;">{{\Carbon\Carbon::parse($re->invoiceDate)->format('d-M-Y')}}</td>
                                                 <td style="text-align: center;">{{$re->invoiceNumber}}</td>
@@ -48,6 +49,8 @@
                             @endif
                             </div>
                             <a href="{{url('admin/dashbords')}}" class="btn btn-danger btn-sm">Close</a>
+
+                            <a href="{{url('admin/stock')}}" class="btn btn-info btn-sm">Add New</a>
                         </div>
                         {{--Modal view import detail--}}
                     <!-- Modal -->

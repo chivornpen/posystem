@@ -8,7 +8,7 @@
 </div>
 <div class="row">
     <div class="col-lg-10">
-        <button type="button" onclick="getPOInfo({{$details->id}})" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Edit Invoice</button>
+        <a href="{{ route('invoicePO.index')}}" class="btn btn-info btn-sm" > Back </a>
     </div>
 </div>
 <div class="row">

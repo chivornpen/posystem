@@ -10,7 +10,7 @@
             <div class='col-md-12'>
               <div class="form-group">
                 <select name="brands" class="form-control brands">
-                  <option value="0">Please select brand name</option>
+                  <option value="0">Please select branch name</option>
                     @foreach($brands as $brand)
                       <option value="{{$brand->id}}">{!! $brand->brandName !!}</option>
                     @endforeach

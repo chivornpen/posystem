@@ -5,31 +5,36 @@ namespace App\Http\Controllers;
 use App\Brand;
 use App\Channel;
 use App\Customer;
+use App\Import;
 use App\Product;
 use App\Province;
 use App\Purchaseorder;
 use App\Purchaseordersd;
+use App\Stockout;
+use App\Stockoutsd;
+use App\Subimport;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Output\StreamOutput;
 
 class reportController extends Controller
 {
     public function index(){
         $customer="";
-        if(Auth::user()->position->name=="SD" ){//&& Auth::user()->position->name=="SD"
+        if(strtolower(Auth::user()->position->name)=="sd" ){//&& Auth::user()->position->name=="SD"
             $customer = Customer::where('brand_id',Auth::user()->brand_id)->get();
-        }elseif(Auth::user()->position->name!="SD"){
+        }elseif(strtolower(Auth::user()->position->name)!="sd"){
             $customer = Customer::all();
         }
         $brand = Brand::all();
         return view('admin.report.index',compact('customer','brand'));
     }
     public function show($data,$brand){//Live search in customer list
-            if(Auth::user()->position->name!="SD"){//
+            if(strtolower(Auth::user()->position->name)!="sd"){//
                 if($data){
                     $customer="";
                     $province_id=0;
@@ -57,7 +62,7 @@ class reportController extends Controller
                     }
                     return view('admin.report.search',compact('customer'));
                 }
-            }elseif(Auth::user()->position->name="SD"){
+            }elseif(strtolower(Auth::user()->position->name)=="sd"){
                 $customer="";
                 $channel_id = Channel::where('description','like','%'.trim($data).'%')->value('id');
                 if($data==0){
@@ -78,7 +83,7 @@ class reportController extends Controller
         $purchaseorder="";
         $product="";
         $users="";
-        if(Auth::user()->position->name!="SD"){//Auth::user()->position->name!="SD"
+        if(strtolower(Auth::user()->position->name)!="sd"){//Auth::user()->position->name!="SD"
             $users = DB::table('positions')->join('users','users.position_id','=','positions.id')->select('users.nameDisplay','users.id')->where('positions.name','sale')->orwhere('positions.name','sd')->get();
             $purchaseorder = Purchaseorder::where('isDelivery','=',1)->get();
 //            $brand =Brand::all();
@@ -101,7 +106,7 @@ class reportController extends Controller
     public function SaleReportSearch($saleName, $startDate, $endDate, $brand){
         $start=$startDate;
         $end=$endDate;
-        if(strtolower(Auth::user()->position->name)!="SD" && $brand==0) {//Auth::user()->position->name!="SD"
+        if(strtolower(Auth::user()->position->name)!="sd" && $brand==0) {//Auth::user()->position->name!="SD"
             if ($start == 0 && $end == 0 && $saleName == 0) {
                 $product = Product::all();
                 $purchaseorder = Purchaseorder::where('isDelivery', '=', 1)->get();
@@ -319,5 +324,91 @@ class reportController extends Controller
     public function sdPaymentReport(){
         return view('admin.report.sdPayment');
     }
+
+
+
+
+    //// expired_product
+    public function expiredProduct(){
+        $now = Carbon::now()->format('Y-m-d')."<br>";
+        $nowP = Carbon::now()->addYear(1)->format('Y-m-d');
+        $import = Import::all();
+        $brand = Brand::all();
+        $count="0";
+        $counti=0;
+        $subimport="";
+        $sdCount=0;
+        $customerSd = "";
+        $customerSdCount=0;
+
+        foreach ($import as $i){
+            $count= $i->products()->whereBetween('expd',[$now,$nowP])->get();
+        }
+        $stockout = Stockout::where('status','!=',1)->get();
+        foreach ($stockout as $s){
+            $counti = $s->imports()->whereBetween('expd',[$now,$nowP])->where('status',null)->get();
+        }
+//            DB::table('import_stockout')->whereBetween('expd',[$now,$nowP])->where('status',null)->get();
+        //End Main stock///
+
+        if(Auth::user()->brand_id){
+            $subimport = Subimport::where('brand_id',Auth::user()->brand_id)->get();//Main stock expired of SD
+            $customerSd = Stockoutsd::where('brand_id',Auth::user()->brand_id)->where('status',null)->get();//To SD customer expired
+        }else{
+            $subimport = Subimport::all();
+            $customerSd = Stockoutsd::where('status',null)->get();
+        }
+
+        foreach ($subimport as $im){
+            $sdCount = $im->products()->whereBetween('expd',[$now,$nowP])->get();
+        }
+
+        foreach ($customerSd as $sdCus){
+            $customerSdCount = $sdCus->subimports()->whereBetween('expd',[$now,$nowP])->get();
+        }
+//      $import = DB::table('import_product')->where([['expd','<',$nowP],['expd','>',$now],['qty','>',0]])->get();
+        return view('admin.report.expired_Products',compact('import','count','counti','brand','sdCount', 'subimport','stockout','customerSd','customerSdCount'));
+    }
+
+
+    public function sdStockSearchByBrand($brand){
+        $now = Carbon::now()->format('Y-m-d')."<br>";
+        $nowP = Carbon::now()->addYear(1)->format('Y-m-d');
+        $sdCount=0;
+        if($brand!=0){
+            $subimport = Subimport::where('brand_id',$brand)->get();
+            if($subimport){
+                foreach ($subimport as $im){
+                    $sdCount = $im->products()->whereBetween('expd',[$now,$nowP])->get();
+                }
+            }
+        }else {
+            $subimport = Subimport::all();
+            foreach ($subimport as $im) {
+                $sdCount = $im->products()->whereBetween('expd', [$now, $nowP])->get();
+            }
+        }
+        return view('admin.report.sdStockSearchByBrand',compact('sdCount', 'subimport'));
+    }
+
+    public function sdCustomerSearchByBrand($brandName){
+        $now = Carbon::now()->format('Y-m-d')."<br>";
+        $nowP = Carbon::now()->addYear(1)->format('Y-m-d');
+        $customerSdCount=0;
+        $customerSd = "";
+        if($brandName!=0){
+            $customerSd = Stockoutsd::where('brand_id',$brandName)->where('status',null)->get();
+        }else{
+            $customerSd = Stockoutsd::where('status',null)->get();
+        }
+        foreach ($customerSd as $sdCus){
+            $customerSdCount = $sdCus->subimports()->whereBetween('expd',[$now,$nowP])->get();
+        }
+        return view('admin.report.SDCustomerExpiredSearch',compact('customerSd','customerSdCount'));
+    }
+
+
+
+
 
 }

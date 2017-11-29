@@ -2,9 +2,6 @@
                             <a href="{{route('dashbords.index') }}"><i class="fa fa-bell fa-fw"></i> Notifications</a>
 </li>
 {{-------Account---------------}}
-                        <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#Account"><i class="fa fa-money" aria-hidden="true"></i> Account Managment<i class="fa fa-fw fa-caret-down"></i></a>
-                            <ul id="Account" class="collapse nav nav-second-level">
                                 <li>
                                     <a href="{{ route('invoicePO.index')}}">New Invoice</a>
                                 </li>
@@ -28,8 +25,6 @@
                                     <a href="{{url('/invoicePo/ProductReturn/view')}}"><i class="fa fa-share" aria-hidden="true"></i> Create Invoice Return</a>
                                 </li>
 
-                            </ul>
-                        </li>
                         {{-------end account--------------}}
                         {{--customer report--}}
                         <li><a href="javascript:;" data-toggle="collapse" data-target="#Report"><i class="fa fa-file-text" aria-hidden="true"></i> Report <i class="fa fa-fw fa-caret-down"></i></a>

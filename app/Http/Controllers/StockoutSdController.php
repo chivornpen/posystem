@@ -136,7 +136,7 @@ class StockoutSdController extends Controller
                 }
             }
             //------------------------------
-            return redirect()->route('saleSD.index');
+            return redirect()->route('stockoutsd.index');
     }
 
     /**

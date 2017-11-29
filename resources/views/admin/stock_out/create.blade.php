@@ -98,7 +98,7 @@
 
                            $("#invoiceDate").val(data['invoiceDate']);
 
-                           $("#stockoutDate").val(data['invoiceDate'])
+                           $("#stockoutDate").val(data['invoiceDate']);
                        },
                        error:function (error) {
                          console.log(error);

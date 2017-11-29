@@ -119,7 +119,7 @@ class StockReportController extends Controller
     }
     public function reportStockReturn()
     {
-        $returnpros = Returnpro::where('purchaseorder_id','!=',0)->get();
+        $returnpros = Returnpro::all();
         $products = Product::all();
        return view('admin.stockReport.reportstockreturnpro',compact('returnpros','products')); 
     }

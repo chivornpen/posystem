@@ -42,6 +42,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(PurchaseOder::class);
     }
+    public function requestpros()
+    {
+        return $this->hasMany(Requestpro::class);
+    }
     public function purchaseordersds()
     {
         return $this->hasMany(Purchaseodersd::class);
@@ -52,5 +56,9 @@ class User extends Authenticatable
     public function returnpro()
     {
         return $this->hasOne(Returnpro::class);
+    }
+    public function returnreqpro()
+    {
+        return $this->hasOne(Returnreqpro::class);
     }
 }
