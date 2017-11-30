@@ -16,7 +16,11 @@ use App\SetValue;
 use App\User;
 use App\Position;
 use App\Customer;
-
+use App\Pricelist;
+use App\Chartaccount;
+use App\Transection;
+use App\Tmppayment;
+use App\Setvariable;
 class InvoicePOController extends Controller
 {
     /**
@@ -43,6 +47,29 @@ class InvoicePOController extends Controller
         $exchange = Exchange::all();
         return view('admin.invoicePO.exchangeInvoice',compact('exchange'));
     }
+
+    public function createPayment(Request $re)
+    {
+        $setVariable = $re->cookie('setVariablePayment');
+        if(count($setVariable)){
+            $purchaseorders = Purchaseorder::where('isPayment','=',0)->get();
+           return view('admin.invoicePO.paymentform',compact('purchaseorders'));
+        }else{
+            $chartaccounts = Chartaccount::whereIn('typeaccount_id',[1,5,6])->pluck('description','id');
+            return view('admin.setvariable.create',compact('chartaccounts'));
+        }
+    }
+    public function viewincomepayment()
+    {
+        $transections = Transection::select('batchID')->distinct('batchID')->get();
+        return view('admin.invoicePO.viewincomepayment',compact('transections'));
+    }
+    public function entryPayment($id)
+    {
+        $cradit = Purchaseorder::where('id','=',$id)->value('cradit');
+        return view('admin.invoicePO.viewtextboxpayment',compact('cradit'));
+    }
+
     //show invoice have to return to customer
     public function ProductReturn(){
         $productReturn = Returnpro::where('isGenerate','=',0)->get();
@@ -145,7 +172,7 @@ class InvoicePOController extends Controller
 
         $returnProduct = Returnpro::findOrFail($returnId);
         $returnProduct->isGenerate=1;
-        $returnProduct-> purchaseorder_id = $purchaseorderId;
+        $returnProduct->purchaseorder_id = $purchaseorderId;
         $returnProduct->save();
 
         $stockout = Stockout::findOrFail($returnPro);
@@ -337,22 +364,176 @@ class InvoicePOController extends Controller
         $cradits = PurchaseOrder::where('isPayment','=',0)->get();
         return view('admin.invoicePO.index',compact('pos','paids','cradits','id'));
     }
+    public function submit(Request $request)
+    {
+        $this->validate($request, [
+            'invN' => 'required',
+            'paid' => 'required',
+            'cur'  => 'required',
+        ]);
+        $batchId=0;
+        $bacth = Transection::OrderBy('batchID','desc')->value('batchID');
+        if ($bacth) {
+            $batchId = $bacth;
+        }else{
+            $batchId = 0;
+        }
+        $rate = Input::get('exchangerate');
+        $currency = Input::get('cur');
 
+        $invoice = Input::get('invN');
 
+        $purchase = Purchaseorder::findOrFail($invoice);
+        $cod = $purchase->cod;
+        $discount = $purchase->discount;
+        $grandTotal = $purchase->cradit;
+        $paid = $purchase->paid;
+        $paidnew = Input::get("paid");
+        $cradit = $grandTotal - $paidnew;
+            if($cradit==0){
 
+                $num = Tmppayment::where('purchaseorder_id','=',$invoice)->count();
+                if ($num) {
+                    $newrate = Input::get('exchangerate');
+                    $oldrate = Tmppayment::where('purchaseorder_id','=',$invoice)->sum('exchangerate');
+                    $allrate = $newrate+$oldrate;
+                    $numrate = $num +1;
+                    $rate = $allrate/$numrate;
+                }
+                $setvariables = $re->cookie('setVariablePayment');
+                        $revenueid = 0;$revenuedr = 0;$revenuecr = 0;$cohid = 0;$cohdr = 0;$cohcr = 0;$cogsid = 0;$cogsdr = 0;$cogscr = 0; $re_typeaccount_id = 0; $coh_typeaccount_id = 0; $cogs_typeaccount_id = 0;
+                if(count($setvariables)){
+                    foreach ($setvariables as $value) {
+                        $revenueid = $value['revenue']['id'];
+                        $revenuedr = $value['revenue']['Dr'];
+                        $revenuecr = $value['revenue']['Cr'];
+                        $re_typeaccount_id = $value['revenue']['typeaccount_id'];
+                        $cohid = $value['COH']['id'];
+                        $cohdr = $value['COH']['Dr'];
+                        $cohcr = $value['COH']['Cr'];
+                        $coh_typeaccount_id = $value['COH']['typeaccount_id'];
+                        $cogsid = $value['COGS']['id'];
+                        $cogsdr = $value['COGS']['Dr'];
+                        $cogscr = $value['COGS']['Cr'];
+                        $cogs_typeaccount_id = $value['COGS']['typeaccount_id'];
+                    }                   
+                }
+                $purchaseDetails = DB::table('purchaseorder_product')->where('purchaseorder_id',$invoice)->select('product_id',DB::raw('SUM(qty) as qty'),DB::raw('sum(unitPrice) as price'))->groupBy('product_id')->get();
+                foreach ($purchaseDetails as $poDetail) {
+                    $product_id = $poDetail->product_id;
+                    $qty = $poDetail->qty;
+                    $price = $poDetail->price;
+                    $now = Carbon::now()->toDateString();
+                    $landingprice = DB::table('pricelists')->where([['product_id','=',$product_id],['startdate','<=',$now],['enddate','>=',$now],])->value('landingprice');
+                    $cash = ($qty * $price)-(($qty * $price)*($discount/100));
+                    $cashOnHand = $cash-$cash*($cod/100);
+                    $cost = $landingprice * $qty;
+                    $revenue = $cashOnHand - $cost;
 
+                    $runningCash = Transection::where('chartaccount_id',1)->OrderBy('id','desc')->value('runningBalance');
+                    $transection = Transection::create(array(
+                        'batchID' => $batchId+1,
+                        'transectionDate'=>Carbon::now()->toDateString(),
+                        'chartaccount_id'=>$cohid,
+                        'typeaccount_id'=>$coh_typeaccount_id,
+                        'drAmt'=>$cashOnHand*$cohdr,
+                        'crAmt'=>$cohcr*0,
+                        'runningBalance'=>$cashOnHand+$runningCash,
+                        'Postamount'=>$cashOnHand*$rate,
+                        'currency'=>$currency,
+                        'exchangeRate'=>$rate,
+                        'user_id'=>Auth::user()->id,
+                    )); 
 
+                    $runningCost = Transection::where('chartaccount_id',8)->OrderBy('id','desc')->value('runningBalance');
 
+                    $transection = Transection::create(array(
+                        'batchID' => $batchId+1,
+                        'transectionDate'=>Carbon::now()->toDateString(),
+                        'chartaccount_id'=>$cogsid,
+                        'typeaccount_id'=>$cogs_typeaccount_id,
+                        'drAmt'=>$cogsdr*0,
+                        'crAmt'=>$cost*$cogscr,
+                        'runningBalance'=>$runningCost-$cost,
+                        'Postamount'=>-$cost*$rate,
+                        'currency'=>$currency,
+                        'exchangeRate'=>$rate,
+                        'user_id'=>Auth::user()->id,
+                    ));
 
+                    $runningRe = Transection::where('chartaccount_id',9)->OrderBy('id','desc')->value('runningBalance');
 
+                    $transection = Transection::create(array(
+                        'batchID' => $batchId+1,
+                        'transectionDate'=>Carbon::now()->toDateString(),
+                        'chartaccount_id'=>$revenueid,
+                        'typeaccount_id'=>$re_typeaccount_id,
+                        'drAmt'=>$revenuedr*0,
+                        'crAmt'=>$revenue*$revenuecr,
+                        'runningBalance'=>$runningRe-$revenue,
+                        'Postamount'=>$revenue*$rate,
+                        'currency'=>$currency,
+                        'exchangeRate'=>$rate,
+                        'user_id'=>Auth::user()->id,
+                    ));
+                }
+                $paids = $paid + $paidnew;
+                $purchase->paid = $paids;
+                $purchase->cradit = $cradit;
+                $purchase->isPayment = 1;
+                $purchase->paidDate = Carbon::now()->toDateString();
+                $purchase->printedBy = Auth::user()->id;   
+                $purchase->save(); 
+                $tmps = Tmppayment::where('purchaseorder_id','=',$invoice)->get();
+                    foreach ($tmps as $tmp) {
+                        $tmp->delete();
+                    }
+            }else{
+                $tmppayment = new Tmppayment;
+                $tmppayment->purchaseorder_id = $invoice;
+                $tmppayment->cradit = $cradit;
+                $tmppayment->paid = $paidnew;
+                $tmppayment->exchangerate = $rate;
+                $tmppayment->user_id = Auth::user()->id;
+                $tmppayment->save();
+                $paids = $paid + $paidnew;
+                $purchase->paid = $paids;
+                $purchase->cradit = $cradit;
+                $purchase->isPayment = 0;
+                $purchase->paidDate = Carbon::now()->toDateString();
+                $purchase->save();
+            }
+        return $this->viewincomepayment();
+    } 
 
-
-
-
-
-
-
-
-
-
+    public function incomeStatement()
+    {
+        $transections =array();
+        //$transections = Transection::whereIn('typeaccount_id',[5,6])->get();
+        return view('admin.invoicePO.incomestatement',compact('transections'));
+    } 
+  
+    public function incomeReportFilter(Request $request){
+        $this->validate($request,[
+            'date'                =>'required',
+            'typeDate'            =>'required'
+        ],[
+            'date.required'       =>'The date field required',
+            'typeDate.required'   =>'Please choose one'
+        ]);
+        $endDate=null;
+        $startDate=null;
+        $reportType="";
+        if($request->input('typeDate')=="m") {
+            $endDate = Carbon::parse($request->input('date'))->toDateString();
+            $startDate = substr(Carbon::parse($request->input('date'))->toDateString(), 0, -2) . "01";
+            $reportType ="Monthly";
+        }else if($request->input('typeDate')=="y"){
+            $endDate = Carbon::parse($request->input('date'))->toDateString();
+            $startDate = substr(Carbon::parse($request->input('date'))->toDateString(), 0, -5)."01"."-01";
+            $reportType ="Yearly";
+        }
+        $transections = Transection::whereIn('typeaccount_id',[6,5])->whereBetween('transectionDate',[$startDate,$endDate])->OrderBy('chartaccount_id','desc')->get();
+        return view('admin.invoicePO.incomestatement',compact('transections','endDate','reportType'));
+    } 
 }

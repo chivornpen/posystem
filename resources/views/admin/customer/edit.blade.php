@@ -14,9 +14,9 @@
         {!!Form::model($customer,['action'=>['customerController@update',$customer->id],'method'=>'PATCH'])!!}
           {{csrf_field()}}
           <div class="row">
-              <div class="col-lg-3">
+              <div class="col-lg-4">
                    <div class="form-group {{ $errors->has('name') ? ' has-error' : '' }}">
-                        {!!Form::label('name','Customer Name : ',[])!!}
+                        {!!Form::label('name','Name Khmer : ',[])!!}
                         {!!Form::text('name',null,['class'=>'form-control','required'=>'true'])!!}
                         @if ($errors->has('name'))
                             <span class="help-block">
@@ -25,7 +25,18 @@
                         @endif
                     </div>
               </div>
-              <div class="col-lg-3">
+              <div class="col-lg-4">
+                   <div class="form-group {{ $errors->has('nameEn') ? ' has-error' : '' }}">
+                        {!!Form::label('nameEn','Name English : ',[])!!}
+                        {!!Form::text('nameEn',null,['class'=>'form-control','required'=>'true'])!!}
+                        @if ($errors->has('nameEn'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('nameEn') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+              </div>
+              <div class="col-lg-4">
                    <div class="form-group {{ $errors->has('contactNo') ? ' has-error' : '' }}">
                         {!!Form::label('contactNo','Contact No : ',[])!!}
                         {!!Form::number('contactNo',null,['class'=>'form-control','required'=>'true'])!!}

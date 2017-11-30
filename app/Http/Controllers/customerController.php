@@ -76,6 +76,7 @@ class customerController extends Controller
             $customer = new Customer;
             $customer->user_id = Auth::user()->id;
             $customer->name = Input::get("name");
+            $customer->nameEn = Input::get("nameEn");
             $customer->contactNo = Input::get("contactNo");
             $customer->homeNo = Input::get("homeNo");
             $customer->streetNo = Input::get("streetNo");
@@ -144,6 +145,7 @@ class customerController extends Controller
             $customer = Customer::findOrFail($id);
             $customer->user_id = Auth::user()->id;
             $customer->name = Input::get("name");
+            $customer->nameEn = Input::get("nameEn");
             $customer->contactNo = Input::get("contactNo");
             $customer->homeNo = Input::get("homeNo");
             $customer->streetNo = Input::get("streetNo");

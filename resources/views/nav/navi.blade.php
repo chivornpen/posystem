@@ -224,9 +224,6 @@
                                         <li>
                                             <a href="{{url('/admin/view/income/payment')}}"> View</a>
                                         </li>
-                                        <li>
-                                             <a href="{{URL::to('/admin/income/statement')}}"> Income Statement</a>
-                                        </li>
                                     </ul>
                                 </li>
                                 <li>
@@ -377,7 +374,7 @@
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#account"><i class="fa fa-line-chart" aria-hidden="true"></i> Account<i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="account" class="collapse nav nav-second-level">
                                         <li>
-                                            <a href="#">Income Statement</a>
+                                            <a href="{{URL::to('/admin/income/statement')}}">Income Statement</a>
                                         </li>
                                         <li>
                                             <a href="#">SOE</a>
