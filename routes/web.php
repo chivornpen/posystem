@@ -56,6 +56,12 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('purchaseOrdersSD','PurchaseOrderSDController');
 	Route::get('/sdcancel','PurchaseOrderSDController@sdcancel');
 	Route::resource('invoicePO','InvoicePOController');
+	Route::get('/income/payment','InvoicePOController@createPayment');
+	Route::post('submit','InvoicePOController@submit');
+	Route::get('/view/income/payment','InvoicePOController@viewincomepayment');
+	Route::get('/income/statement','InvoicePOController@incomeStatement');
+	Route::post('/income/report/filter/date','InvoicePOController@incomeReportFilter');
+	Route::get('/showpaid/{id}','InvoicePOController@showInvoicePaid');
 	Route::resource('summaryInv','CraditPOController');
 	Route::resource('stocks','StockController');
 	Route::resource('setValues','SetValueController');
@@ -66,6 +72,9 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::resource('stockreport','StockReportController');
 	Route::resource('sdstockreport','SDStockReportController');
 	Route::resource('requestpro','RequestproController');
+	Route::get('/set/variable','SetvariableController@create');
+	Route::post('set/variable/store','SetvariableController@save');
+	Route::get('/discard','SetvariableController@discard');
 	Route::get('/discard','RequestproController@discard');
 	Route::get('/createverify','RequestproController@createverify');
 	Route::get('/viewreturnrequest','RequestproController@viewReturnRequest');
@@ -83,7 +92,6 @@ Route::group(['prefix' => 'admin','middleware'=>'auth'], function () {
 	Route::get('/invoice','InvoiceController@invoice');
 	Route::resource('summaryInvs','CraditPOController');
 	Route::get('/details/{id}','CraditPOController@detail');
-	Route::get('/showpaid/{id}','InvoicePOController@showInvoicePaid');
 	Route::post('/updatePro','PurchaseOrderController@updatePro');
 	Route::get('/showEdit/{poid}','PurchaseOrderController@showEdit');
 	Route::post('/deletePro','PurchaseOrderController@deletePro');

@@ -17,6 +17,14 @@
                                     </ul>
                                 </li>
                                 <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#setvariable"><i class="fa fa-fw f fa-money"></i> Set Variables <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="setvariable" class="collapse nav nav-second-level">
+                                        <li>
+                                            <a href="{{URL::to('/admin/set/variable')}}">Set Variable</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#Positions"><i class="fa fa-fw fa-briefcase"></i> Positions <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="Positions" class="collapse nav nav-second-level">
                                         <li>
@@ -207,7 +215,20 @@
                                 <li>
                                     <a href="{{ route('invoicePO.index')}}">New Invoice</a>
                                 </li>
-
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#pay"><i class="fa fa-credit-card" aria-hidden="true"></i> Payments <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="pay" class="collapse nav">
+                                        <li>
+                                             <a href="{{URL::to('/admin/income/payment')}}"> Payment</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{url('/admin/view/income/payment')}}"> View</a>
+                                        </li>
+                                        <li>
+                                             <a href="{{URL::to('/admin/income/statement')}}"> Income Statement</a>
+                                        </li>
+                                    </ul>
+                                </li>
                                 <li>
                                     <a href="javascript:;" data-toggle="collapse" data-target="#create"><i class="fa fa-plus" aria-hidden="true"></i> Create <i class="fa fa-fw fa-caret-down"></i></a>
                                     <ul id="create" class="collapse nav">
